@@ -11,5 +11,5 @@ class StimulationSignal:
         self.electrode = electrode
         
     def set_stimulation_signal(frequency, amplitude, pulse_width, training_time, muscle, electrode):
-        for i in range(frequency):
+        for i in range(electrode):
             

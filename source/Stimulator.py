@@ -23,12 +23,23 @@ class Stimulator:
         self.mode = mode
         self.pulse_width = pulse_width
         self.amplitude = amplitude
+        self.baud_rate = 460800
+        self.start_byte = 0xF0
+        self.stop_byte = 0x0F
+        self.stuffing_byte = 0x81
+        self.stuffing_key = 0x55
         
         
         print("TODO")
-    
-    # Establishes connexion
-    def ini_ACK():
+            
+        
+    # Establishes connexion acknowlege
+    def init():
+        
+        
+        print("TODO")
+    # Establishes connexion acknowlege
+    def init_ACK():
         print("TODO")
     
 
