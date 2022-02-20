@@ -9,10 +9,37 @@ import crccheck.checksum
 # ts1:            main stimulation period in ms (1-1024.5 ms in 0.5 steps)
 # ts2:            inter-pulse time in ms (1.5-17 ms in 0.5 steps)
 
-
+  
 
 class Stimulator:
+    
         # Constuctor
+       # Dictionary with all possible commands
+       
+  TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
+             'GetStimulationMode': 0x0A, 'GetStimulationModeAck': 0x0B,
+             'InitChannelListMode': 0x1E, 'InitChannelListModeAck': 0x1F,
+             'StartChannelListMode': 0x20, 'StartChannelListModeAck': 0x21,
+             'StopChannelListMode': 0x22, 'StopChannelListModeAck': 0x23,
+             'SinglePulse': 0x24, 'SinglePulseAck': 0x25, 'StimulationError': 0x26}
+  
+  
+  VERSION = 0x01
+
+  INITACK_RESULT_OK = 0x00
+  INITACK_RESULT_ERR = -0x05
+
+  START_BYTE = 0xF0
+  STOP_BYTE  = 0x0F
+  STUFFING_BYTE = 0x81
+  STUFFING_KEY = 0x55
+  MAX_PACKET_BYTES = 69 
+  
+        # fonction pour appeler une commande (avec son numéro)
+        def throw_command(command):
+            #if command type == hexadécimal of certain command, throw associated function.
+            
+
 
         def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude):
             self.channel_stim = channel_stim
