@@ -66,7 +66,7 @@ class Stimulator:
            
            version_number = bytearray.fromhex(version_number)
            packet_data = []
-           packet_data = [command, packet_number, version_number]
+           packet_data = [ packet_number, command, version_number]
            return packet_data
             
         # Establishes connexion acknowlege
@@ -81,12 +81,24 @@ class Stimulator:
             
         # Error signal (inactivity ends connexion)    
         def watchdog():
-            print("TODO")
+            command = bytearray.fromhex(0x04)
+            packet_number = np.zeros(255)
+            for i in 255:
+               packet_number.append(i)
+            packet_data = []
+            packet_data = [packet_number, command]
+            return packet_data
         
             
         # Returns chosen mode
-        def getMode():
-            print("TODO")
+        def get_mode():
+            command = bytearray.fromhex(0X0A)
+            packet_number = np.zeros(255)
+            for i in 255:
+               packet_number.append(i)
+            packet_data = []
+            packet_data = [packet_number, command]
+            return packet_data
         
             
         # Sent by RehaStim2 in response to getMode
