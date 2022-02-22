@@ -38,8 +38,10 @@ class Stimulator:
   
         # fonction pour appeler une commande (avec son numéro)
         def throw_command(command):
-            #if command type == hexadécimal of certain command, throw associated function.
-            
+
+
+        #if command type == hexadécimal of certain command, throw associated function.
+        #fonction qui lit le paquet reçu par rehastim et qui l'associe à une commande.  
 
         #command = {'Init':0x01}
         version_number = 0x01
@@ -96,6 +98,14 @@ class Stimulator:
            packet_data = []
            packet_data = [command, packet_number, version_number]
            return packet_data
+
+        # Associates the right command 
+        def read_packets(command):
+            for type in Stimulator.TYPES:
+                if Stimulator.TYPES[types] == command
+                    return type
+            
+
             
         # Establishes connexion acknowlege
         def init_ACK():
