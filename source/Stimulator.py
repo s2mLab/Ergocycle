@@ -15,7 +15,7 @@ import numpy as np
 class Stimulator:
     
         # Constuctor
-<<<<<<< HEAD
+
        
            TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
              'GetStimulationMode': 0x0A, 'GetStimulationModeAck': 0x0B,
@@ -41,10 +41,9 @@ class Stimulator:
             #if command type == hexadécimal of certain command, throw associated function.
             
 
-=======
         #command = {'Init':0x01}
         version_number = 0x01
->>>>>>> 174e83765c2b5b7576b9d3842dc9b111eb84a904
+
 
         def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude):
             self.channel_stim = channel_stim
