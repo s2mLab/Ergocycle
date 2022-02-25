@@ -17,7 +17,7 @@ class Stimulator:
         # Constuctor
 
        
-           TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
+        TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
              'GetStimulationMode': 0x0A, 'GetStimulationModeAck': 0x0B,
              'InitChannelListMode': 0x1E, 'InitChannelListModeAck': 0x1F,
              'StartChannelListMode': 0x20, 'StartChannelListModeAck': 0x21,
@@ -25,19 +25,19 @@ class Stimulator:
              'SinglePulse': 0x24, 'SinglePulseAck': 0x25, 'StimulationError': 0x26}
   
   
-           VERSION = 0x01
+        VERSION = 0x01
 
-              INITACK_RESULT_OK = 0x00
-              INITACK_RESULT_ERR = -0x05
+        INITACK_RESULT_OK = 0x00
+        INITACK_RESULT_ERR = -0x05
           
-            START_BYTE = 0xF0
-            STOP_BYTE  = 0x0F
-            STUFFING_BYTE = 0x81
-            STUFFING_KEY = 0x55
-            MAX_PACKET_BYTES = 69 
+        START_BYTE = 0xF0
+        STOP_BYTE  = 0x0F
+        STUFFING_BYTE = 0x81
+        STUFFING_KEY = 0x55
+        MAX_PACKET_BYTES = 69 
   
         # fonction pour appeler une commande (avec son numéro)
-        def throw_command(command):
+        # def throw_command(command):
 
 
         #if command type == hexadécimal of certain command, throw associated function.
@@ -99,83 +99,23 @@ class Stimulator:
            packet_data = [command, packet_number, version_number]
            return packet_data
 
-        # Associates the right command 
+    # Associates the right command 
         def read_packets(command):
             for type in Stimulator.TYPES:
-                if Stimulator.TYPES[types] == command
+                if Stimulator.TYPES[types] == command:
                     return type
             
 
-            
-        # Establishes connexion acknowlege
-        def init_ACK():
-            print("TODO")
-        
-    
-        # Sends message for unknown command
-        def unknown_cmd():
-            print("TODO")
-        
-            
-        # Error signal (inactivity ends connexion)    
-        def watchdog():
-            print("TODO")
-        
-            
-        # Returns chosen mode
-        def getMode():
-            print("TODO")
-        
-            
-        # Sent by RehaStim2 in response to getMode
-        def getModeACK():
-            print("TODO")
-        
-    
-        # Initialises stimulation
-        def init_stimulation(channel_stim, ts1, ts2):
-            print("TODO")
-        
-        
-        # Sent by RehaStim2 in response to init_stimulation
-        def init_stimulation_ACK():
-            print("TODO")
-        
-            
-        # Starts stimulation and modifies it
-        def start_stimulation(mode, pulse_width, amplitude):
-            print("TODO")
-        
-    
-            
-        # Sent by RehaStim2 in response to start_stimulation
-        def start_stimulation_ACK():    
-            print("TODO")
-        
-        
-        # Stops stimulation
-        def stop_stimulation():
-            print("TODO")
-        
-            
-        # Sent by RehaStim2 in response to stop_stimulation
-        def stop_stimulation_ACK():
-            print("TODO")
-        
-        
-        # Sends a unique impulsion
-        def single_pulse():
-            print("TODO")
-        
-            
-        # Sent by RehaStim2 in response to single_pulse
-        def single_pulse_ACK():
-            print("TODO")
-        
-        
-        # Error message sent by RehaStim2 
-        def error():
-            print("TODO")
+    # Opens port
+
+    # Closes port
+
+    # Send packets
+
+    # Receives packet
+
+    # Creates packet for every command part of dictionary TYPES
+   
   
 
 #Essai
