@@ -11,7 +11,7 @@ from PIL import Image
 from InstructionWindow import InstructionWindow
 from StimulationWindow import StimulationWindow
 from Parameters import Parameters
-from DangerPopUp import DangerPopUp
+#from DangerPopUp import DangerPopUp
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
