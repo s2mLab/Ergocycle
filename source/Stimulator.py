@@ -106,7 +106,7 @@ class Stimulator:
            packet_data = [command, packet_number, version_number]
            return packet_data
 
-        # Associates the right command 
+        # Read the received packet
         def read_packets(self):
             #for type in Stimulator.TYPES:
                # if Stimulator.TYPES[type] == command:
@@ -130,27 +130,37 @@ class Stimulator:
             else:
                 # Return empty string to avoid hanging
                 return b''
-
+            
+        # choose the right function for the received packet
+        def function_call_received_packet(self,packet):
+            if(str(packet[5]) == Stimulator.TYPES[1]):
+                return Stimulator.init_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[2]):
+                return Stimulator.unknown_cmd()
+            elif(str(packet[5]) == Stimulator.TYPES[5]):
+                return Stimulator.getmodeACK()
+            elif(str(packet[5]) == Stimulator.TYPES[7]):
+                return Stimulator.init_stimulation_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[9]):
+                return Stimulator.start_stimulation_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[11]):
+                return Stimulator.stop_stimulation_ACK()
             
         # Establishes connexion acknowlege
-        def init_ACK(self):
-            packet = Stimulator.read_packets()
-            if(str(packet[5]) == Stimulator.TYPES[1]):
-                if (str(packet[6]) == '0'):
-                    return 'Connexion established'
-                elif (str(packet[6]) == '-5'):
-                    return 'Version number is incompatible'
+        def init_ACK(self, packet):
+            if (str(packet[6]) == '0'):
+                return 'Connexion established'
+            elif (str(packet[6]) == '-5'):
+                return 'Version number is incompatible'
                 
     
         # Sends message for unknown command
-        def unknown_cmd():
-            packet = Stimulator.read_packets()
-            if(str(packet[5]) == Stimulator.TYPES[2]):
-                return str(packet[6])
+        def unknown_cmd(self, packet):
+            return str(packet[6])
         
             
         # Error signal (inactivity ends connexion)    
-        def watchdog():
+        def watchdog(self):
             print("TODO")
         
             
@@ -160,21 +170,19 @@ class Stimulator:
         
             
         # Sent by RehaStim2 in response to getMode
-        def getModeACK():
-            packet = Stimulator.read_packets()
-            if(str(packet[5]) == Stimulator.TYPES[5]):
-                if(str(packet[6] == '0')):
-                    if(str(packet[7]) == '0'):
-                        return 'Start Mode'
-                    elif(str(packet[7]) == '1'):
-                        return 'Stimulation initialized'
-                    elif(str(packet[7]) == '2'):
-                        return 'Stimulation started'
-                    
-                elif(str(packet[6] == '-1')):
-                    return 'Transfer error'
-                elif(str(packet[6] == '-8')):
-                    return 'Busy error'
+        def getModeACK(self, packet):
+            
+            if(str(packet[6] == '0')):
+                if(str(packet[7]) == '0'):
+                    return 'Start Mode'
+                elif(str(packet[7]) == '1'):
+                    return 'Stimulation initialized'
+                elif(str(packet[7]) == '2'):
+                    return 'Stimulation started'
+            elif(str(packet[6]) == '-1'):
+                return 'Transfer error'
+            elif(str(packet[6]) == '-8'):
+                return 'Busy error' #add a timer
     
         # Initialises stimulation
         def init_stimulation(channel_stim, ts1, ts2):
@@ -182,19 +190,36 @@ class Stimulator:
         
         
         # Sent by RehaStim2 in response to init_stimulation
-        def init_stimulation_ACK():
-            print("TODO")
-        
+        def init_stimulation_ACK(self, packet):
             
+                if(str(packet[6]) == '0'):
+                    return 'Stimulation initialized'
+                elif(str(packet[6]) == '-1'):
+                    return 'Transfer error'
+                elif(str(packet[6]) == '-2'):
+                    return 'Parameter error' #Change for please change parameters?
+                elif(str(packet[6]) == '-3'):
+                    return 'Wrong mode error'
+                elif(str(packet[6]) == '-8'):
+                    return 'Busy error' # Add a timer?
+                
         # Starts stimulation and modifies it
         def start_stimulation(mode, pulse_width, amplitude):
             print("TODO")
-        
-    
             
         # Sent by RehaStim2 in response to start_stimulation
-        def start_stimulation_ACK():    
-            print("TODO")
+        def start_stimulation_ACK(self, packet):    
+            
+            if(str(packet[6]) == '0'):
+                return ' Stimulation started'
+            if(str(packet[6]) == '-1'):
+                return ' Transfer error'
+            if(str(packet[6]) == '-2'):
+                return ' Parameter error'
+            if(str(packet[6]) == '-3'):
+                return ' Wrong mode error'
+            if(str(packet[6]) == '-8'):
+                return ' Busy error'
         
         
         # Stops stimulation
@@ -203,9 +228,14 @@ class Stimulator:
         
             
         # Sent by RehaStim2 in response to stop_stimulation
-        def stop_stimulation_ACK():
-            print("TODO")
-        
+        def stop_stimulation_ACK(self, packet):
+    
+            if(str(packet[6]) == '0'):
+                return ' Stimulation stopped'
+            if(str(packet[6]) == '-1'):
+                return ' Transfer error'
+        '''
+        Vérifier si utile pour nous ou si décide de le faire pour plus tard
         
         # Sends a unique impulsion
         def single_pulse():
@@ -216,11 +246,13 @@ class Stimulator:
         def single_pulse_ACK():
             print("TODO")
         
+        POSSIBLEMENT PAS UNE COMMANDE EN SOI
         
         # Error message sent by RehaStim2 
         def error():
             print("TODO")
-  
+            
+        '''
 
 
     
