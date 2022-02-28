@@ -6,8 +6,10 @@ Created on Wed Feb 23 14:10:00 2022
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
+import numpy
 from StimulationWindow import StimulationWindow
 from PIL import Image
+from numpy import *
 #import sys
 
 SCREEN_WIDTH = 1920
@@ -15,6 +17,7 @@ SCREEN_HEIGTH = 1080
 
 MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 # À modifier
+
 
 class InstructionWindow(QWidget):
     def __init__(self, init_parameters):
@@ -147,6 +150,15 @@ class InstructionWindow(QWidget):
 
     def clicked_start(self, init_parameters):
         if self.com_start_feedback == True:
+            self.start_parameters = numpy.empty([3,8],dtype=int)
+            for i in range(len(self.start_parameters)):
+                if i==0:
+                    self.start_parameters[i,:]=[init_parameters.get_electrode1_amplitude(), init_parameters.get_electrode2_amplitude(), init_parameters.get_electrode3_amplitude(),init_parameters.get_electrode4_amplitude(),init_parameters.get_electrode5_amplitude(),init_parameters.get_electrode6_amplitude(),init_parameters.get_electrode7_amplitude(),init_parameters.get_electrode8_amplitude()]
+                if i==1:
+                    self.start_parameters[i,:]=[init_parameters.get_electrode1_frequency(), init_parameters.get_electrode2_frequency(), init_parameters.get_electrode3_frequency(),init_parameters.get_electrode4_frequency(),init_parameters.get_electrode5_frequency(),init_parameters.get_electrode6_frequency(),init_parameters.get_electrode7_frequency(),init_parameters.get_electrode8_frequency()]
+                if i==2:
+                    self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
+            #print(self.start_parameters)
             self.stimulation_window = StimulationWindow(init_parameters)
             self.close()
             self.stimulation_window.show()
