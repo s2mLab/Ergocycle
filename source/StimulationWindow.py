@@ -6,7 +6,9 @@ Created on Wed Feb 23 17:20:00 2022
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtCore import QTimer, QTime
 from PIL import Image
+from time import strftime
 #from Parameters import Parameters
 #import sys
 
@@ -16,6 +18,8 @@ MAX_AMPLITUDE = 130
 MIN_AMPLITUDE = 0
 MAX_FREQ = 50
 MIN_FREQ = 0
+MAX_IMP = 500
+MIN_IMP = 0
 
 class StimulationWindow(QWidget):
     def __init__(self, init_parameters):
@@ -50,7 +54,15 @@ class StimulationWindow(QWidget):
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
         self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
-        ### 1.6. Label d'amplitude, fréquence et durée d'impulsion ##
+        ### 1.6. Timer ###
+        self.timer = QTimer
+        self.timer.timeout.connect(self.clocking)
+        self.timer.start(1000)
+        self.lcd = QLCDNumber(self)
+        self.lcd.display(strftime("%M:%S"))
+        self.lcd.move(650,200)
+        self.clocking()
+        ### 1.7. Label d'amplitude, fréquence et durée d'impulsion ###
         self.amplitude_label = QtWidgets.QLabel(self)
         self.amplitude_label.setText("Amplitude (mA):")
         self.amplitude_label.move(400,300)
@@ -547,14 +559,14 @@ class StimulationWindow(QWidget):
         self.increase_imp6_button.adjustSize()
         self.increase_imp7_button.adjustSize()
         self.increase_imp8_button.adjustSize()
-        self.increase_imp1_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp2_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp3_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp4_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp5_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp6_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp7_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.increase_imp8_button.clicked.connect(lambda:self.clicked_stop()) 
+        self.increase_imp1_button.clicked.connect(lambda:self.increase_imp1(current_parameters)) 
+        self.increase_imp2_button.clicked.connect(lambda:self.increase_imp2(current_parameters)) 
+        self.increase_imp3_button.clicked.connect(lambda:self.increase_imp3(current_parameters)) 
+        self.increase_imp4_button.clicked.connect(lambda:self.increase_imp4(current_parameters)) 
+        self.increase_imp5_button.clicked.connect(lambda:self.increase_imp5(current_parameters)) 
+        self.increase_imp6_button.clicked.connect(lambda:self.increase_imp6(current_parameters)) 
+        self.increase_imp7_button.clicked.connect(lambda:self.increase_imp7(current_parameters)) 
+        self.increase_imp8_button.clicked.connect(lambda:self.increase_imp8(current_parameters)) 
         ### 1.13.2 - "-" pour durée d'impulsion
         self.decrease_imp1_button = QtWidgets.QPushButton(self)
         self.decrease_imp2_button = QtWidgets.QPushButton(self)
@@ -604,15 +616,18 @@ class StimulationWindow(QWidget):
         self.decrease_imp6_button.adjustSize()
         self.decrease_imp7_button.adjustSize()
         self.decrease_imp8_button.adjustSize()
-        self.decrease_imp1_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp2_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp3_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp4_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp5_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp6_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp7_button.clicked.connect(lambda:self.clicked_stop()) 
-        self.decrease_imp8_button.clicked.connect(lambda:self.clicked_stop()) 
-
+        self.decrease_imp1_button.clicked.connect(lambda:self.decrease_imp1(current_parameters)) 
+        self.decrease_imp2_button.clicked.connect(lambda:self.decrease_imp2(current_parameters))  
+        self.decrease_imp3_button.clicked.connect(lambda:self.decrease_imp3(current_parameters)) 
+        self.decrease_imp4_button.clicked.connect(lambda:self.decrease_imp4(current_parameters)) 
+        self.decrease_imp5_button.clicked.connect(lambda:self.decrease_imp5(current_parameters)) 
+        self.decrease_imp6_button.clicked.connect(lambda:self.decrease_imp6(current_parameters))  
+        self.decrease_imp7_button.clicked.connect(lambda:self.decrease_imp7(current_parameters))  
+        self.decrease_imp8_button.clicked.connect(lambda:self.decrease_imp8(current_parameters)) 
+    def clocking(self,current_parameters):
+        self.time = current_parameters.get_stim_training_length()
+        self.formated_time = self.time.strftime("%M:%S")
+        self.lcd.display(self.formated_time)
     def increase_amplitude1(self, current_parameters):
         if (int(current_parameters.electrode1_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode1_amplitude = str(int(current_parameters.electrode1_amplitude)+ 2)
@@ -681,35 +696,59 @@ class StimulationWindow(QWidget):
 
     def increase_frequency1(self, current_parameters):
         if (int(current_parameters.electrode1_frequency)) < MAX_FREQ:
-            current_parameters.electrode1_frequency = str(int(current_parameters.electrode1_frequency)+ 5)
+            if (int(current_parameters.electrode1_frequency)) == 0:
+                current_parameters.electrode1_frequency = str(10)
+            else:
+                current_parameters.electrode1_frequency = str(int(current_parameters.electrode1_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency2(self, current_parameters):
         if (int(current_parameters.electrode2_frequency)) < MAX_FREQ:
-            current_parameters.electrode2_frequency = str(int(current_parameters.electrode2_frequency)+ 5)
+            if (int(current_parameters.electrode2_frequency)) == 0:
+                current_parameters.electrode2_frequency = str(10)
+            else:
+                current_parameters.electrode2_frequency = str(int(current_parameters.electrode2_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency3(self, current_parameters):
         if (int(current_parameters.electrode3_frequency)) < MAX_FREQ:
-            current_parameters.electrode3_frequency = str(int(current_parameters.electrode3_frequency)+ 5)
+            if (int(current_parameters.electrode3_frequency)) == 0:
+                current_parameters.electrode3_frequency = str(10)
+            else:
+                current_parameters.electrode3_frequency = str(int(current_parameters.electrode3_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency4(self, current_parameters):
         if (int(current_parameters.electrode4_frequency)) < MAX_FREQ:
-            current_parameters.electrode4_frequency = str(int(current_parameters.electrode4_frequency)+ 5)
+            if (int(current_parameters.electrode4_frequency)) == 0:
+                current_parameters.electrode4_frequency = str(10)
+            else:
+                current_parameters.electrode4_frequency = str(int(current_parameters.electrode4_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency5(self, current_parameters):
         if (int(current_parameters.electrode5_frequency)) < MAX_FREQ:
-            current_parameters.electrode5_frequency = str(int(current_parameters.electrode5_frequency)+ 5)
+            if (int(current_parameters.electrode5_frequency)) == 0:
+                current_parameters.electrode5_frequency = str(10)
+            else:
+                current_parameters.electrode5_frequency = str(int(current_parameters.electrode5_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency6(self, current_parameters):
         if (int(current_parameters.electrode6_frequency)) < MAX_FREQ:
-            current_parameters.electrode6_frequency = str(int(current_parameters.electrode6_frequency)+ 5)
+            if (int(current_parameters.electrode6_frequency)) == 0:
+                current_parameters.electrode6_frequency = str(10)
+            else:
+                current_parameters.electrode6_frequency = str(int(current_parameters.electrode6_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency7(self, current_parameters):
         if (int(current_parameters.electrode7_frequency)) < MAX_FREQ:
-            current_parameters.electrode7_frequency = str(int(current_parameters.electrode7_frequency)+ 5)
+            if (int(current_parameters.electrode7_frequency)) == 0:
+                current_parameters.electrode7_frequency = str(10)
+            else:
+                current_parameters.electrode7_frequency = str(int(current_parameters.electrode7_frequency)+ 5)
             self.update_labels(current_parameters)
     def increase_frequency8(self, current_parameters):
         if (int(current_parameters.electrode8_frequency)) < MAX_FREQ:
-            current_parameters.electrode8_frequency = str(int(current_parameters.electrode8_frequency)+ 5)
+            if (int(current_parameters.electrode8_frequency)) == 0:
+                current_parameters.electrode8_frequency = str(10)
+            else:
+                current_parameters.electrode8_frequency = str(int(current_parameters.electrode8_frequency)+ 5)
             self.update_labels(current_parameters)
 
     def decrease_frequency1(self, current_parameters):
@@ -766,7 +805,120 @@ class StimulationWindow(QWidget):
             if (int(current_parameters.electrode8_frequency)) == 10:
                 current_parameters.electrode8_frequency = str(0)
             else: 
-                current_parameters.electrode8_frequency = str(int(current_parameters.electrode1_frequency)- 5)
+                current_parameters.electrode8_frequency = str(int(current_parameters.electrode8_frequency)- 5)
+            self.update_labels(current_parameters)
+    ## Durée d'impulsion ##
+    def increase_imp1(self, current_parameters):
+        if (int(current_parameters.electrode1_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode1_length_imp)) == 0:
+                current_parameters.electrode1_length_imp = str(20)
+            else:
+                current_parameters.electrode1_length_imp = str(int(current_parameters.electrode1_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp2(self, current_parameters):
+        if (int(current_parameters.electrode2_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode2_length_imp)) == 0:
+                current_parameters.electrode2_length_imp = str(20)
+            else:
+                current_parameters.electrode2_length_imp = str(int(current_parameters.electrode2_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp3(self, current_parameters):
+        if (int(current_parameters.electrode3_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode3_length_imp)) == 0:
+                current_parameters.electrode3_length_imp = str(20)
+            else:
+                current_parameters.electrode3_length_imp = str(int(current_parameters.electrode3_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp4(self, current_parameters):
+        if (int(current_parameters.electrode4_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode4_length_imp)) == 0:
+                current_parameters.electrode4_length_imp = str(20)
+            else:
+                current_parameters.electrode4_length_imp = str(int(current_parameters.electrode4_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp5(self, current_parameters):
+        if (int(current_parameters.electrode5_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode5_length_imp)) == 0:
+                current_parameters.electrode5_length_imp = str(20)
+            else:
+                current_parameters.electrode5_length_imp = str(int(current_parameters.electrode5_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp6(self, current_parameters):
+        if (int(current_parameters.electrode6_length_imp)) < MAX_FREQ:
+            if (int(current_parameters.electrode6_length_imp)) == 0:
+                current_parameters.electrode6_length_imp = str(20)
+            else:
+                current_parameters.electrode6_length_imp = str(int(current_parameters.electrode6_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp7(self, current_parameters):
+        if (int(current_parameters.electrode7_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode7_length_imp)) == 0:
+                current_parameters.electrode7_length_imp = str(20)
+            else:
+                current_parameters.electrode7_length_imp = str(int(current_parameters.electrode7_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def increase_imp8(self, current_parameters):
+        if (int(current_parameters.electrode8_length_imp)) < MAX_IMP:
+            if (int(current_parameters.electrode8_length_imp)) == 0:
+                current_parameters.electrode8_length_imp = str(20)
+            else:
+                current_parameters.electrode8_length_imp = str(int(current_parameters.electrode8_length_imp)+ 10)
+            self.update_labels(current_parameters)
+    def decrease_imp1(self, current_parameters):
+        if (int(current_parameters.electrode1_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode1_length_imp)) == 20:
+                current_parameters.electrode1_length_imp = str(0)
+            else: 
+                current_parameters.electrode1_length_imp = str(int(current_parameters.electrode1_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp2(self, current_parameters):
+        if (int(current_parameters.electrode2_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode2_length_imp)) == 20:
+                current_parameters.electrode2_length_imp = str(0)
+            else: 
+                current_parameters.electrode2_length_imp = str(int(current_parameters.electrode2_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp3(self, current_parameters):
+        if (int(current_parameters.electrode3_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode3_length_imp)) == 20:
+                current_parameters.electrode3_length_imp = str(0)
+            else: 
+                current_parameters.electrode3_length_imp = str(int(current_parameters.electrode3_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp4(self, current_parameters):
+        if (int(current_parameters.electrode4_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode4_length_imp)) == 20:
+                current_parameters.electrode4_length_imp = str(0)
+            else: 
+                current_parameters.electrode4_length_imp = str(int(current_parameters.electrode4_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp5(self, current_parameters):
+        if (int(current_parameters.electrode5_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode5_length_imp)) == 20:
+                current_parameters.electrode5_length_imp = str(0)
+            else: 
+                current_parameters.electrode5_length_imp = str(int(current_parameters.electrode5_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp6(self, current_parameters):
+        if (int(current_parameters.electrode6_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode6_length_imp)) == 20:
+                current_parameters.electrode6_length_imp = str(0)
+            else: 
+                current_parameters.electrode6_length_imp = str(int(current_parameters.electrode6_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp7(self, current_parameters):
+        if (int(current_parameters.electrode7_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode7_length_imp)) == 20:
+                current_parameters.electrode7_length_imp = str(0)
+            else: 
+                current_parameters.electrode7_length_imp = str(int(current_parameters.electrode7_length_imp)- 10)
+            self.update_labels(current_parameters)
+    def decrease_imp8(self, current_parameters):
+        if (int(current_parameters.electrode8_length_imp)) > MIN_IMP:
+            if (int(current_parameters.electrode8_length_imp)) == 20:
+                current_parameters.electrode8_length_imp = str(0)
+            else: 
+                current_parameters.electrode8_length_imp = str(int(current_parameters.electrode8_length_imp)- 10)
             self.update_labels(current_parameters)
     def update_labels(self, current_parameters):
         self.current_amplitude1_label.setText(current_parameters.get_electrode1_amplitude())
