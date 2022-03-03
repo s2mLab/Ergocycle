@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import QTimer, QTime
 from PIL import Image
-from time import strftime
+import time
 #from Parameters import Parameters
 #import sys
 
@@ -55,13 +55,22 @@ class StimulationWindow(QWidget):
         self.stop_button.adjustSize()
         self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
         ### 1.6. Timer ###
-        self.timer = QTimer
-        self.timer.timeout.connect(self.clocking)
-        self.timer.start(1000)
-        self.lcd = QLCDNumber(self)
-        self.lcd.display(strftime("%M:%S"))
-        self.lcd.move(650,200)
-        self.clocking()
+        #self.timer = QTimer()
+        #self.timer.timeout.connect(self.clocking(current_parameters))
+        #self.timer.start(1000)
+        #self.lcd = QLCDNumber(self)
+        #self.lcd.display(strftime("%M:%S"))
+        #self.lcd.move(650,200)
+        #self.clocking()
+        self.end_of_stim = True
+        self.timer_label = QtWidgets.QLabel(self)
+        #self.timer_label.setText(str(current_parameters.get_stim_training_length()))
+        self.timer_label.move(750,200)
+        self.timer_label.setFont(QFont('Arial', 16, weight = QFont.Bold))
+        self.timer_label.adjustSize()
+        timer = QTimer(self)
+        timer.timeout.connect(self.clocking)
+        timer.start(1000)
         ### 1.7. Label d'amplitude, fréquence et durée d'impulsion ###
         self.amplitude_label = QtWidgets.QLabel(self)
         self.amplitude_label.setText("Amplitude (mA):")
@@ -624,10 +633,24 @@ class StimulationWindow(QWidget):
         self.decrease_imp6_button.clicked.connect(lambda:self.decrease_imp6(current_parameters))  
         self.decrease_imp7_button.clicked.connect(lambda:self.decrease_imp7(current_parameters))  
         self.decrease_imp8_button.clicked.connect(lambda:self.decrease_imp8(current_parameters)) 
-    def clocking(self,current_parameters):
-        self.time = current_parameters.get_stim_training_length()
-        self.formated_time = self.time.strftime("%M:%S")
-        self.lcd.display(self.formated_time)
+    def clocking(self):
+        current_time = QTime.currentTime()
+        display_time = current_time.toString("hh:mm:ss")
+        self.timer_label.setText(display_time)
+        print(current_time)
+
+    #def clocking(self,current_parameters):
+        #self.stim_training_length_sec = 60*(current_parameters.get_stim_training_length())
+        #while self.stim_training_length_sec:
+            #self.min = self.stim_training_length_sec // 60
+            #self.sec = self.stim_training_length_sec % 60
+            #self.time_layout = '{:02d}:{:02d}'.format(self.min, self.sec)
+            #time.sleep(1)
+            #self.stim_training_length_sec -= 1
+            #self.timer_label.setText(self.time_layout)
+            #self.timer_label.adjustSize()
+        #self.end_of_stim = True
+        #self.close()
     def increase_amplitude1(self, current_parameters):
         if (int(current_parameters.electrode1_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode1_amplitude = str(int(current_parameters.electrode1_amplitude)+ 2)
@@ -973,4 +996,5 @@ class StimulationWindow(QWidget):
 
 
     def clicked_stop(self):
+        self.end_of_stim = True
         self.close()
