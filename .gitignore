@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Interfaces graphiques
+source/test_gitignore.txt
+
+# Documentation personnelle
+documentation/guide_oop.md
+

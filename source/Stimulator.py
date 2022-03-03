@@ -1,9 +1,10 @@
 # Stimulator class
 
 # Imports
-from StimulationSignal import StimulationSignal
+#from StimulationSignal import StimulationSignal
 import crccheck.checksum
 import numpy as np
+import serial
 
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
@@ -15,6 +16,7 @@ import numpy as np
 class Stimulator:
     
         # Constuctor
+
 
        
         TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
@@ -47,7 +49,10 @@ class Stimulator:
         version_number = 0x01
 
 
-        def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude):
+        #def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude):
+
+        def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude, port_path):
+
             self.channel_stim = channel_stim
             self.freq = freq
             self.ts1 = ts1
@@ -55,28 +60,61 @@ class Stimulator:
             self.mode = mode
             self.pulse_width = pulse_width
             self.amplitude = amplitude
-            #self.baud_rate = 460800
-            #self.start_byte = 0xF0
-            #self.stop_byte = 0x0F
-            #self.stuffing_byte = 0x81
-            #self.stuffing_key = 0x55
+            # Save device path
+            #self.port_path = port_path
+            # Create serial port
+            #self.port = serial.Serial(Stimulator.port_path)
+            # Configure serial port
+            #self.port.apply_settings(Stimulator.SETTINGS)
+            # Initialize packet count
+            #self.packet_count = 0
+            
+        TYPES = {'Init': 0x01, 'InitAck': 0x02, 'UnknownCommand': 0x03, 'Watchdog': 0x04,
+                 'GetStimulationMode': 0x0A, 'GetStimulationModeAck': 0x0B,
+                 'InitChannelListMode': 0x1E, 'InitChannelListModeAck': 0x1F,
+                 'StartChannelListMode': 0x20, 'StartChannelListModeAck': 0x21,
+                 'StopChannelListMode': 0x22, 'StopChannelListModeAck': 0x23,
+                 'SinglePulse': 0x24, 'SinglePulseAck': 0x25, 'StimulationError': 0x26}
+        '''
+        SETTINGS = {
+                'bytesize': serial.EIGHTBITS,
+                'baudrate': 460800,
+                'stopbits': serial.STOPBITS_ONE,
+                'timeout': 0.1,
+                'parity': serial.PARITY_EVEN
+               }
+        '''
+        #Create serial port
+        def init_port(self, port_path):
+            
+            port=serial.Serial(port_path, 460800, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
+            return port
+        
+        
+        VERSION = 0x01
+    
+        INITACK_RESULT_OK = 0x00
+        INITACK_RESULT_ERR = -0x05
+              
+        START_BYTE = 0xF0
+        STOP_BYTE  = 0x0F
+        STUFFING_BYTE = 0x81
+        STUFFING_KEY = 0x55
+        MAX_PACKET_BYTES = 69
+        version_number = 0x01
+  
+        # fonction pour appeler une commande (avec son numéro)
+        #def throw_command(command):
+
+
+        #if command type == hexadécimal of certain command, throw associated function.
+        #fonction qui lit le paquet reçu par rehastim et qui l'associe à une commande.  
+
+        #command = {'Init':0x01}
             
         
         #print("TODO")
-        '''
-        def first_bytes(self):
-            baud_rate = 460800
-            start_byte = 0xF0
-            stop_byte = 0x0F
-            stuffing_byte = 0x81
-            stuffing_key = 0x55
-            packet = []
-            
-            packet.append(start_byte)
-            packet.append(stuffing_byte)
-            checksum = crccheck.crc. Crc8
-            
-         '''
+       
     # Checksum of each packet
         def checksum(self, packet_data):
             checksum = crccheck.crc.Crc8.calc(packet_data)
@@ -86,6 +124,10 @@ class Stimulator:
         def data_length(self, packet_data):
             data_length = len(packet_data)
             return data_length
+        
+       # "byte stuffing", i.e, xoring with STUFFING_KEY
+        def stuff_byte(byte):
+            return ((byte & ~Stimulator.STUFFING_KEY) | (~byte & Stimulator.STUFFING_KEY)) 
         
     # Establishes connexion acknowlege
         def init(self, version_number):
@@ -102,7 +144,7 @@ class Stimulator:
     # Associates the right command 
         def read_packets(command):
             for type in Stimulator.TYPES:
-                if Stimulator.TYPES[types] == command:
+                if Stimulator.TYPES[type] == command:
                     return type
             
 
@@ -117,8 +159,153 @@ class Stimulator:
     # Creates packet for every command part of dictionary TYPES
    
   
+        # Read the received packet
+        def read_packets(self):
+            #for type in Stimulator.TYPES:
+               # if Stimulator.TYPES[type] == command:
+                   # return type
+             
+            # Read port stream
+            packet = self.port.read()
+            # If it is a start byte, collect packet
+            if packet == self.START_BYTE.to_bytes(1,byteorder='little'):
+                # Collect header bytes
+                for i in range(4):
+                    packet += self.port.read()
+                # Collect data bytes
+                datalength = self.stuff_byte(packet[-1])
+                for i in range(datalength):
+                    packet += self.port.read()
+                # Collect stop byte
+                packet += self.port.read()
+                # Return packet as byte string
+                return packet
+            else:
+                # Return empty string to avoid hanging
+                return b''
+            
+        # choose the right function for the received packet
+        def function_call_received_packet(self,packet):
+            if(str(packet[5]) == Stimulator.TYPES[1]):
+                return Stimulator.init_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[2]):
+                return Stimulator.unknown_cmd()
+            elif(str(packet[5]) == Stimulator.TYPES[5]):
+                return Stimulator.getmodeACK()
+            elif(str(packet[5]) == Stimulator.TYPES[7]):
+                return Stimulator.init_stimulation_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[9]):
+                return Stimulator.start_stimulation_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES[11]):
+                return Stimulator.stop_stimulation_ACK()
+            
+        # Establishes connexion acknowlege
+        def init_ACK(self, packet):
+            if (str(packet[6]) == '0'):
+                return 'Connexion established'
+            elif (str(packet[6]) == '-5'):
+                return 'Version number is incompatible'
+                
+    
+        # Sends message for unknown command
+        def unknown_cmd(self, packet):
+            return str(packet[6])
+        
+            
+        # Error signal (inactivity ends connexion)    
+        def watchdog(self):
+            print("TODO")
+        
+            
+        # Returns chosen mode
+        def getMode():
+            print("TODO")
+        
+            
+        # Sent by RehaStim2 in response to getMode
+        def getModeACK(self, packet):
+            
+            if(str(packet[6] == '0')):
+                if(str(packet[7]) == '0'):
+                    return 'Start Mode'
+                elif(str(packet[7]) == '1'):
+                    return 'Stimulation initialized'
+                elif(str(packet[7]) == '2'):
+                    return 'Stimulation started'
+            elif(str(packet[6]) == '-1'):
+                return 'Transfer error'
+            elif(str(packet[6]) == '-8'):
+                return 'Busy error' #add a timer
+    
+        # Initialises stimulation
+        def init_stimulation(channel_stim, ts1, ts2):
+            print("TODO")
+        
+        
+        # Sent by RehaStim2 in response to init_stimulation
+        def init_stimulation_ACK(self, packet):
+            
+                if(str(packet[6]) == '0'):
+                    return 'Stimulation initialized'
+                elif(str(packet[6]) == '-1'):
+                    return 'Transfer error'
+                elif(str(packet[6]) == '-2'):
+                    return 'Parameter error' #Change for please change parameters?
+                elif(str(packet[6]) == '-3'):
+                    return 'Wrong mode error'
+                elif(str(packet[6]) == '-8'):
+                    return 'Busy error' # Add a timer?
+                
+        # Starts stimulation and modifies it
+        def start_stimulation(mode, pulse_width, amplitude):
+            print("TODO")
+            
+        # Sent by RehaStim2 in response to start_stimulation
+        def start_stimulation_ACK(self, packet):    
+            
+            if(str(packet[6]) == '0'):
+                return ' Stimulation started'
+            if(str(packet[6]) == '-1'):
+                return ' Transfer error'
+            if(str(packet[6]) == '-2'):
+                return ' Parameter error'
+            if(str(packet[6]) == '-3'):
+                return ' Wrong mode error'
+            if(str(packet[6]) == '-8'):
+                return ' Busy error'
+        
+        
+        # Stops stimulation
+        def stop_stimulation():
+            print("TODO")
+        
+            
+        # Sent by RehaStim2 in response to stop_stimulation
+        def stop_stimulation_ACK(self, packet):
+    
+            if(str(packet[6]) == '0'):
+                return ' Stimulation stopped'
+            if(str(packet[6]) == '-1'):
+                return ' Transfer error'
+        '''
+        Vérifier si utile pour nous ou si décide de le faire pour plus tard
+        
+        # Sends a unique impulsion
+        def single_pulse():
+            print("TODO")
+        
+            
+        # Sent by RehaStim2 in response to single_pulse
+        def single_pulse_ACK():
+            print("TODO")
+        
+        POSSIBLEMENT PAS UNE COMMANDE EN SOI
+        
+        # Error message sent by RehaStim2 
+        def error():
+            print("TODO")
+            
+        '''
 
-#Essai
-a = Stimulator.init()
-print(a)
+
     
