@@ -158,7 +158,7 @@ class InstructionWindow(QWidget):
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_frequency(), init_parameters.get_electrode2_frequency(), init_parameters.get_electrode3_frequency(),init_parameters.get_electrode4_frequency(),init_parameters.get_electrode5_frequency(),init_parameters.get_electrode6_frequency(),init_parameters.get_electrode7_frequency(),init_parameters.get_electrode8_frequency()]
                 if i==2:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
-            #print(self.start_parameters)
+            print("start parameters: ", self.start_parameters)
             self.stimulation_window = StimulationWindow(init_parameters)
             self.close()
             self.stimulation_window.show()

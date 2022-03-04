@@ -486,7 +486,7 @@ class MainWindowStim(QMainWindow):
 
     def update(self, init_parameters):
         self.param_label.adjustSize()
-        print("Paramètres enregistrés2: ", init_parameters.get_electrode1_amplitude(), "mA", init_parameters.get_stim_training_length(),"min")
+        #print("Paramètres enregistrés2: ", init_parameters.get_electrode1_amplitude(), "mA", init_parameters.get_stim_training_length(),"min")
         #print("Paramètres enregistrés:",init_parameters.get_electrode1_muscle(), init_parameters.get_electrode2_muscle(), init_parameters.get_electrode3_muscle(),init_parameters.get_electrode4_muscle(),init_parameters.get_electrode5_muscle(), init_parameters.get_electrode6_muscle(), init_parameters.get_electrode7_muscle(),init_parameters.get_electrode8_muscle())
         #print("Amplitudes enregistrées: ", init_parameters.get_electrode1_amplitude(),  init_parameters.get_electrode2_amplitude(),  init_parameters.get_electrode3_amplitude(),  init_parameters.get_electrode4_amplitude(),  init_parameters.get_electrode5_amplitude(), init_parameters.get_electrode6_amplitude(),  init_parameters.get_electrode7_amplitude(),  init_parameters.get_electrode8_amplitude())
         #print("Fréquences enregistrées: ", init_parameters.get_electrode1_frequency(),  init_parameters.get_electrode2_frequency(),  init_parameters.get_electrode3_frequency(),  init_parameters.get_electrode4_frequency(),  init_parameters.get_electrode5_frequency(), init_parameters.get_electrode6_frequency(),  init_parameters.get_electrode7_frequency(),  init_parameters.get_electrode8_frequency())

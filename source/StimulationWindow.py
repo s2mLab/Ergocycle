@@ -8,7 +8,10 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
 from PyQt5.QtCore import QTimer, QTime
 from PIL import Image
+#from Stimulator import Stimulator
 import time
+import numpy
+from numpy import *
 #from Parameters import Parameters
 #import sys
 
@@ -1002,7 +1005,15 @@ class StimulationWindow(QWidget):
         self.current_imp_label7_label.adjustSize()
         self.current_imp_label8_label.setText(current_parameters.get_electrode8_length_imp())
         self.current_imp_label8_label.adjustSize()
-
+        self.update_parameters = numpy.empty([3,8],dtype=int)
+        for i in range(len(self.update_parameters)):
+            if i==0:
+                self.update_parameters[i,:]=[current_parameters.get_electrode1_amplitude(), current_parameters.get_electrode2_amplitude(), current_parameters.get_electrode3_amplitude(),current_parameters.get_electrode4_amplitude(),current_parameters.get_electrode5_amplitude(),current_parameters.get_electrode6_amplitude(),current_parameters.get_electrode7_amplitude(),current_parameters.get_electrode8_amplitude()]
+            if i==1:
+                self.update_parameters[i,:]=[current_parameters.get_electrode1_frequency(), current_parameters.get_electrode2_frequency(), current_parameters.get_electrode3_frequency(),current_parameters.get_electrode4_frequency(),current_parameters.get_electrode5_frequency(),current_parameters.get_electrode6_frequency(),current_parameters.get_electrode7_frequency(),current_parameters.get_electrode8_frequency()]
+            if i==2:
+                self.update_parameters[i,:]=[current_parameters.get_electrode1_length_imp(),current_parameters.get_electrode2_length_imp(), current_parameters.get_electrode3_length_imp(), current_parameters.get_electrode4_length_imp(), current_parameters.get_electrode5_length_imp(), current_parameters.get_electrode6_length_imp(), current_parameters.get_electrode7_length_imp(),current_parameters.get_electrode8_length_imp()]
+        print("updated parameters: ", self.update_parameters)
 
 
     def clicked_stop(self):
