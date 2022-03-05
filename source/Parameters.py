@@ -97,101 +97,152 @@ class Parameters():
 
     ## Aller chercher les valeurs des fréquences pour chaque électrode ##
     def get_electrode1_frequency(self):
+        #print("valeur de get : ", self.electrode1_frequency)
         return self.electrode1_frequency
     
     def set_electrode1_frequency(self, combo_box):
-        self.electrode1_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            #print("combo box text : ", combo_box.currentText())
+            self.electrode1_frequency = str(10)
+        else: 
+            self.electrode1_frequency = combo_box.currentText()
+        
 
     def get_electrode2_frequency(self):
         return self.electrode2_frequency
     
     def set_electrode2_frequency(self, combo_box):
-        self.electrode2_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode2_frequency = str(10)
+        else: 
+            self.electrode2_frequency = combo_box.currentText()
 
     def get_electrode3_frequency(self):
         return self.electrode3_frequency
     
     def set_electrode3_frequency(self, combo_box):
-        self.electrode3_frequency= combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode3_frequency = str(10)
+        else: 
+            self.electrode3_frequency= combo_box.currentText()
     
     def get_electrode4_frequency(self):
         return self.electrode4_frequency
     
     def set_electrode4_frequency(self, combo_box):
-        self.electrode4_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode4_frequency = str(10)
+        else: 
+            self.electrode4_frequency = combo_box.currentText()
     
     def get_electrode5_frequency(self):
         return self.electrode5_frequency
 
     def set_electrode5_frequency(self, combo_box):
-        self.electrode5_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode5_frequency = str(10)
+        else: 
+            self.electrode5_frequency = combo_box.currentText()
 
     def get_electrode6_frequency(self):
         return self.electrode6_frequency
     
     def set_electrode6_frequency(self, combo_box):
-        self.electrode6_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode6_frequency = str(10)
+        else: 
+            self.electrode6_frequency = combo_box.currentText()
 
     def get_electrode7_frequency(self):
         return self.electrode7_frequency
     
     def set_electrode7_frequency(self, combo_box):
-        self.electrode7_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode7_frequency = str(10)
+        else: 
+            self.electrode7_frequency = combo_box.currentText()
     
     def get_electrode8_frequency(self):
         return self.electrode8_frequency
     
     def set_electrode8_frequency(self, combo_box):
-        self.electrode8_frequency = combo_box.currentText()
+        if combo_box.currentText() == str(5):
+            self.electrode8_frequency = str(10)
+        else: 
+            self.electrode8_frequency = combo_box.currentText()
 
     ## Aller chercher les valeurs des durées d'impulsions pour chaque électrode ##
     def get_electrode1_length_imp(self):
         return self.electrode1_length_imp
     
     def set_electrode1_length_imp(self, combo_box):
-        self.electrode1_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode1_length_imp = str(20)
+        else: 
+            self.electrode1_length_imp = combo_box.currentText()
 
     def get_electrode2_length_imp(self):
         return self.electrode2_length_imp
     
     def set_electrode2_length_imp(self, combo_box):
-        self.electrode2_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode2_length_imp = str(20)
+        else: 
+            self.electrode2_length_imp = combo_box.currentText()
 
     def get_electrode3_length_imp(self):
         return self.electrode3_length_imp
     
     def set_electrode3_length_imp(self, combo_box):
-        self.electrode3_length_imp= combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode3_length_imp = str(20)
+        else: 
+            self.electrode3_length_imp= combo_box.currentText()
     
     def get_electrode4_length_imp(self):
         return self.electrode4_length_imp
     
     def set_electrode4_length_imp(self, combo_box):
-        self.electrode4_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode4_length_imp = str(20)
+        else: 
+            self.electrode4_length_imp = combo_box.currentText()
     
     def get_electrode5_length_imp(self):
         return self.electrode5_length_imp
 
     def set_electrode5_length_imp(self, combo_box):
-        self.electrode5_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode5_length_imp = str(20)
+        else: 
+            self.electrode5_length_imp = combo_box.currentText()
 
     def get_electrode6_length_imp(self):
         return self.electrode6_length_imp
     
     def set_electrode6_length_imp(self, combo_box):
-        self.electrode6_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode6_length_imp = str(20)
+        else: 
+            self.electrode6_length_imp = combo_box.currentText()
 
     def get_electrode7_length_imp(self):
         return self.electrode7_length_imp
     
     def set_electrode7_length_imp(self, combo_box):
-        self.electrode7_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode7_length_imp = str(20)
+        else: 
+            self.electrode7_length_imp = combo_box.currentText()
     
     def get_electrode8_length_imp(self):
         return self.electrode8_length_imp
     
     def set_electrode8_length_imp(self, combo_box):
-        self.electrode8_length_imp = combo_box.currentText()
+        if combo_box.currentText() == str(10):
+            self.electrode8_length_imp = str(20)
+        else: 
+            self.electrode8_length_imp = combo_box.currentText()
 
     ## Aller chercher les muscles à stimuler pour chaque électrodes ##
     def get_electrode1_muscle(self):

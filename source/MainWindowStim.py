@@ -183,9 +183,11 @@ class MainWindowStim(QMainWindow):
         self.length_imp_label = QtWidgets.QLabel(self)
         self.frequency_label = QtWidgets.QLabel(self)
 
+        self.error_label = QtWidgets.QLabel(self)
+
         self.amplitude_list_int = list(range(0,132,2))
-        self.frequency_list_int = list(range(0,55,5)) ## Devrait commencer à 10 mais je dois mettre à zero si jamais electrode pas utilisée. Si personne entre 5 je vais mettre la stim à 0
-        self.length_imp_list_int = list(range(0,510,10)) ## Devrait commencer à 20 mais je dois mettre à zero si jamais electrode pas utilisée. Si personne entre 10 je vais mettre la stim à 0
+        self.frequency_list_int = list(range(0,55,5)) ## Devrait commencer à 10 mais je dois mettre à zero si jamais electrode pas utilisée. Si l'utilisateur entre 5 Hz, la stim va à 10 Hz.
+        self.length_imp_list_int = list(range(0,510,10)) ## Devrait commencer à 20 mais je dois mettre à zero si jamais electrode pas utilisée. Si l'utilisateur entre 10 ms, la stim va à 20 ms.
         
         self.amplitude_list1 = map(str,self.amplitude_list_int)
         self.amplitude_list2 = map(str,self.amplitude_list_int)
@@ -245,6 +247,18 @@ class MainWindowStim(QMainWindow):
         
 
     def clicked_more(self, init_parameters): ## Possiblement regarder si on peut mettre les label inactive si choix de muscle plus haut est aucun "Aucun"
+        ## 1 - Mettre les ComboBox des muscles à utiliser et la durée de l'entrâinement en stimulation inactifs à la suite de l'appui du premier bouton "Soumettre"
+        self.stim_training_length_ComboBox.setEnabled(False)
+        self.electrode1_ComboBox.setEnabled(False)
+        self.electrode2_ComboBox.setEnabled(False)
+        self.electrode3_ComboBox.setEnabled(False)
+        self.electrode4_ComboBox.setEnabled(False)
+        self.electrode5_ComboBox.setEnabled(False)
+        self.electrode6_ComboBox.setEnabled(False)
+        self.electrode7_ComboBox.setEnabled(False)
+        self.electrode8_ComboBox.setEnabled(False)
+        
+        ## 2 - Ajout du titre de l'instruction
         self.param_label.setText("Veuillez sélectionner les valeurs des paramètres de stimulation: ")
         self.param_label.move(10,450)
         self.param_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
@@ -426,6 +440,8 @@ class MainWindowStim(QMainWindow):
         self.electrode8_ComboBox_length_imp.setFont(QFont('Arial', 12))
         self.electrode8_ComboBox_length_imp.adjustSize()
 
+        self.set_electrode_off(init_parameters)
+
         self.submit_final_button.setText("  Soumettre  ")
         self.submit_final_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
         self.submit_final_button.move(1400, 900)
@@ -433,19 +449,56 @@ class MainWindowStim(QMainWindow):
         self.submit_final_button.adjustSize()
         self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
     
-    def clicked_next(self, init_parameters):
-        # 1 - Enregistrer les valeurs des paramètres entrées
-        # 1.1 - Temps de stiumulation de l'entrainement (pour le menu de stimulation)
-        init_parameters.set_stim_training_length(self.stim_training_length_ComboBox) 
-        # 1.2 - Muscles à stimuler à chaque électrode (pour le menu des instructions)
-        init_parameters.set_electrode1_muscle(self.electrode1_ComboBox) 
+    def set_electrode_off(self, init_parameters):
+        # 1 - Enregistrer les valeurs des paramètres entrées pour les électrodes utilisées
+        init_parameters.set_electrode1_muscle(self.electrode1_ComboBox)
         init_parameters.set_electrode2_muscle(self.electrode2_ComboBox) 
         init_parameters.set_electrode3_muscle(self.electrode3_ComboBox)
         init_parameters.set_electrode4_muscle(self.electrode4_ComboBox) 
         init_parameters.set_electrode5_muscle(self.electrode5_ComboBox) 
         init_parameters.set_electrode6_muscle(self.electrode6_ComboBox) 
         init_parameters.set_electrode7_muscle(self.electrode7_ComboBox) 
-        init_parameters.set_electrode8_muscle(self.electrode8_ComboBox) 
+        init_parameters.set_electrode8_muscle(self.electrode8_ComboBox)
+        # 2 - Empêcher l'utilisateur de mettre des valeurs non-nulles à des électrodes pas utilisées lors de l'entraînement
+        if (init_parameters.get_electrode1_muscle() == "Aucun"):
+            self.electrode1_ComboBox_amplitude.setEnabled(False)
+            self.electrode1_ComboBox_frequency.setEnabled(False)
+            self.electrode1_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode2_muscle() == "Aucun"):
+            self.electrode2_ComboBox_amplitude.setEnabled(False)
+            self.electrode2_ComboBox_frequency.setEnabled(False)
+            self.electrode2_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode3_muscle() == "Aucun"):
+            self.electrode3_ComboBox_amplitude.setEnabled(False)
+            self.electrode3_ComboBox_frequency.setEnabled(False)
+            self.electrode3_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode4_muscle() == "Aucun"):
+            self.electrode4_ComboBox_amplitude.setEnabled(False)
+            self.electrode4_ComboBox_frequency.setEnabled(False)
+            self.electrode4_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode5_muscle() == "Aucun"):
+            self.electrode5_ComboBox_amplitude.setEnabled(False)
+            self.electrode5_ComboBox_frequency.setEnabled(False)
+            self.electrode5_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode6_muscle() == "Aucun"):
+            self.electrode6_ComboBox_amplitude.setEnabled(False)
+            self.electrode6_ComboBox_frequency.setEnabled(False)
+            self.electrode6_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode7_muscle() == "Aucun"):
+            self.electrode7_ComboBox_amplitude.setEnabled(False)
+            self.electrode7_ComboBox_frequency.setEnabled(False)
+            self.electrode7_ComboBox_length_imp.setEnabled(False)
+        if (init_parameters.get_electrode8_muscle() == "Aucun"):
+            self.electrode8_ComboBox_amplitude.setEnabled(False)
+            self.electrode8_ComboBox_frequency.setEnabled(False)
+            self.electrode8_ComboBox_length_imp.setEnabled(False)
+    
+    def clicked_next(self, init_parameters):
+        # 1 - Enregistrer les valeurs des paramètres entrées
+        # 1.1 - Temps de stiumulation de l'entrainement (pour le menu de stimulation)
+        init_parameters.set_stim_training_length(self.stim_training_length_ComboBox) 
+        # 1.2 - Muscles à stimuler à chaque électrode (pour le menu des instructions) 
+        # Déjà fait dans la méthode "set_electrode_off"
         # 1.3 - Amplitude à chaque électrode (pour le menu de stimulation)
         init_parameters.set_electrode1_amplitude(self.electrode1_ComboBox_amplitude)
         init_parameters.set_electrode2_amplitude(self.electrode2_ComboBox_amplitude)
@@ -474,15 +527,96 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode7_length_imp(self.electrode7_ComboBox_length_imp)
         init_parameters.set_electrode8_length_imp(self.electrode8_ComboBox_length_imp)
         # 2- vérification que tout est entrée (appel a la fonction is_completed)
+        if self.is_completed(init_parameters) == True:
+            print("YESSS")
+            # 3- vérification du danger (appel a la fonction danger_check)
 
-        # 3- vérification du danger (appel a la fonction danger_check)
+            # 4- Appel au bon menu (DangerPopUp ou InstructionMenu)
+            self.instruction_window = InstructionWindow(init_parameters)
+                #self.stim_window = StimulationWindow(init_parameters)
+            self.close()
+            self.instruction_window.show()
+            self.update(init_parameters)
+        else:
+            self.error_label.setText("Attention! Assurez-vous d'entrer trois valeurs de paramètres pour chaque électrode utilisées. Veuillez-Réessayer.")
+            self.error_label.move(200,75)
+            self.error_label.setFont(QFont('Arial', 15, weight = QFont.Bold))
+            self.error_label.setStyleSheet("background-color: red")
+            self.error_label.adjustSize()
+            self.error_label.setText
 
-        # 4- Appel au bon menu (DangerPopUp ou InstructionMenu)
-        self.instruction_window = InstructionWindow(init_parameters)
-        #self.stim_window = StimulationWindow(init_parameters)
-        self.close()
-        self.instruction_window.show()
-        self.update(init_parameters)
+    def e1_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode1_muscle() != "Aucun" and int(init_parameters.get_electrode1_amplitude()) != 0 and int(init_parameters.get_electrode1_frequency())!=0 and int(init_parameters.get_electrode1_length_imp())!=0) or (init_parameters.get_electrode1_muscle() == "Aucun" and int(init_parameters.get_electrode1_amplitude()) == 0 and int(init_parameters.get_electrode1_frequency())==0 and int(init_parameters.get_electrode1_length_imp())==0):
+            self.reponse1 = True
+        else: 
+            self.reponse1 = False
+        return(self.reponse1)
+    def e2_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode2_muscle() != "Aucun" and int(init_parameters.get_electrode2_amplitude()) != 0 and int(init_parameters.get_electrode2_frequency())!=0 and int(init_parameters.get_electrode2_length_imp())!=0) or (init_parameters.get_electrode2_muscle() == "Aucun" and int(init_parameters.get_electrode2_amplitude()) == 0 and int(init_parameters.get_electrode2_frequency())==0 and int(init_parameters.get_electrode2_length_imp())==0):
+            self.reponse2 = True
+        else: 
+            self.reponse2 = False
+        return(self.reponse2)
+    def e3_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode3_muscle() != "Aucun" and int(init_parameters.get_electrode3_amplitude()) != 0 and int(init_parameters.get_electrode3_frequency())!=0 and int(init_parameters.get_electrode3_length_imp())!=0) or (init_parameters.get_electrode3_muscle() == "Aucun" and int(init_parameters.get_electrode3_amplitude()) == 0 and int(init_parameters.get_electrode3_frequency())==0 and int(init_parameters.get_electrode3_length_imp())==0):
+            self.reponse3 = True
+        else: 
+            self.reponse3 = False
+        return(self.reponse3)
+    def e4_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode4_muscle() != "Aucun" and int(init_parameters.get_electrode4_amplitude()) != 0 and int(init_parameters.get_electrode4_frequency())!=0 and int(init_parameters.get_electrode4_length_imp())!=0) or (init_parameters.get_electrode4_muscle() == "Aucun" and int(init_parameters.get_electrode4_amplitude()) == 0 and int(init_parameters.get_electrode4_frequency())==0 and int(init_parameters.get_electrode4_length_imp())==0):
+            self.reponse4 = True
+        else: 
+            self.reponse4 = False
+        return(self.reponse4)
+
+    def e5_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode5_muscle() != "Aucun" and int(init_parameters.get_electrode5_amplitude()) != 0 and int(init_parameters.get_electrode5_frequency())!=0 and int(init_parameters.get_electrode5_length_imp())!=0) or (init_parameters.get_electrode5_muscle() == "Aucun" and int(init_parameters.get_electrode5_amplitude()) == 0 and int(init_parameters.get_electrode5_frequency())==0 and int(init_parameters.get_electrode5_length_imp())==0):
+            self.reponse5 = True
+        else: 
+            self.reponse5 = False
+        return(self.reponse5)
+    def e6_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode6_muscle() != "Aucun" and int(init_parameters.get_electrode6_amplitude()) != 0 and int(init_parameters.get_electrode6_frequency())!=0 and int(init_parameters.get_electrode6_length_imp())!=0) or (init_parameters.get_electrode6_muscle() == "Aucun" and int(init_parameters.get_electrode6_amplitude()) == 0 and int(init_parameters.get_electrode6_frequency())==0 and int(init_parameters.get_electrode6_length_imp())==0):
+            self.reponse6 = True
+        else: 
+            self.reponse6 = False
+        return(self.reponse6)
+    def e7_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode7_muscle() != "Aucun" and int(init_parameters.get_electrode7_amplitude()) != 0 and int(init_parameters.get_electrode7_frequency())!=0 and int(init_parameters.get_electrode7_length_imp())!=0) or (init_parameters.get_electrode7_muscle() == "Aucun" and int(init_parameters.get_electrode7_amplitude()) == 0 and int(init_parameters.get_electrode7_frequency())==0 and int(init_parameters.get_electrode7_length_imp())==0):
+            self.reponse7 = True
+        else: 
+            self.reponse7 = False
+        return(self.reponse7)
+    def e8_is_completed(self, init_parameters):
+        if (init_parameters.get_electrode8_muscle() != "Aucun" and int(init_parameters.get_electrode8_amplitude()) != 0 and int(init_parameters.get_electrode8_frequency())!=0 and int(init_parameters.get_electrode8_length_imp())!=0) or (init_parameters.get_electrode8_muscle() == "Aucun" and int(init_parameters.get_electrode8_amplitude()) == 0 and int(init_parameters.get_electrode8_frequency())==0 and int(init_parameters.get_electrode8_length_imp())==0):
+            self.reponse8 = True
+        else: 
+            self.reponse8 = False
+        return(self.reponse8)
+    def is_completed(self, init_parameters):
+        self.rep1 = self.e1_is_completed(init_parameters)
+        self.rep2 = self.e2_is_completed(init_parameters)
+        self.rep3 = self.e3_is_completed(init_parameters)
+        self.rep4 = self.e4_is_completed(init_parameters)
+        self.rep5 = self.e5_is_completed(init_parameters)
+        self.rep6 = self.e6_is_completed(init_parameters)
+        self.rep7 = self.e7_is_completed(init_parameters)
+        self.rep8 = self.e8_is_completed(init_parameters)
+        if self.rep1 == True and self.rep2 == True and self.rep3 == True and self.rep4 == True and self.rep5 == True and self.rep6 == True and self.rep7 == True and self.rep8 == True:
+            self.global_reponse = True
+        else: 
+            self.global_reponse = False
+        return(self.global_reponse)
+        #if (init_parameters.get_electrode1_muscle() != "Aucun" and int(init_parameters.get_electrode1_amplitude()) != 0 and int(init_parameters.get_electrode1_frequency())!=0 and int(init_parameters.get_electrode1_length_imp())!=0) or (init_parameters.get_electrode1_muscle() == "Aucun" and int(init_parameters.get_electrode1_amplitude()) == 0 and int(init_parameters.get_electrode1_frequency())==0 and int(init_parameters.get_electrode1_length_imp())==0):
+            #self.reponse1 = True
+        #if (init_parameters.get_electrode2_muscle() != "Aucun" and int(init_parameters.get_electrode2_amplitude()) != 0 and int(init_parameters.get_electrode2_frequency())!=0 and int(init_parameters.get_electrode2_length_imp())!=0) or (init_parameters.get_electrode2_muscle() == "Aucun" and int(init_parameters.get_electrode2_amplitude()) == 0 and int(init_parameters.get_electrode2_frequency())==0 and int(init_parameters.get_electrode2_length_imp())==0):
+            #self.reponse2 = True
+        #if self.reponse1 == True and self.reponse2 == True:
+            #self.global_reponse = True
+        #else: 
+            #self.global_reponse = False
+        #return(self.global_reponse)
 
     def update(self, init_parameters):
         self.param_label.adjustSize()
