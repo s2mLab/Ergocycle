@@ -1,7 +1,6 @@
 import sys
 import math
 
-
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QHBoxLayout
 from PyQt5.QtWidgets import QPushButton
