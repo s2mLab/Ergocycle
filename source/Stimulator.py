@@ -19,13 +19,7 @@ class Stimulator:
 
 
        
-        TYPES = {'Init': 0x01, 'InitAck': 0x02, 'Unknown': 0x03, 'Watchdog': 0x04,
-             'GetStimulationMode': 0x0A, 'GetStimulationModeAck': 0x0B,
-             'InitChannelListMode': 0x1E, 'InitChannelListModeAck': 0x1F,
-             'StartChannelListMode': 0x20, 'StartChannelListModeAck': 0x21,
-             'StopChannelListMode': 0x22, 'StopChannelListModeAck': 0x23,
-             'SinglePulse': 0x24, 'SinglePulseAck': 0x25, 'StimulationError': 0x26}
-  
+      
   
         VERSION = 0x01
 
@@ -125,27 +119,20 @@ class Stimulator:
             data_length = len(packet_data)
             return data_length
         
-       # "byte stuffing", i.e, xoring with STUFFING_KEY
+    # "byte stuffing", i.e, xoring with STUFFING_KEY
         def stuff_byte(byte):
             return ((byte & ~Stimulator.STUFFING_KEY) | (~byte & Stimulator.STUFFING_KEY)) 
-        
-    # Establishes connexion acknowlege
-        def init(self, version_number):
-           command = bytearray.fromhex(0x01)
-           packet_number = np.zeros(255)
-           for i in 255:
-               packet_number.append(i)
-           
-           version_number = bytearray.fromhex(version_number)
-           packet_data = []
-           packet_data = [command, packet_number, version_number]
-           return packet_data
+      
+   # Construction of each packet
+        def packet_construction(self,packet_number, packet_type, packet_data):
+            packet_command = self.TYPES[packet_type]
+            packet_payload = [packet_number, packet_command] + packet_data 
+            checksum = self.checksum(packet_payload)
+            data_length = self.data_length(packet_payload)
+            packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
+            packet_end = [self.STOP_BYTE]
+            return packet_lead + packet_payload + packet_end
 
-    # Associates the right command 
-        def read_packets(command):
-            for type in Stimulator.TYPES:
-                if Stimulator.TYPES[type] == command:
-                    return type
             
 
     # Opens port
@@ -186,18 +173,25 @@ class Stimulator:
             
         # choose the right function for the received packet
         def function_call_received_packet(self,packet):
-            if(str(packet[5]) == Stimulator.TYPES[1]):
+            if(str(packet[5]) == Stimulator.TYPES['InitACK']):
                 return Stimulator.init_ACK()
-            elif(str(packet[5]) == Stimulator.TYPES[2]):
+            elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
                 return Stimulator.unknown_cmd()
-            elif(str(packet[5]) == Stimulator.TYPES[5]):
+            elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
                 return Stimulator.getmodeACK()
-            elif(str(packet[5]) == Stimulator.TYPES[7]):
+            elif(str(packet[5]) == Stimulator.TYPES['InitChannelListModeAck']):
                 return Stimulator.init_stimulation_ACK()
-            elif(str(packet[5]) == Stimulator.TYPES[9]):
+            elif(str(packet[5]) == Stimulator.TYPES['StartChannelListModeAck']):
                 return Stimulator.start_stimulation_ACK()
-            elif(str(packet[5]) == Stimulator.TYPES[11]):
+            elif(str(packet[5]) == Stimulator.TYPES['StopChannelListModeAck']):
                 return Stimulator.stop_stimulation_ACK()
+            
+            
+        # Establishes connexion acknowlege
+        def init(self, packet_number):
+           packet = self.packet_construction(packet_number,'Init', self.VERSION )
+           packet_byte = packet.to_bytes(1, 'little')
+           return packet_byte   
             
         # Establishes connexion acknowlege
         def init_ACK(self, packet):
@@ -212,14 +206,29 @@ class Stimulator:
             return str(packet[6])
         
             
-        # Error signal (inactivity ends connexion)    
-        def watchdog(self):
-            print("TODO")
+        # Error signal (inactivity ends connexion)  VERIFY IF IT HAVE TO BE SEND EVERY <1200MS OR SEND IF ONLY NOTHING SEND AFTER 120MS   
+        def watchdog(self, packet_number): 
+            packet_payload = [packet_number, Stimulator.TYPES['Watchdog']]
+            checksum = self.checksum(packet_payload)
+            data_length = self.data_length(packet_payload)
+            packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
+            packet_end = [self.STOP_BYTE]
+            packet = packet_lead + packet_payload + packet_end
+            packet_byte = packet.to_bytes(1, 'little')
+            return packet_byte
+            
         
             
-        # Returns chosen mode
-        def getMode():
-            print("TODO")
+        # Asking to know which mode has been chosen
+        def getMode(self, packet_number):
+            packet_payload = [packet_number, Stimulator.TYPES['GetStimulationMode']]
+            checksum = self.checksum(packet_payload)
+            data_length = self.data_length(packet_payload)
+            packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
+            packet_end = [self.STOP_BYTE]
+            packet = packet_lead + packet_payload + packet_end
+            packet_byte = packet.to_bytes(1, 'little')
+            return packet_byte
         
             
         # Sent by RehaStim2 in response to getMode
