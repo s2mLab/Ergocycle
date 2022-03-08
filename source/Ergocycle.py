@@ -4,9 +4,9 @@
 # from Crankset import Crankset
 # from Menu import Menu
 # from Motor import Motor
-from Screen import Screen
+from Screen import Screen as Screen
 # from StimulationSignal import StimulationSignal
-# from Stimulator import Stimulator
+from Stimulator import Stimulator as Stimulator
 
 import threading
 
@@ -15,9 +15,10 @@ class Ergocycle:
     # Constuctor
     def __init__(self):
 
-        # Dictionary that matches events to functions to be called
+        # Dictionary that matches buttons text to functions to be called
         function_dictionary = {
-            "Modifier / Envoyer" : self.test_event
+            "Tester événements" : self.test_event,
+            "Commander amplitude" : self.command_stimulator
         }
 
         self.assistance_screen = Screen(function_dictionary)
@@ -26,13 +27,16 @@ class Ergocycle:
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
         # self.stimulation_screen = Screen()
-        # self.stimulator = Stimulator()
+        self.stimulator = Stimulator("a channel", "a freq", "a ts1", "a ts2", "a mode", "a pulse_width", "an amplitude", "a port_path")
 
-        self.test_timer()
+        #self.test_timer()
 
 
     def test_event(self):
-        print("TEST EVENT")
+        print("(Ergocycle) Testing an event")
+
+    def command_stimulator(self):#(self, command)
+        self.stimulator.throw_command("Set frequency to " + self.assistance_screen.get_amplitude() + " volts")
 
     def test_timer(self):
         print("TEST TIMER")
@@ -45,9 +49,6 @@ class Ergocycle:
         print("TODO")
 
     def command_stimulation_screen(self, command, parameters):
-        print("TODO")
-
-    def command_stimulator(self, command, parameters):
         print("TODO")
 
     def read_crankset(self):

@@ -32,10 +32,13 @@ class Screen:
         self.window.setFixedHeight(self.height)
 
         layout = QHBoxLayout()
-        layout.addWidget(QLabel('Vitesse:'))
-        layout.addWidget(QLineEdit())
-        self.send_button = QPushButton('Modifier / Envoyer')
+        layout.addWidget(QLabel('Amplitude:'))
+        self.amplitude_edit = QLineEdit()
+        layout.addWidget(self.amplitude_edit)
+        self.send_button = QPushButton("Commander amplitude")
         layout.addWidget(self.send_button)
+        self.test_button = QPushButton("Tester événements")
+        layout.addWidget(self.test_button)
 
         # Connect before the show or the exec
         print("Widgets:")
@@ -49,7 +52,7 @@ class Screen:
                 label = widget.text()
                 if label in function_dictionary:
                     widget.clicked.connect(function_dictionary[label])
-                    print("CONNECTED")
+                    print("CONNECTED BUTTON TO ERGOCYCLE")
 
         self.window.setLayout(layout)
         self.window.show()
@@ -59,8 +62,5 @@ class Screen:
         #sys.exit(self.app.exec_())
         self.application.exec_()
 
-    def get_speed():
-        return self.speed
-
-    def get_send_button():
-        return self.send_button
+    def get_amplitude(self):
+        return self.amplitude_edit.text()
