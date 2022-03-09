@@ -11,7 +11,7 @@ from PIL import Image
 from InstructionWindow import InstructionWindow
 from StimulationWindow import StimulationWindow
 from Parameters import Parameters
-#from DangerPopUp import DangerPopUp
+from DangerPopUp import DangerPopUp
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
@@ -528,15 +528,18 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode8_length_imp(self.electrode8_ComboBox_length_imp)
         # 2- vérification que tout est entrée (appel a la fonction is_completed)
         if self.is_completed(init_parameters) == True:
-            print("YESSS")
             # 3- vérification du danger (appel a la fonction danger_check)
-
+            if self.danger_check(init_parameters) == True:
+                self.danger_pop_up_window = DangerPopUp(init_parameters)
+                self.danger_pop_up_window.show()
+                self.update(init_parameters)
+            else:
             # 4- Appel au bon menu (DangerPopUp ou InstructionMenu)
-            self.instruction_window = InstructionWindow(init_parameters)
+                self.instruction_window = InstructionWindow(init_parameters)
                 #self.stim_window = StimulationWindow(init_parameters)
-            self.close()
-            self.instruction_window.show()
-            self.update(init_parameters)
+                self.close()
+                self.instruction_window.show()
+                self.update(init_parameters)
         else:
             self.error_label.setText("Attention! Assurez-vous d'entrer trois valeurs de paramètres pour chaque électrode utilisées. Veuillez-Réessayer.")
             self.error_label.move(200,75)
@@ -625,3 +628,76 @@ class MainWindowStim(QMainWindow):
         #print("Amplitudes enregistrées: ", init_parameters.get_electrode1_amplitude(),  init_parameters.get_electrode2_amplitude(),  init_parameters.get_electrode3_amplitude(),  init_parameters.get_electrode4_amplitude(),  init_parameters.get_electrode5_amplitude(), init_parameters.get_electrode6_amplitude(),  init_parameters.get_electrode7_amplitude(),  init_parameters.get_electrode8_amplitude())
         #print("Fréquences enregistrées: ", init_parameters.get_electrode1_frequency(),  init_parameters.get_electrode2_frequency(),  init_parameters.get_electrode3_frequency(),  init_parameters.get_electrode4_frequency(),  init_parameters.get_electrode5_frequency(), init_parameters.get_electrode6_frequency(),  init_parameters.get_electrode7_frequency(),  init_parameters.get_electrode8_frequency())
         #print("Durées d'imp enregistrées: ", init_parameters.get_electrode1_length_imp(),  init_parameters.get_electrode2_length_imp(),  init_parameters.get_electrode3_length_imp(),  init_parameters.get_electrode4_length_imp(),  init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(),  init_parameters.get_electrode7_length_imp(),  init_parameters.get_electrode8_length_imp())
+    def couple_amplitude_frequency_check(self, init_parameters):
+        i=0
+        self.seuil_amplitude = 60
+        self.seuil_frequency = 40
+        if int(init_parameters.get_electrode1_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode1_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode2_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode2_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode3_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode3_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode4_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode4_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode5_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode5_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode6_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode6_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode7_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode7_frequency())>self.seuil_frequency:
+            i+=1
+        elif int(init_parameters.get_electrode8_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode8_frequency())>self.seuil_frequency:
+            i+=1
+        return (i)
+    def couple_amplitude_imp_check(self, init_parameters):
+        self.seuil_amplitude = 60
+        self.seuil_imp = 250
+        j=0
+        if int(init_parameters.get_electrode1_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode1_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode2_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode2_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode3_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode3_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode4_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode4_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode5_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode5_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode6_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode6_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode7_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode7_length_imp())>self.seuil_imp:
+            j+=1
+        elif int(init_parameters.get_electrode8_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode8_length_imp())>self.seuil_imp:
+            j+=1
+        return(j)
+    def couple_frequency_imp_check(self, init_parameters):  
+        self.seuil_frequency = 40
+        self.seuil_imp = 250
+        k=0
+        if int(init_parameters.get_electrode1_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode1_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode2_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode2_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode3_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode3_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode4_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode4_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode5_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode5_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode6_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode6_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode7_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode7_length_imp())>self.seuil_imp:
+            k+=1
+        elif int(init_parameters.get_electrode8_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode8_length_imp())>self.seuil_imp:
+            k+=1
+        return(k)
+
+    def danger_check(self, init_parameters):
+        self.i=self.couple_amplitude_frequency_check(init_parameters)
+        self.j=self.couple_amplitude_imp_check(init_parameters)
+        self.k=self.couple_frequency_imp_check(init_parameters)
+        if self.i!=0 or self.j!=0 or self.k!=0:
+            self.danger = True
+        else:
+            self.danger = False
+        return(self.danger)
