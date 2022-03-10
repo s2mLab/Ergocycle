@@ -29,6 +29,7 @@ class Ergocycle:
         # self.stimulation_screen = Screen()
         self.stimulator = Stimulator("a channel", "a freq", "a ts1", "a ts2", "a mode", "a pulse_width", "an amplitude", "a port_path")
 
+        self.assistance_screen.start_application()
         #self.test_timer()
 
 
