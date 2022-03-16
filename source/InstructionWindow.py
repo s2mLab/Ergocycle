@@ -26,6 +26,7 @@ class InstructionWindow(QWidget):
         self.setGeometry(100, 50, SCREEN_WIDTH/1.2, SCREEN_HEIGTH/1.15)
         self.setWindowTitle("Instructions d'installation des électrodes")
         self.setStyleSheet("background-color: white;")
+        ### 1.2. Information du module de communication ###
         self.com_start_feedback = True ## à changer quand on va avoir info du module de communication
         self.initUI(init_parameters)
     def initUI(self, init_parameters):  
@@ -150,7 +151,7 @@ class InstructionWindow(QWidget):
 
     def clicked_start(self, init_parameters):
         if self.com_start_feedback == True:
-            self.start_parameters = numpy.empty([3,8],dtype=int)
+            self.start_parameters = numpy.empty([4,8], dtype=int)
             for i in range(len(self.start_parameters)):
                 if i==0:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_amplitude(), init_parameters.get_electrode2_amplitude(), init_parameters.get_electrode3_amplitude(),init_parameters.get_electrode4_amplitude(),init_parameters.get_electrode5_amplitude(),init_parameters.get_electrode6_amplitude(),init_parameters.get_electrode7_amplitude(),init_parameters.get_electrode8_amplitude()]
@@ -158,6 +159,8 @@ class InstructionWindow(QWidget):
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_frequency(), init_parameters.get_electrode2_frequency(), init_parameters.get_electrode3_frequency(),init_parameters.get_electrode4_frequency(),init_parameters.get_electrode5_frequency(),init_parameters.get_electrode6_frequency(),init_parameters.get_electrode7_frequency(),init_parameters.get_electrode8_frequency()]
                 if i==2:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
+                if i==3:
+                    self.start_parameters[i,:]=init_parameters.get_muscle_number()
             print("start parameters: ", self.start_parameters)
             self.stimulation_window = StimulationWindow(init_parameters)
             self.close()
