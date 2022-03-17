@@ -53,12 +53,13 @@ class MainWindowStim(QMainWindow):
         self.stim_training_length_label.adjustSize()
         
         self.stim_training_length_ComboBox = QtWidgets.QComboBox(self)
-        self.stim_training_length_ComboBox.addItems(["5", "10", "15", "20", "25", "30"])
+        self.stim_training_length_ComboBox.addItems(["1","5", "10", "15", "20", "25", "30"])
         self.stim_training_length_ComboBox.move(450,150)
         self.stim_training_length_ComboBox.setFont(QFont('Arial', 12))
         self.stim_training_length_ComboBox.adjustSize()
 
-        ## 1.5. Définition des muscles à stimuler ##
+        ## 1.6. Définition des muscles à stimuler ##
+        ### Droite ###
         self.muscle_label = QtWidgets.QLabel(self)
         self.muscle_label.setText("Veuillez sélectionner les muscles à stimuler et l'électrode correspondante: ")
         self.muscle_label.move(10,200)
@@ -186,8 +187,8 @@ class MainWindowStim(QMainWindow):
         self.error_label = QtWidgets.QLabel(self)
 
         self.amplitude_list_int = list(range(0,132,2))
-        self.frequency_list_int = list(range(0,55,5)) ## Devrait commencer à 10 mais je dois mettre à zero si jamais electrode pas utilisée. Si l'utilisateur entre 5 Hz, la stim va à 10 Hz.
-        self.length_imp_list_int = list(range(0,510,10)) ## Devrait commencer à 20 mais je dois mettre à zero si jamais electrode pas utilisée. Si l'utilisateur entre 10 ms, la stim va à 20 ms.
+        self.frequency_list_int = list(range(0,55,5)) 
+        self.length_imp_list_int = list(range(0,510,10)) 
         
         self.amplitude_list1 = map(str,self.amplitude_list_int)
         self.amplitude_list2 = map(str,self.amplitude_list_int)
@@ -246,8 +247,8 @@ class MainWindowStim(QMainWindow):
         self.submit_final_button = QtWidgets.QPushButton(self)
         
 
-    def clicked_more(self, init_parameters): ## Possiblement regarder si on peut mettre les label inactive si choix de muscle plus haut est aucun "Aucun"
-        ## 1 - Mettre les ComboBox des muscles à utiliser et la durée de l'entrâinement en stimulation inactifs à la suite de l'appui du premier bouton "Soumettre"
+    def clicked_more(self, init_parameters): 
+        ### 2.1 - Mettre les ComboBox des muscles à utiliser et la durée de l'entrâinement en stimulation inactifs à la suite de l'appui du premier bouton "Soumettre" ###
         self.stim_training_length_ComboBox.setEnabled(False)
         self.electrode1_ComboBox.setEnabled(False)
         self.electrode2_ComboBox.setEnabled(False)
@@ -258,7 +259,7 @@ class MainWindowStim(QMainWindow):
         self.electrode7_ComboBox.setEnabled(False)
         self.electrode8_ComboBox.setEnabled(False)
         
-        ## 2 - Ajout du titre de l'instruction
+        ### 2.2 - Ajout du titre de l'instruction ###
         self.param_label.setText("Veuillez sélectionner les valeurs des paramètres de stimulation: ")
         self.param_label.move(10,450)
         self.param_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
@@ -304,7 +305,7 @@ class MainWindowStim(QMainWindow):
         self.electrode88_label.setFont(QFont('Arial', 12))
         self.electrode88_label.adjustSize()
 
-        ## Tous les combos box des paramètres de stimulation ##
+        ## 2.3 - Tous les menus déroulants des paramètres de stimulation ##
         self.amplitude_label.setText("Amplitude (mA):")
         self.amplitude_label.move(400,(500))
         self.amplitude_label.setFont(QFont('Arial', 12))
@@ -440,8 +441,10 @@ class MainWindowStim(QMainWindow):
         self.electrode8_ComboBox_length_imp.setFont(QFont('Arial', 12))
         self.electrode8_ComboBox_length_imp.adjustSize()
 
+        ### 2.4 - Bloquer les menus déroulants des électrodes non-utilisées (exigence de sécurité) ###
         self.set_electrode_off(init_parameters)
 
+        ### 2.5 - Initialisation du bouton soumettre ### 
         self.submit_final_button.setText("  Soumettre  ")
         self.submit_final_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
         self.submit_final_button.move(1400, 900)
@@ -450,7 +453,7 @@ class MainWindowStim(QMainWindow):
         self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
     
     def set_electrode_off(self, init_parameters):
-        # 1 - Enregistrer les valeurs des paramètres entrées pour les électrodes utilisées
+        ### 3.1 - Enregistrer les valeurs des paramètres entrées pour les électrodes utilisées ###
         init_parameters.set_electrode1_muscle(self.electrode1_ComboBox)
         init_parameters.set_electrode2_muscle(self.electrode2_ComboBox) 
         init_parameters.set_electrode3_muscle(self.electrode3_ComboBox)
@@ -459,7 +462,7 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode6_muscle(self.electrode6_ComboBox) 
         init_parameters.set_electrode7_muscle(self.electrode7_ComboBox) 
         init_parameters.set_electrode8_muscle(self.electrode8_ComboBox)
-        # 2 - Empêcher l'utilisateur de mettre des valeurs non-nulles à des électrodes pas utilisées lors de l'entraînement
+        ### 3.2 - Empêcher l'utilisateur de mettre des valeurs non-nulles à des électrodes pas utilisées lors de l'entraînement ###
         if (init_parameters.get_electrode1_muscle() == "Aucun"):
             self.electrode1_ComboBox_amplitude.setEnabled(False)
             self.electrode1_ComboBox_frequency.setEnabled(False)
@@ -494,12 +497,10 @@ class MainWindowStim(QMainWindow):
             self.electrode8_ComboBox_length_imp.setEnabled(False)
     
     def clicked_next(self, init_parameters):
-        # 1 - Enregistrer les valeurs des paramètres entrées
-        # 1.1 - Temps de stiumulation de l'entrainement (pour le menu de stimulation)
+        ### Enregistrer les valeurs des paramètres entrées ###
+        ### 4.1 - Temps de stiumulation de l'entrainement (pour le menu de stimulation) ###
         init_parameters.set_stim_training_length(self.stim_training_length_ComboBox) 
-        # 1.2 - Muscles à stimuler à chaque électrode (pour le menu des instructions) 
-        # Déjà fait dans la méthode "set_electrode_off"
-        # 1.3 - Amplitude à chaque électrode (pour le menu de stimulation)
+        ### 4.2 - Amplitude à chaque électrode (pour le menu de stimulation) ###
         init_parameters.set_electrode1_amplitude(self.electrode1_ComboBox_amplitude)
         init_parameters.set_electrode2_amplitude(self.electrode2_ComboBox_amplitude)
         init_parameters.set_electrode3_amplitude(self.electrode3_ComboBox_amplitude)
@@ -508,7 +509,7 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode6_amplitude(self.electrode6_ComboBox_amplitude)
         init_parameters.set_electrode7_amplitude(self.electrode7_ComboBox_amplitude)
         init_parameters.set_electrode8_amplitude(self.electrode8_ComboBox_amplitude)
-        # 1.4 - Fréquence à chaque électrode (pour le menu de stimulation)
+        ### 4.3 - Fréquence à chaque électrode (pour le menu de stimulation) ###
         init_parameters.set_electrode1_frequency(self.electrode1_ComboBox_frequency)
         init_parameters.set_electrode2_frequency(self.electrode2_ComboBox_frequency)
         init_parameters.set_electrode3_frequency(self.electrode3_ComboBox_frequency)
@@ -517,7 +518,7 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode6_frequency(self.electrode6_ComboBox_frequency)
         init_parameters.set_electrode7_frequency(self.electrode7_ComboBox_frequency)
         init_parameters.set_electrode8_frequency(self.electrode8_ComboBox_frequency)
-        # 1.5 - Durée de l'impulsion à chaque électrode (pour le menu de stimulation)
+        ### 4.4 - Durée de l'impulsion à chaque électrode (pour le menu de stimulation) ###
         init_parameters.set_electrode1_length_imp(self.electrode1_ComboBox_length_imp)
         init_parameters.set_electrode2_length_imp(self.electrode2_ComboBox_length_imp)
         init_parameters.set_electrode3_length_imp(self.electrode3_ComboBox_length_imp)
@@ -526,21 +527,20 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode6_length_imp(self.electrode6_ComboBox_length_imp)
         init_parameters.set_electrode7_length_imp(self.electrode7_ComboBox_length_imp)
         init_parameters.set_electrode8_length_imp(self.electrode8_ComboBox_length_imp)
-        # 2- vérification que tout est entrée (appel a la fonction is_completed)
+        ### 4.5 - Vérification que toutes les informations sont entrées (appel a la fonction is_completed) ###
         if self.is_completed(init_parameters) == True:
-            # 3- vérification du danger (appel a la fonction danger_check)
+            ### 4.5.1 - Vérification du danger et appel au bon menu (DangerPopUp ou InstructionWindow) ###
             if self.danger_check(init_parameters) == True:
                 self.danger_pop_up_window = DangerPopUp(init_parameters)
-                self.danger_pop_up_window.setWindowModality(2) ## The window is modal to the application and blocks input to all windows.
+                self.danger_pop_up_window.setWindowModality(2) ## Bloque les inputs des autres fenêtres
                 self.danger_pop_up_window.show()
-                self.update(init_parameters)
+                self.update()
             else:
-            # 4- Appel au bon menu (DangerPopUp ou InstructionMenu)
                 self.instruction_window = InstructionWindow(init_parameters)
-                #self.stim_window = StimulationWindow(init_parameters)
                 self.close()
                 self.instruction_window.show()
-                self.update(init_parameters)
+                self.update()
+        ### 4.6 - S'il manque des information, on affiche un message d'erreur ###
         else:
             self.error_label.setText("Attention! Assurez-vous d'entrer trois valeurs de paramètres pour chaque électrode utilisées. Veuillez-Réessayer.")
             self.error_label.move(200,75)
@@ -612,86 +612,9 @@ class MainWindowStim(QMainWindow):
         else: 
             self.global_reponse = False
         return(self.global_reponse)
-        #if (init_parameters.get_electrode1_muscle() != "Aucun" and int(init_parameters.get_electrode1_amplitude()) != 0 and int(init_parameters.get_electrode1_frequency())!=0 and int(init_parameters.get_electrode1_length_imp())!=0) or (init_parameters.get_electrode1_muscle() == "Aucun" and int(init_parameters.get_electrode1_amplitude()) == 0 and int(init_parameters.get_electrode1_frequency())==0 and int(init_parameters.get_electrode1_length_imp())==0):
-            #self.reponse1 = True
-        #if (init_parameters.get_electrode2_muscle() != "Aucun" and int(init_parameters.get_electrode2_amplitude()) != 0 and int(init_parameters.get_electrode2_frequency())!=0 and int(init_parameters.get_electrode2_length_imp())!=0) or (init_parameters.get_electrode2_muscle() == "Aucun" and int(init_parameters.get_electrode2_amplitude()) == 0 and int(init_parameters.get_electrode2_frequency())==0 and int(init_parameters.get_electrode2_length_imp())==0):
-            #self.reponse2 = True
-        #if self.reponse1 == True and self.reponse2 == True:
-            #self.global_reponse = True
-        #else: 
-            #self.global_reponse = False
-        #return(self.global_reponse)
 
-    def update(self, init_parameters):
+    def update(self):
         self.param_label.adjustSize()
-        #print("Paramètres enregistrés2: ", init_parameters.get_electrode1_amplitude(), "mA", init_parameters.get_stim_training_length(),"min")
-        #print("Paramètres enregistrés:",init_parameters.get_electrode1_muscle(), init_parameters.get_electrode2_muscle(), init_parameters.get_electrode3_muscle(),init_parameters.get_electrode4_muscle(),init_parameters.get_electrode5_muscle(), init_parameters.get_electrode6_muscle(), init_parameters.get_electrode7_muscle(),init_parameters.get_electrode8_muscle())
-        #print("Amplitudes enregistrées: ", init_parameters.get_electrode1_amplitude(),  init_parameters.get_electrode2_amplitude(),  init_parameters.get_electrode3_amplitude(),  init_parameters.get_electrode4_amplitude(),  init_parameters.get_electrode5_amplitude(), init_parameters.get_electrode6_amplitude(),  init_parameters.get_electrode7_amplitude(),  init_parameters.get_electrode8_amplitude())
-        #print("Fréquences enregistrées: ", init_parameters.get_electrode1_frequency(),  init_parameters.get_electrode2_frequency(),  init_parameters.get_electrode3_frequency(),  init_parameters.get_electrode4_frequency(),  init_parameters.get_electrode5_frequency(), init_parameters.get_electrode6_frequency(),  init_parameters.get_electrode7_frequency(),  init_parameters.get_electrode8_frequency())
-        #print("Durées d'imp enregistrées: ", init_parameters.get_electrode1_length_imp(),  init_parameters.get_electrode2_length_imp(),  init_parameters.get_electrode3_length_imp(),  init_parameters.get_electrode4_length_imp(),  init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(),  init_parameters.get_electrode7_length_imp(),  init_parameters.get_electrode8_length_imp())
-    #def couple_amplitude_frequency_check(self, init_parameters):
-        #i=0
-        #self.seuil_amplitude = 60
-        #self.seuil_frequency = 40
-        #if int(init_parameters.get_electrode1_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode1_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode2_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode2_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode3_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode3_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode4_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode4_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode5_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode5_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode6_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode6_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode7_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode7_frequency())>self.seuil_frequency:
-            #i+=1
-        #elif int(init_parameters.get_electrode8_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode8_frequency())>self.seuil_frequency:
-            #i+=1
-        #return (i)
-    #def couple_amplitude_imp_check(self, init_parameters):
-        #self.seuil_amplitude = 60
-        #self.seuil_imp = 250
-        #j=0
-        #if int(init_parameters.get_electrode1_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode1_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode2_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode2_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode3_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode3_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode4_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode4_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode5_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode5_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode6_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode6_length_imp())>self.seuil_imp:
-            #j+=1
-       # elif int(init_parameters.get_electrode7_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode7_length_imp())>self.seuil_imp:
-            #j+=1
-        #elif int(init_parameters.get_electrode8_amplitude()) > self.seuil_amplitude and int(init_parameters.get_electrode8_length_imp())>self.seuil_imp:
-            #j+=1
-        #return(j)
-    #def couple_frequency_imp_check(self, init_parameters):  
-        #self.seuil_frequency = 40
-        #self.seuil_imp = 250
-        #k=0
-        #if int(init_parameters.get_electrode1_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode1_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode2_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode2_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode3_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode3_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode4_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode4_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode5_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode5_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode6_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode6_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode7_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode7_length_imp())>self.seuil_imp:
-            #k+=1
-        #elif int(init_parameters.get_electrode8_frequency()) > self.seuil_frequency and int(init_parameters.get_electrode8_length_imp())>self.seuil_imp:
-            #k+=1
-        #return(k)
 
     def danger_check(self, init_parameters):
         self.i=init_parameters.couple_amplitude_frequency_check()
@@ -702,12 +625,4 @@ class MainWindowStim(QMainWindow):
         else:
             self.danger = False
         return(self.danger)
-    #def danger_check(self, init_parameters):
-        #self.i=self.couple_amplitude_frequency_check(init_parameters)
-        #self.j=self.couple_amplitude_imp_check(init_parameters)
-        #self.k=self.couple_frequency_imp_check(init_parameters)
-        #if self.i!=0 or self.j!=0 or self.k!=0:
-            #self.danger = True
-        #else:
-            #self.danger = False
-        #return(self.danger)
+    
