@@ -50,38 +50,34 @@ class StimulationWindow(QWidget):
         self.menu_label.adjustSize()
         ### 1.5. Bouton d'arrêt ##
         self.stop_button = QtWidgets.QPushButton(self)
-        self.stop_button.setText("  ARRÊT  ")
+        self.stop_button.setText("  Arrêter  ")
         self.stop_button.setStyleSheet("background-color: red; border: 2 solid;")
         self.stop_button.move(1300, 50)
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
         self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
-        ### 1.6. Timer ###
-        #self.timer = QTimer()
-        #self.timer.timeout.connect(self.clocking(current_parameters))
-        #self.timer.start(1000)
-        #self.lcd = QLCDNumber(self)
-        #self.lcd.display(strftime("%M:%S"))
-        #self.lcd.move(650,200)
-        #self.clocking()
-        self.end_of_stim = True
-        self.timer_label_min = QtWidgets.QLabel(self)
-        self.timer_label_min.setText(str(current_parameters.get_stim_training_length()))
-        self.timer_label_min.move(820,200)
-        self.timer_label_min.setFont(QFont('Arial', 16, weight = QFont.Bold))
-        self.timer_label_min.adjustSize()
-        self.timer_split_label = QtWidgets.QLabel(self)
-        self.timer_split_label.setText(" : ")
-        self.timer_split_label.move(875,200)
-        self.timer_split_label.setFont(QFont('Arial', 16, weight = QFont.Bold))
-        self.timer_split_label.adjustSize()
-        self.timer_label_sec = QtWidgets.QLabel(self)
-        self.timer_label_sec.setText(str(0))
-        self.timer_label_sec.move(925,200)
-        self.timer_label_sec.setFont(QFont('Arial', 16, weight = QFont.Bold))
-        self.timer_label_sec.adjustSize()
-        #self.countdown_timer(current_parameters)
-        ### 1.7. Label d'amplitude, fréquence et durée d'impulsion ###
+        ### 1.6. ###
+        #self.end_of_stim = False
+        ### 1.7. Nouvelle méthode pour le timer ###
+        self.counter = 0
+        self.minute = '00'
+        self.second = '00'
+        self.count = '00'
+        self.MAX_TIME = int(current_parameters.get_stim_training_length())
+        self.time_label = QLabel(self)
+        self.time_label.setGeometry(750, 175, 150, 70)
+        self.startWatch = True
+        # Bouton pause du timer 
+        self.pauseWatch = QPushButton("Pause", self)
+        self.pauseWatch.setGeometry(900, 187, 100, 40)
+        self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
+        self.pauseWatch.setFont(QFont('Arial', 12))
+        self.pauseWatch.pressed.connect(self.pause)
+        # objet timer
+        timer = QTimer(self)
+        timer.timeout.connect(self.showCounter)
+        timer.start(100)
+        ### 1.8. Layout des labels de la fenêtre de stimulation ###
         self.amplitude_label = QtWidgets.QLabel(self)
         self.amplitude_label.setText("Amplitude (mA):")
         self.amplitude_label.move(400,300)
@@ -1064,7 +1060,7 @@ class StimulationWindow(QWidget):
         self.current_imp_label7_label.adjustSize()
         self.current_imp_label8_label.setText(current_parameters.get_electrode8_length_imp())
         self.current_imp_label8_label.adjustSize()
-        self.update_parameters = numpy.empty([3,8],dtype=int)
+        self.update_parameters = numpy.empty([4,8],dtype=int)
         for i in range(len(self.update_parameters)):
             if i==0:
                 self.update_parameters[i,:]=[current_parameters.get_electrode1_amplitude(), current_parameters.get_electrode2_amplitude(), current_parameters.get_electrode3_amplitude(),current_parameters.get_electrode4_amplitude(),current_parameters.get_electrode5_amplitude(),current_parameters.get_electrode6_amplitude(),current_parameters.get_electrode7_amplitude(),current_parameters.get_electrode8_amplitude()]
@@ -1072,8 +1068,53 @@ class StimulationWindow(QWidget):
                 self.update_parameters[i,:]=[current_parameters.get_electrode1_frequency(), current_parameters.get_electrode2_frequency(), current_parameters.get_electrode3_frequency(),current_parameters.get_electrode4_frequency(),current_parameters.get_electrode5_frequency(),current_parameters.get_electrode6_frequency(),current_parameters.get_electrode7_frequency(),current_parameters.get_electrode8_frequency()]
             if i==2:
                 self.update_parameters[i,:]=[current_parameters.get_electrode1_length_imp(),current_parameters.get_electrode2_length_imp(), current_parameters.get_electrode3_length_imp(), current_parameters.get_electrode4_length_imp(), current_parameters.get_electrode5_length_imp(), current_parameters.get_electrode6_length_imp(), current_parameters.get_electrode7_length_imp(),current_parameters.get_electrode8_length_imp()]
+            if i==3:
+                    self.update_parameters[i,:]=current_parameters.get_muscle_number()
         print("updated parameters: ", self.update_parameters)
+    def showCounter(self):
+        # Check the value of startWatch  variable to start or stop the Stop Watch
+        if self.startWatch:
+            # Increment counter by 1
+            self.counter += 1
 
+            # Count and set the time counter value
+            cnt = int((self.counter/10 - int(self.counter/10))*10)
+            self.count = '0' + str(cnt)
+
+            # Set the second value
+            if int(self.counter/10) < 10 :
+                self.second = '0' + str(int(self.counter / 10))
+            else:
+                self.second = str(int(self.counter / 10))
+                # Set the minute value
+                if self.counter / 10 == 60.0 :
+                    self.second == '00'
+                    self.counter = 0
+                    min = int(self.minute) + 1
+                    if min == self.MAX_TIME:
+                        self.close()
+                    if min < 10 :
+                        self.minute = '0' + str(min)
+                    else:
+                        self.minute = str(min)
+        #if min == self.MAX_TIME:
+            #print('hi')
+            #self.close()
+
+        # Merge the mintue, second and count values
+        text = self.minute + ':' + self.second + ':' + self.count
+        # Display the stop watch values in the label
+        self.time_label.setText('<h1 style="color:black">' + text + '</h1>')
+
+    def pause(self):
+        if self.pauseWatch.text() == 'Pause':
+            self.pauseWatch.setText('Reprendre')
+            self.startWatch = False
+            self.end_of_stim = True
+        else:
+            self.startWatch = True
+            self.pauseWatch.setText('Pause')
+            self.end_of_stim = False
 
     def clicked_stop(self):
         self.end_of_stim = True

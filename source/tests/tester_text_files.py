@@ -1,5 +1,5 @@
 import numpy as np
-
+import datetime
 #def create_file(file_name, param_matrix):
     #f = open(file_name, "w+")
     #for row in range(param_matrix):
@@ -22,3 +22,11 @@ file_object.close
 #for i in range(10):
     # file_object.write("This is line %d\r\n" % (i+1))
 
+#amplitude : self.start_parameters[1,:]
+#frequency : self.start_parameters[2,:]
+#length impulsion: self.start_parameters[3,:]
+
+file_object1 = open("InstructionWindow")
+matrix = np.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", self.start_parameters[1,:]],["Frequency (Hz)", self.start_parameters[2,:]], ["Impulsion length (ms)", self.start_paramters[3,:]]])
+file_object.write(str(datetime.now()))
+file_object.write(matrix)

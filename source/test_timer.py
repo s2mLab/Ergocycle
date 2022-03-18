@@ -2,6 +2,7 @@ import time
 import sys
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
+from datetime import datetime
 
 DURATION_INT = 5
 
@@ -41,16 +42,22 @@ class TimerWindow(QtWidgets.QMainWindow):
         self.my_qtimer = QtCore.QTimer(self)
         self.my_qtimer.timeout.connect(self.timer_timeout)
         self.my_qtimer.start(1000)
+        self.timer_timeout()
         self.update_gui()
 
     def timer_timeout(self):
-        self.time_left_int_min = self.time_left_int//60
-        self.time_left_int_sec = self.time_left_int%60
-        self.time_left_int_sec -=1
+        ## get time
+        time = datetime.now()
+        formatted_time = time.strftime("%I:%M:%S")
+        self.time_passed_qll.setDigitCount(12)
+        self.time_passed_qll.display(formatted_time)
+        #self.time_left_int_min = self.time_left_int//60
+        #self.time_left_int_sec = self.time_left_int%60
+        #self.time_left_int_sec -=1
 
-        if self.time_left_int_sec == 0:
-            self.time_left_int_min -=1
-            self.time_left_int_sec = 59
+        #if self.time_left_int_sec == 0:
+            #self.time_left_int_min -=1
+            #self.time_left_int_sec = 59
             #self.widget_counter_int = (self.widget_counter_int + 1) % 4
             #self.pages_qsw.setCurrentIndex(self.widget_counter_int)
             #self.time_left_int = DURATION_INT
