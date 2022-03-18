@@ -5,6 +5,7 @@
 import crccheck.checksum
 #import numpy as np
 import serial
+import time
 
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
@@ -20,8 +21,8 @@ class Stimulator:
     # Class variables
     VERSION = 0x01
 
-    INITACK_RESULT_OK = 0x00
-    INITACK_RESULT_ERR = -0x05
+    INIT_REPETITION_TIME = 0.5
+    
 
     START_BYTE = 0xF0
     STOP_BYTE  = 0x0F
@@ -122,26 +123,24 @@ class Stimulator:
                 packet += self.port.read()
             # Collect stop byte
             packet += self.port.read()
-            # Return packet as byte string
-            return packet
+            # Call the right ACK function
+            if(str(packet[5]) == Stimulator.TYPES['InitACK']):
+                return Stimulator.init_ACK()
+            elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
+                return Stimulator.unknown_cmd()
+            elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
+                return Stimulator.getmodeACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['InitChannelListModeAck']):
+                return Stimulator.init_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StartChannelListMode']):
+                return Stimulator.start_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StopChannelListModeAck']):
+                return Stimulator.stop_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StartChannelListModeAck']):
+                return Stimulator.error_stimulation_ACK(packet)
         else:
             # Return empty string to avoid hanging
             return b''
-
-    # choose the right function for the received packet
-    def function_call_received_packet(self,packet):
-        if(str(packet[5]) == Stimulator.TYPES['InitACK']):
-            return Stimulator.init_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
-            return Stimulator.unknown_cmd()
-        elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
-            return Stimulator.getmodeACK()
-        elif(str(packet[5]) == Stimulator.TYPES['InitChannelListModeAck']):
-            return Stimulator.init_stimulation_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['StartChannelListModeAck']):
-            return Stimulator.start_stimulation_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['StopChannelListModeAck']):
-            return Stimulator.stop_stimulation_ACK()
 
 # Creates packet for every command part of dictionary TYPES
 
@@ -295,15 +294,74 @@ class Stimulator:
 
         if(str(packet[6]) == '0'):
             return ' Stimulation stopped'
-        if(str(packet[6]) == '-1'):
+        elif(str(packet[6]) == '-1'):
             return ' Transfer error'
         
-    def main(self):
         
-        INIT_TIMER = 0.5
-        WATCHDOG_TIMER = 1.2
+    def stimulation_error(self, packet):
+        
+        if(str(packet[6]) == '-1'):
+            return ' Emergency switch activated/not conencted' #mettre fonction qui affiche message sur interface
+        elif(str(packet[6]) == '-2'):
+            return ' Electrode error'
+        elif(str(packet[6]) == '-3'):
+            return 'Stimulation module error'
+   
+    def call_init(self): #Lié avec ouverture écran
+        while True:
+            self.send_packet('Init')
+            received_packet=self.read_packets()
+            if (received_packet == 'Version number is incompatible'):
+                self.VERSION = hex(1.24)
+                self.send_packet('Init')
+            time.sleep(self.INIT_REPETITION_TIME)
+        return    
     
+    def testing_stimulation(self): # lié avec +- courant
+        self.ts1 = 3
+        self.send_packet('InitChannelListMode')
+        received_packet=self.read_packets()
+        if (received_packet == 'Stimulation initialized'):
+            self.send_packet('StartChannelListMode')
+            received_packet = self.read_packets()
+            if (received_packet == 'busy error'):
+                while():
+                    time.sleep(10)
+                self.send_packet('StartChannelListMode')
+            elif (received_packet == 'transfer error'):
+                self.send_packet('StartChannelListMode')
+            #elif (received_packet == 'Wrong mode error'):
+                #self.mode ==
+            #elif (received_packet == 'Parameter error'):
+                
+    def control_stimulation(self): #lié avec bouton start stim/update            
+        self.send_packet('InitChannelListMode')
+        received_packet=self.read_packets()
+        if (received_packet == 'Stimulation initialized'):
+            self.send_packet('StartChannelListMode')
+            received_packet = self.read_packets()
+            if (received_packet == 'busy error'):
+                while():
+                    time.sleep(10)
+                self.send_packet('StartChannelListMode')
+            elif (received_packet == 'transfer error'):
+                self.send_packet('StartChannelListMode')
+            #elif (received_packet == 'Wrong mode error'):
+                #self.mode ==
+            #elif (received_packet == 'Parameter error'):
+                
+    
+            
+        
+        
     '''
+    if (InstructionWindow.clicked_started()): #changer pour ouverture 
+            Stimulator.send_packet('Init')
+            Stimulator.read_packets()
+        if (Stimulator.read_packets() == 'Connexion established'):
+            Stimulator.send_packet('InitChannelListMode')
+            if(Stimulator.read_packets() == 'Stimulation initialized'):
+                if()
     Vérifier si utile pour nous ou si décide de le faire pour plus tard
 
     # Sends a unique impulsion

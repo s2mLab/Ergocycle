@@ -7,10 +7,13 @@
 from Screen import Screen as Screen
 # from StimulationSignal import StimulationSignal
 from Stimulator import Stimulator as Stimulator
+import MainWindowStim
 
 import threading
 
 class Ergocycle:
+    
+    INIT_TIMER = 0.5
 
     # Constuctor
     def __init__(self):
@@ -54,3 +57,10 @@ class Ergocycle:
 
     def read_crankset(self):
         print("TODO")
+
+    def initialise_stimulation(self):
+        if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI
+          Stimulator.call_init()  
+    
+        
+        
