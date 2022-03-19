@@ -42,7 +42,7 @@ class Stimulator:
 
     # Constuctor
     def __init__(self, ts1, ts2, StimulationSignal, port_path): #Changer ts1 pour 1/StimulationSignal.frequency
-    # ---- StimulationSignal = Contient les infos de fréquence, amplitude et fréquence et muscle pour chaque électrode ---- #
+    # ---- StimulationSignal = Contient les infos d'amplitude, de fréquence, de durée d'impulsion et le nom du muscle pour chaque électrode ---- #
     # ---- ts1 = Main stimulation interval                                 ---- #
     # ---- ts2 = Inter pulse interval (use only if use duplet or triplet)  ---- #
     # ---- Mode = Single pulse, duplet or triplet                          ---- #
@@ -50,12 +50,21 @@ class Stimulator:
     # ---- packet_count = initialise the packet count                      ---- #
     
         self.StimulationSignal = StimulationSignal
+        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
+        self.frequency = StimulationSignal[1] #à vérifier si bon indice
+        self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
+        self.muscle = StimulationSignal[3]
         self.ts1 = ts1
         self.ts2 = ts2 #Pas full utile si utilise pas doublet ou triplet
-        self.mode
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
-
+        
+        while True:
+            received_packet= self.read_packets()
+            self.init_ACK(received_packet)
+            time.sleep(self.INIT_REPETITION_TIME)
+        return 
+    
 
     # Function to command the stimulator with pre-defined commands
     def throw_command(self, command):
@@ -91,8 +100,8 @@ class Stimulator:
 
 # Send packets
     def send_packet(self, cmd):
-        if cmd == 'Init':
-            self.port.write(self.init(self.packet_count))
+        if cmd == 'InitACK':
+            self.port.write(self.initACK(self.packet_count))
         elif cmd == 'Watchdog':
             self.port.write(self.watchdog(self.packet_count))
         elif cmd == 'GetStimulationMode':
@@ -124,8 +133,8 @@ class Stimulator:
             # Collect stop byte
             packet += self.port.read()
             # Call the right ACK function
-            if(str(packet[5]) == Stimulator.TYPES['InitACK']):
-                return Stimulator.init_ACK()
+            if(str(packet[5]) == Stimulator.TYPES['Init']):
+                return Stimulator.init()
             elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
                 return Stimulator.unknown_cmd()
             elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
@@ -145,16 +154,17 @@ class Stimulator:
 # Creates packet for every command part of dictionary TYPES
 
     # Establishes connexion acknowlege
-    def init(self, packet_count):
-       packet = self.packet_construction(self.packet_count,'Init', self.VERSION )
+    def init(self, packet):
+       
 
-       return packet
+       return str(packet[6])
 
     # Establishes connexion acknowlege
     def init_ACK(self, packet):
-        if (str(packet[6]) == '0'):
-            return 'Connexion established'
-        elif (str(packet[6]) == '-5'):
+        if (packet[6] == self.VERSION):
+            result = '0'
+            return self.packet_construction(self.packet_count, 'InitACK', result)
+        else :
             return 'Version number is incompatible'
 
 
@@ -306,16 +316,7 @@ class Stimulator:
             return ' Electrode error'
         elif(str(packet[6]) == '-3'):
             return 'Stimulation module error'
-   
-    def call_init(self): #Lié avec ouverture écran
-        while True:
-            self.send_packet('Init')
-            received_packet=self.read_packets()
-            if (received_packet == 'Version number is incompatible'):
-                self.VERSION = hex(1.24)
-                self.send_packet('Init')
-            time.sleep(self.INIT_REPETITION_TIME)
-        return    
+      
     
     def testing_stimulation(self): # lié avec +- courant
         self.ts1 = 3

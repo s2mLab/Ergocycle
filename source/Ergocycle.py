@@ -30,7 +30,7 @@ class Ergocycle:
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
         # self.stimulation_screen = Screen()
-        self.stimulator = Stimulator("a channel", "a freq", "a ts1", "a ts2", "a mode", "a pulse_width", "an amplitude", "a port_path")
+        self.stimulator = Stimulator("a channel", "a ts1", "a ts2", "COM1")
 
         self.assistance_screen.start_application()
         #self.test_timer()
