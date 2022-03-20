@@ -8,6 +8,8 @@ from Screen import Screen as Screen
 # from StimulationSignal import StimulationSignal
 from Stimulator import Stimulator as Stimulator
 import MainWindowStim
+import main_sef
+import InstructionWindow
 
 import threading
 
@@ -31,7 +33,7 @@ class Ergocycle:
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
         # self.stimulation_screen = Screen(self.read_stimulation_screen)
-        # self.stimulator = Stimulator("a ts2", "a StimulationSignal", "a port path")
+        # self.stimulator = Stimulator( 2, main_sef, "COM1")
         # self.usbDriveWriter = UsbDriveWriter()
 
 
@@ -72,3 +74,21 @@ class Ergocycle:
     def initialise_stimulation(self):
         if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI
           Stimulator.call_init()
+
+    '''First draft to use Stimulator '''
+
+    #self.stimulator.testing_stimulation() à lier avec +- de la nouvelle fenêtre pour tester
+
+    #Possible de lier commande en-dessous avec MainWindowStim.submit_button?
+    parameters = InstructionWindow.get_initial_parameters(MainWindowStim.init_parameter)
+
+    for i in range (len(parameters)):
+        if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 0 or 2) and read_crankset == 40 ): #where 0 = biceps et 2 = post. deltoide, 40 if in degrees
+            Stimulator.control_stimulation(i)
+            if(read_crankset == 190 ):
+                Stimulator.send_packet('StopChannelListMode', i)
+
+        if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 1 or 3) and read_crankset == 200 ): #where 1 = triceps et 3 = ant. deltoide, 200 if in degrees
+            Stimulator.control_stimulation(i)
+            if(read_crankset == 360 ):
+                Stimulator.send_packet('StopChannelListMode', i)
