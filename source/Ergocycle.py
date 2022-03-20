@@ -13,37 +13,47 @@ import InstructionWindow
 
 import threading
 
+"""
+Choices for the events:
+- Multiple function in Ergocycle (more simple and more organised)
+- One function and multiple commands in Ergocycle
+"""
+
+
 class Ergocycle:
-    
+
     INIT_TIMER = 0.5
 
     # Constuctor
     def __init__(self):
 
-        # Dictionary that matches buttons text to functions to be called
-        function_dictionary = {
-            "Tester événements" : self.test_event,
-            "Commander amplitude" : self.command_stimulator
-        }
-
-        self.assistance_screen = Screen(function_dictionary)
+        self.assistance_screen = Screen(self.read_assistance_screen)
         # self.crankset = Crankset()
         # self.crankset_measures = {}
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
-        # self.stimulation_screen = Screen()
-        self.stimulator = Stimulator( 2, main_sef, "COM1")
+        # self.stimulation_screen = Screen(self.read_stimulation_screen)
+        # self.stimulator = Stimulator( 2, main_sef, "COM1")
+        # self.usbDriveWriter = UsbDriveWriter()
+
 
         #self.test_timer()
 
         self.assistance_screen.start_application()
 
+    def read_assistance_screen(self, command):
+        if command == "command_amplitude":
+            print("(Ergocycle) Commanding amplitude " + str(self.assistance_screen.get_amplitude()))
+        elif command == "test_event":
+            print("(Ergocycle) TESTING EVENT")
+        else:
+            print("(Ergocycle) Command " + command + " not found")
 
-    def test_event(self):
-        print("(Ergocycle) Testing an event")
+    def read_stimulation_screen(self):
+        print("TODO: Read stimulation screen")
 
-    def command_stimulator(self):#(self, command)
-        self.stimulator.throw_command("Set frequency to " + self.assistance_screen.get_amplitude() + " volts")
+    #def command_stimulator(self):#(self, command)
+        #self.stimulator.throw_command("Set frequency to " + self.assistance_screen.get_amplitude() + " volts")
 
     def test_timer(self):
         print("TEST TIMER")
@@ -60,24 +70,25 @@ class Ergocycle:
 
     def read_crankset(self):
         print("TODO")
- 
-    
+
+    def initialise_stimulation(self):
+        if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI
+          Stimulator.call_init()
+
     '''First draft to use Stimulator '''
-    
+
     #self.stimulator.testing_stimulation() à lier avec +- de la nouvelle fenêtre pour tester
-    
+
     #Possible de lier commande en-dessous avec MainWindowStim.submit_button?
     parameters = InstructionWindow.get_initial_parameters(MainWindowStim.init_parameter)
-    
+
     for i in range (len(parameters)):
         if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 0 or 2) and read_crankset == 40 ): #where 0 = biceps et 2 = post. deltoide, 40 if in degrees
             Stimulator.control_stimulation(i)
             if(read_crankset == 190 ):
                 Stimulator.send_packet('StopChannelListMode', i)
-                
+
         if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 1 or 3) and read_crankset == 200 ): #where 1 = triceps et 3 = ant. deltoide, 200 if in degrees
             Stimulator.control_stimulation(i)
             if(read_crankset == 360 ):
                 Stimulator.send_packet('StopChannelListMode', i)
-    
-        
