@@ -34,8 +34,9 @@ class Ergocycle:
         # self.stimulation_screen = Screen()
         self.stimulator = Stimulator( 2, main_sef, "COM1")
 
-        self.assistance_screen.start_application()
         #self.test_timer()
+
+        self.assistance_screen.start_application()
 
 
     def test_event(self):

@@ -19,6 +19,8 @@ SCREEN_HEIGTH = 1080
 MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 # À modifier
 
+N_ELECTRODES = 8
+
 class MainWindowStim(QMainWindow):
     def __init__(self):
         super(MainWindowStim, self).__init__()
@@ -29,7 +31,7 @@ class MainWindowStim(QMainWindow):
         ## 1.2. ##
         init_parameters = Parameters()
         self.initUI(init_parameters)
-    
+
     def initUI(self, init_parameters):
         ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
@@ -51,7 +53,7 @@ class MainWindowStim(QMainWindow):
         self.stim_training_length_label.move(10,150)
         self.stim_training_length_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
         self.stim_training_length_label.adjustSize()
-        
+
         self.stim_training_length_ComboBox = QtWidgets.QComboBox(self)
         self.stim_training_length_ComboBox.addItems(["1","5", "10", "15", "20", "25", "30"])
         self.stim_training_length_ComboBox.move(450,150)
@@ -60,6 +62,56 @@ class MainWindowStim(QMainWindow):
 
         ## 1.6. Définition des muscles à stimuler ##
         ### Droite ###
+
+        """
+        self.electrode_first_labels = []
+        self.electrode_ComboBoxes = []
+        self.electrode_second_labels = []
+
+        self.amplitude_lists = []
+        self.frequency_lists = []
+        self.length_imp_lists = []
+
+        self.electrode_ComboBox_amplitudes = []
+        self.electrode_ComboBox_frequencies = []
+        self.electrode_ComboBox_length_imps = []
+
+        for i in range (0, N_ELECTRODES):
+
+            if (i < 4):
+                electrode_side = "(droite):"
+            else:
+                electrode_side = "(gauche):"
+
+            electrode_first_label = QtWidgets.QLabel(self))
+            electrode_first_label.setText("Électrode " + str(i + 1) + " " + electrode_side)
+            electrode_first_label.move(10, 250 + 50 * i)
+            electrode_first_label.setFont(QFont('Arial', 12))
+            electrode_first_label.adjustSize()
+
+            self.electrode_first_labels.append(electrode_label)
+
+            electrode_ComboBox = QtWidgets.QComboBox(self)
+            electrode_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+            electrode_ComboBox.move(200, 250 + 50 * i)
+            electrode_ComboBox.setFont(QFont('Arial', 12))
+            electrode_ComboBox.adjustSize()
+
+            self.electrode_ComboBoxes.append(electrode_ComboBox)
+
+            self.electrodes_second_labels.append(QtWidgets.QLabel(self))
+
+            self.amplitude_lists.append(map(str,self.amplitude_list_int))
+            self.frequency_lists.append(map(str,self.frequency_list_int))
+            self.length_imp_lists.append(map(str,self.length_imp_list_int))
+
+            self.electrode_ComboBox_amplitudes.append(QtWidgets.QComboBox(self))
+            self.electrode_ComboBox_frequencies.append(QtWidgets.QComboBox(self))
+            self.electrode_ComboBox_length_imps.append(QtWidgets.QComboBox(self))
+
+        """
+
+
         self.muscle_label = QtWidgets.QLabel(self)
         self.muscle_label.setText("Veuillez sélectionner les muscles à stimuler et l'électrode correspondante: ")
         self.muscle_label.move(10,200)
@@ -107,7 +159,7 @@ class MainWindowStim(QMainWindow):
         self.electrode4_label.move(10,400)
         self.electrode4_label.setFont(QFont('Arial', 12))
         self.electrode4_label.adjustSize()
-        
+
         self.electrode4_ComboBox = QtWidgets.QComboBox(self)
         self.electrode4_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode4_ComboBox.move(200,400)
@@ -156,7 +208,7 @@ class MainWindowStim(QMainWindow):
         self.electrode8_label.move(550,400)
         self.electrode8_label.setFont(QFont('Arial', 12))
         self.electrode8_label.adjustSize()
-        
+
         self.electrode8_ComboBox = QtWidgets.QComboBox(self)
         self.electrode8_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode8_ComboBox.move(750,400)
@@ -166,7 +218,7 @@ class MainWindowStim(QMainWindow):
         self.submit_button = QtWidgets.QPushButton(self)
         self.submit_button.setText("  Soumettre  ")
         self.submit_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_button.move(1400, 400)
+        self.submit_button.move(1000, 400) # originalement 1400, 400
         self.submit_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_button.adjustSize()
         self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
@@ -180,6 +232,7 @@ class MainWindowStim(QMainWindow):
         self.electrode66_label = QtWidgets.QLabel(self)
         self.electrode77_label = QtWidgets.QLabel(self)
         self.electrode88_label = QtWidgets.QLabel(self)
+
         self.amplitude_label = QtWidgets.QLabel(self)
         self.length_imp_label = QtWidgets.QLabel(self)
         self.frequency_label = QtWidgets.QLabel(self)
@@ -187,9 +240,9 @@ class MainWindowStim(QMainWindow):
         self.error_label = QtWidgets.QLabel(self)
 
         self.amplitude_list_int = list(range(0,132,2))
-        self.frequency_list_int = list(range(0,55,5)) 
-        self.length_imp_list_int = list(range(0,510,10)) 
-        
+        self.frequency_list_int = list(range(0,55,5))
+        self.length_imp_list_int = list(range(0,510,10))
+
         self.amplitude_list1 = map(str,self.amplitude_list_int)
         self.amplitude_list2 = map(str,self.amplitude_list_int)
         self.amplitude_list3 = map(str,self.amplitude_list_int)
@@ -245,9 +298,41 @@ class MainWindowStim(QMainWindow):
         self.electrode8_ComboBox_length_imp = QtWidgets.QComboBox(self)
 
         self.submit_final_button = QtWidgets.QPushButton(self)
-        
 
-    def clicked_more(self, init_parameters): 
+    def clicked_more(self, init_parameters):
+
+        """
+        for i in range (0, N_ELECTRODES):
+
+            if (i < 4):
+                electrode_side = "(droite):"
+            else:
+                electrode_side = "(gauche):"
+
+            self.electrode_ComboBoxes[i].setEnabled(False)
+
+            self.electrode_second_labels[i].setText("Électrode " + str(i + 1) + " " + electrode_side)
+            self.electrode_second_labels[i].move(10, 550 + 50 * i)
+            self.electrode_second_labels[i].setFont(QFont('Arial', 12))
+            self.electrode_second_labels[i].adjustSize()
+
+            self.electrode_ComboBox_amplitudes[i].addItems(self.amplitude_lists[i])
+            self.electrode_ComboBox_amplitudes[i].move(400, 550 + 50 * i)
+            self.electrode_ComboBox_amplitudes[i].setFont(QFont('Arial', 12))
+            self.electrode_ComboBox_amplitudes[i].adjustSize()
+
+            self.electrode_ComboBox_frequencies[i].addItems(self.frequency_lists[i])
+            self.electrode_ComboBox_frequencies[i].move(750,550)
+            self.electrode_ComboBox_frequencies[i].setFont(QFont('Arial', 12))
+            self.electrode_ComboBox_frequencies[i].adjustSize()
+
+            self.electrode_ComboBox_length_imps[i].addItems(self.length_imp_lists[i])
+            self.electrode_ComboBox_length_imps[i].move(1200,550 + 50 * i)
+            self.electrode_ComboBox_length_imps[i].setFont(QFont('Arial', 12))
+            self.electrode_ComboBox_length_imps[i].adjustSize()
+
+        """
+
         ### 2.1 - Mettre les ComboBox des muscles à utiliser et la durée de l'entrâinement en stimulation inactifs à la suite de l'appui du premier bouton "Soumettre" ###
         self.stim_training_length_ComboBox.setEnabled(False)
         self.electrode1_ComboBox.setEnabled(False)
@@ -258,7 +343,7 @@ class MainWindowStim(QMainWindow):
         self.electrode6_ComboBox.setEnabled(False)
         self.electrode7_ComboBox.setEnabled(False)
         self.electrode8_ComboBox.setEnabled(False)
-        
+
         ### 2.2 - Ajout du titre de l'instruction ###
         self.param_label.setText("Veuillez sélectionner les valeurs des paramètres de stimulation: ")
         self.param_label.move(10,450)
@@ -289,7 +374,7 @@ class MainWindowStim(QMainWindow):
         self.electrode55_label.move(10,750)
         self.electrode55_label.setFont(QFont('Arial', 12))
         self.electrode55_label.adjustSize()
-    
+
         self.electrode66_label.setText("Électrode 6 (gauche):")
         self.electrode66_label.move(10,800)
         self.electrode66_label.setFont(QFont('Arial', 12))
@@ -444,23 +529,23 @@ class MainWindowStim(QMainWindow):
         ### 2.4 - Bloquer les menus déroulants des électrodes non-utilisées (exigence de sécurité) ###
         self.set_electrode_off(init_parameters)
 
-        ### 2.5 - Initialisation du bouton soumettre ### 
+        ### 2.5 - Initialisation du bouton soumettre ###
         self.submit_final_button.setText("  Soumettre  ")
         self.submit_final_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_final_button.move(1400, 900)
+        self.submit_final_button.move(1000, 900) # 1400, 900 originalement
         self.submit_final_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_final_button.adjustSize()
         self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
-    
+
     def set_electrode_off(self, init_parameters):
         ### 3.1 - Enregistrer les valeurs des paramètres entrées pour les électrodes utilisées ###
         init_parameters.set_electrode1_muscle(self.electrode1_ComboBox)
-        init_parameters.set_electrode2_muscle(self.electrode2_ComboBox) 
+        init_parameters.set_electrode2_muscle(self.electrode2_ComboBox)
         init_parameters.set_electrode3_muscle(self.electrode3_ComboBox)
-        init_parameters.set_electrode4_muscle(self.electrode4_ComboBox) 
-        init_parameters.set_electrode5_muscle(self.electrode5_ComboBox) 
-        init_parameters.set_electrode6_muscle(self.electrode6_ComboBox) 
-        init_parameters.set_electrode7_muscle(self.electrode7_ComboBox) 
+        init_parameters.set_electrode4_muscle(self.electrode4_ComboBox)
+        init_parameters.set_electrode5_muscle(self.electrode5_ComboBox)
+        init_parameters.set_electrode6_muscle(self.electrode6_ComboBox)
+        init_parameters.set_electrode7_muscle(self.electrode7_ComboBox)
         init_parameters.set_electrode8_muscle(self.electrode8_ComboBox)
         ### 3.2 - Empêcher l'utilisateur de mettre des valeurs non-nulles à des électrodes pas utilisées lors de l'entraînement ###
         if (init_parameters.get_electrode1_muscle() == "Aucun"):
@@ -495,11 +580,11 @@ class MainWindowStim(QMainWindow):
             self.electrode8_ComboBox_amplitude.setEnabled(False)
             self.electrode8_ComboBox_frequency.setEnabled(False)
             self.electrode8_ComboBox_length_imp.setEnabled(False)
-    
+
     def clicked_next(self, init_parameters):
         ### Enregistrer les valeurs des paramètres entrées ###
         ### 4.1 - Temps de stiumulation de l'entrainement (pour le menu de stimulation) ###
-        init_parameters.set_stim_training_length(self.stim_training_length_ComboBox) 
+        init_parameters.set_stim_training_length(self.stim_training_length_ComboBox)
         ### 4.2 - Amplitude à chaque électrode (pour le menu de stimulation) ###
         init_parameters.set_electrode1_amplitude(self.electrode1_ComboBox_amplitude)
         init_parameters.set_electrode2_amplitude(self.electrode2_ComboBox_amplitude)
@@ -552,50 +637,50 @@ class MainWindowStim(QMainWindow):
     def e1_is_completed(self, init_parameters):
         if (init_parameters.get_electrode1_muscle() != "Aucun" and int(init_parameters.get_electrode1_amplitude()) != 0 and int(init_parameters.get_electrode1_frequency())!=0 and int(init_parameters.get_electrode1_length_imp())!=0) or (init_parameters.get_electrode1_muscle() == "Aucun" and int(init_parameters.get_electrode1_amplitude()) == 0 and int(init_parameters.get_electrode1_frequency())==0 and int(init_parameters.get_electrode1_length_imp())==0):
             self.reponse1 = True
-        else: 
+        else:
             self.reponse1 = False
         return(self.reponse1)
     def e2_is_completed(self, init_parameters):
         if (init_parameters.get_electrode2_muscle() != "Aucun" and int(init_parameters.get_electrode2_amplitude()) != 0 and int(init_parameters.get_electrode2_frequency())!=0 and int(init_parameters.get_electrode2_length_imp())!=0) or (init_parameters.get_electrode2_muscle() == "Aucun" and int(init_parameters.get_electrode2_amplitude()) == 0 and int(init_parameters.get_electrode2_frequency())==0 and int(init_parameters.get_electrode2_length_imp())==0):
             self.reponse2 = True
-        else: 
+        else:
             self.reponse2 = False
         return(self.reponse2)
     def e3_is_completed(self, init_parameters):
         if (init_parameters.get_electrode3_muscle() != "Aucun" and int(init_parameters.get_electrode3_amplitude()) != 0 and int(init_parameters.get_electrode3_frequency())!=0 and int(init_parameters.get_electrode3_length_imp())!=0) or (init_parameters.get_electrode3_muscle() == "Aucun" and int(init_parameters.get_electrode3_amplitude()) == 0 and int(init_parameters.get_electrode3_frequency())==0 and int(init_parameters.get_electrode3_length_imp())==0):
             self.reponse3 = True
-        else: 
+        else:
             self.reponse3 = False
         return(self.reponse3)
     def e4_is_completed(self, init_parameters):
         if (init_parameters.get_electrode4_muscle() != "Aucun" and int(init_parameters.get_electrode4_amplitude()) != 0 and int(init_parameters.get_electrode4_frequency())!=0 and int(init_parameters.get_electrode4_length_imp())!=0) or (init_parameters.get_electrode4_muscle() == "Aucun" and int(init_parameters.get_electrode4_amplitude()) == 0 and int(init_parameters.get_electrode4_frequency())==0 and int(init_parameters.get_electrode4_length_imp())==0):
             self.reponse4 = True
-        else: 
+        else:
             self.reponse4 = False
         return(self.reponse4)
 
     def e5_is_completed(self, init_parameters):
         if (init_parameters.get_electrode5_muscle() != "Aucun" and int(init_parameters.get_electrode5_amplitude()) != 0 and int(init_parameters.get_electrode5_frequency())!=0 and int(init_parameters.get_electrode5_length_imp())!=0) or (init_parameters.get_electrode5_muscle() == "Aucun" and int(init_parameters.get_electrode5_amplitude()) == 0 and int(init_parameters.get_electrode5_frequency())==0 and int(init_parameters.get_electrode5_length_imp())==0):
             self.reponse5 = True
-        else: 
+        else:
             self.reponse5 = False
         return(self.reponse5)
     def e6_is_completed(self, init_parameters):
         if (init_parameters.get_electrode6_muscle() != "Aucun" and int(init_parameters.get_electrode6_amplitude()) != 0 and int(init_parameters.get_electrode6_frequency())!=0 and int(init_parameters.get_electrode6_length_imp())!=0) or (init_parameters.get_electrode6_muscle() == "Aucun" and int(init_parameters.get_electrode6_amplitude()) == 0 and int(init_parameters.get_electrode6_frequency())==0 and int(init_parameters.get_electrode6_length_imp())==0):
             self.reponse6 = True
-        else: 
+        else:
             self.reponse6 = False
         return(self.reponse6)
     def e7_is_completed(self, init_parameters):
         if (init_parameters.get_electrode7_muscle() != "Aucun" and int(init_parameters.get_electrode7_amplitude()) != 0 and int(init_parameters.get_electrode7_frequency())!=0 and int(init_parameters.get_electrode7_length_imp())!=0) or (init_parameters.get_electrode7_muscle() == "Aucun" and int(init_parameters.get_electrode7_amplitude()) == 0 and int(init_parameters.get_electrode7_frequency())==0 and int(init_parameters.get_electrode7_length_imp())==0):
             self.reponse7 = True
-        else: 
+        else:
             self.reponse7 = False
         return(self.reponse7)
     def e8_is_completed(self, init_parameters):
         if (init_parameters.get_electrode8_muscle() != "Aucun" and int(init_parameters.get_electrode8_amplitude()) != 0 and int(init_parameters.get_electrode8_frequency())!=0 and int(init_parameters.get_electrode8_length_imp())!=0) or (init_parameters.get_electrode8_muscle() == "Aucun" and int(init_parameters.get_electrode8_amplitude()) == 0 and int(init_parameters.get_electrode8_frequency())==0 and int(init_parameters.get_electrode8_length_imp())==0):
             self.reponse8 = True
-        else: 
+        else:
             self.reponse8 = False
         return(self.reponse8)
     def is_completed(self, init_parameters):
@@ -609,7 +694,7 @@ class MainWindowStim(QMainWindow):
         self.rep8 = self.e8_is_completed(init_parameters)
         if self.rep1 == True and self.rep2 == True and self.rep3 == True and self.rep4 == True and self.rep5 == True and self.rep6 == True and self.rep7 == True and self.rep8 == True:
             self.global_reponse = True
-        else: 
+        else:
             self.global_reponse = False
         return(self.global_reponse)
 
@@ -625,4 +710,3 @@ class MainWindowStim(QMainWindow):
         else:
             self.danger = False
         return(self.danger)
-    
