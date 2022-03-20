@@ -7,6 +7,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
 import numpy
+import datetime 
 from StimulationWindow import StimulationWindow
 from PIL import Image
 from numpy import *
@@ -26,7 +27,8 @@ class InstructionWindow(QWidget):
         self.setGeometry(100, 50, SCREEN_WIDTH/1.2, SCREEN_HEIGTH/1.15)
         self.setWindowTitle("Instructions d'installation des électrodes")
         self.setStyleSheet("background-color: white;")
-        self.com_start_feedback = True ## à changer quand on va avoir info du module de communication
+        ### 1.2. Information du module de communication ###
+        self.com_start_feedback = True ## à changer pour get_start_status quand on va avoir info du module de communication
         self.initUI(init_parameters)
     def initUI(self, init_parameters):  
         ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
@@ -147,18 +149,41 @@ class InstructionWindow(QWidget):
         self.start_button.setFont(QFont('Arial', 14, weight = QFont.Bold))
         self.start_button.adjustSize()
         self.start_button.clicked.connect(lambda:self.clicked_start(init_parameters))
-
-    def clicked_start(self, init_parameters):
-        if self.com_start_feedback == True:
-            self.start_parameters = numpy.empty([3,8],dtype=int)
-            for i in range(len(self.start_parameters)):
+        self.start_parameters = numpy.empty([4,8], dtype=int)
+    def get_initial_parameters(self, init_parameters):
+        #self.start_parameters = numpy.empty([4,8], dtype=int)
+        for i in range(len(self.start_parameters)):
                 if i==0:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_amplitude(), init_parameters.get_electrode2_amplitude(), init_parameters.get_electrode3_amplitude(),init_parameters.get_electrode4_amplitude(),init_parameters.get_electrode5_amplitude(),init_parameters.get_electrode6_amplitude(),init_parameters.get_electrode7_amplitude(),init_parameters.get_electrode8_amplitude()]
                 if i==1:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_frequency(), init_parameters.get_electrode2_frequency(), init_parameters.get_electrode3_frequency(),init_parameters.get_electrode4_frequency(),init_parameters.get_electrode5_frequency(),init_parameters.get_electrode6_frequency(),init_parameters.get_electrode7_frequency(),init_parameters.get_electrode8_frequency()]
                 if i==2:
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
-            print("start parameters: ", self.start_parameters)
+                if i==3:
+                    self.start_parameters[i,:]=init_parameters.get_muscle_number()
+        print("start parameters: ", self.start_parameters)
+        return(self.start_parameters)
+    def create_file(self, init_parameters):
+        self.file_object1 = open("InstructionWindow")
+        matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", init_parameters.start_parameters[1,:]],["Frequency (Hz)", init_parameters.start_parameters[2,:]], ["Impulsion length (ms)", init_parameters.start_paramters[3,:]]])
+        self.file_object.write(str(datetime.now()))
+        self.file_object.write(matrix) 
+    def clicked_start(self, init_parameters):
+        if self.com_start_feedback == True:
+            self.get_initial_parameters(init_parameters)
+            self.create_file(init_parameters)
+            #self.start_parameters = numpy.empty([4,8], dtype=int)
+            #for i in range(len(self.start_parameters)):
+                #if i==0:
+                    #self.start_parameters[i,:]=[init_parameters.get_electrode1_amplitude(), init_parameters.get_electrode2_amplitude(), init_parameters.get_electrode3_amplitude(),init_parameters.get_electrode4_amplitude(),init_parameters.get_electrode5_amplitude(),init_parameters.get_electrode6_amplitude(),init_parameters.get_electrode7_amplitude(),init_parameters.get_electrode8_amplitude()]
+                #if i==1:
+                    #self.start_parameters[i,:]=[init_parameters.get_electrode1_frequency(), init_parameters.get_electrode2_frequency(), init_parameters.get_electrode3_frequency(),init_parameters.get_electrode4_frequency(),init_parameters.get_electrode5_frequency(),init_parameters.get_electrode6_frequency(),init_parameters.get_electrode7_frequency(),init_parameters.get_electrode8_frequency()]
+                #if i==2:
+                    #self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
+                #if i==3:
+                    #self.start_parameters[i,:]=init_parameters.get_muscle_number()
+            #print("start parameters: ", self.start_parameters)
+            ### Ajouter code ici pour envoyer cette matrice au module de communication ###
             self.stimulation_window = StimulationWindow(init_parameters)
             self.close()
             self.stimulation_window.show()

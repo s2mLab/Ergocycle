@@ -5,6 +5,7 @@
 import crccheck.checksum
 import numpy as np
 import serial
+import time
 
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
@@ -20,8 +21,8 @@ class Stimulator:
     # Class variables
     VERSION = 0x01
 
-    INITACK_RESULT_OK = 0x00
-    INITACK_RESULT_ERR = -0x05
+    INIT_REPETITION_TIME = 0.5
+    
 
     START_BYTE = 0xF0
     STOP_BYTE  = 0x0F
@@ -37,98 +38,89 @@ class Stimulator:
              'StartChannelListMode': 0x20, 'StartChannelListModeAck': 0x21,
              'StopChannelListMode': 0x22, 'StopChannelListModeAck': 0x23,
              'SinglePulse': 0x24, 'SinglePulseAck': 0x25, 'StimulationError': 0x26}
-    '''
-    SETTINGS = {
-            'bytesize': serial.EIGHTBITS,
-            'baudrate': 460800,
-            'stopbits': serial.STOPBITS_ONE,
-            'timeout': 0.1,
-            'parity': serial.PARITY_EVEN
-           }
-    '''
+    
 
     # Constuctor
-    def __init__(self, channel_stim, freq, ts1, ts2, mode, pulse_width, amplitude, port_path):
-# ---- Ça fait beaucoup d'arguments... ---- #
-        self.channel_stim = channel_stim
-        self.freq = freq
-        self.ts1 = ts1
-        self.ts2 = ts2
-        self.mode = mode
-        self.pulse_width = pulse_width
-        self.amplitude = amplitude
-
-        # Save device path
-        #self.port_path = port_path
-        # Create serial port
-        #self.port = serial.Serial(Stimulator.port_path)
-        # Configure serial port
-        #self.port.apply_settings(Stimulator.SETTINGS)
-        # Initialize packet count
-        #self.packet_count = 0
-
-    #Create serial port
-    def init_port(self, port_path):
-
-        port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
-        return port
-
-# ---- Croyez-vous que ce serait mieux de faire de port un attribut de Stimulator ? ---- #
-
-
-    # Function to command the stimulator with pre-defined commands
-    def throw_command(self, command):
-        print("(Stimulator) TODO : call the '" + command + "' command")
-
-        #if command type == hexadécimal of certain command, throw associated function.
-        #fonction qui lit le paquet reçu par rehastim et qui l'associe à une commande.
-
-        #command = {'Init':0x01}
-
-    # Checksum of each packet
-    def checksum(self, packet_data):
-        checksum = crccheck.crc.Crc8.calc(packet_data)
-        return checksum
-
-    # Length of the data part in packet
-    def data_length(self, packet_data):
-        data_length = len(packet_data)
-
-        return data_length
+    def __init__(self, ts2, StimulationSignal, port_path): #Changer ts1 pour 1/StimulationSignal.frequency
+    # ---- StimulationSignal = Contient les infos d'amplitude, de fréquence, de durée d'impulsion et le nom du muscle pour chaque électrode ---- #
+    # ---- ts1 = Main stimulation interval                                 ---- #
+    # ---- ts2 = Inter pulse interval (use only if use duplet or triplet)  ---- #
+    # ---- Mode = Single pulse, duplet or triplet                          ---- #
+    # ---- port = open port from port_path                                 ---- #
+    # ---- packet_count = initialise the packet count                      ---- #
+    
+        self.StimulationSignal = StimulationSignal
+        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
+        self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour fréquence
+        self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
+        self.muscle = StimulationSignal[3]
+        self.ts2 = ts2 
+        self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
+        self.packet_count = 0
+        
+        while True:
+            received_packet= self.read_packets()
+            self.init_ACK(received_packet)
+            time.sleep(self.INIT_REPETITION_TIME)
+        return 
+    
+    # Function to modify the stimulation's parameters
+    def set_StimulationSignal(self,StimulationSignal):
+        self.StimulationSignal = StimulationSignal
+        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
+        self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour avoir fréquence
+        self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
+        self.muscle = StimulationSignal[3]
+        
+    # Function to modify the time between pulses if doublet or triplet are chose
+    def set_t2(self,t2):
+        self.t2 = t2
+    
 
     # "byte stuffing", i.e, xoring with STUFFING_KEY
     def stuff_byte(byte):
         return ((byte & ~Stimulator.STUFFING_KEY) | (~byte & Stimulator.STUFFING_KEY))
 
     # Construction of each packet
-    def packet_construction(self,packet_number, packet_type, packet_data):
+    def packet_construction(self,packet_count, packet_type, *packet_data):
         packet_command = self.TYPES[packet_type]
-        packet_payload = [packet_number, packet_command] + packet_data
-        checksum = self.checksum(packet_payload)
-        data_length = self.data_length(packet_payload)
+        packet_payload = [self.packet_count, packet_command]
+        if packet_data!= None:
+            for i in packet_data:
+                packet_payload.append(i)
+        checksum = self.stuff_byte(crccheck.crc.Crc8.calc(packet_payload))
+        data_length = self.stuff_byte(len(packet_payload))
         packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
         packet_end = [self.STOP_BYTE]
-        return packet_lead + packet_payload + packet_end
+        packet = packet_lead + packet_payload + packet_end
+        return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
+# Closes port
+    def close_port(self):
+        self.port.close()
 
-    # Opens port
+# Send packets
+    def send_packet(self, cmd):
+        if cmd == 'InitACK':
+            self.port.write(self.initACK(self.packet_count))
+        elif cmd == 'Watchdog':
+            self.port.write(self.watchdog(self.packet_count))
+        elif cmd == 'GetStimulationMode':
+            self.port.write(self.getMode(self.packet_count))
+        elif cmd == 'InitChannelListMode':
+            self.port.write(self.init_stimulation(self.packet_count, None, len(self.StimulationSignal.electrodes), None, self.ts2, self.ts1, 0)) #quoi faire avec channel_execution
+        elif cmd == 'StartChannelListMode':
+            self.port.write(self.start_stimulation(self.packet_count, self.mode, self.StimulationSignal.pulse_width, self.StimulationSignal.amplitude))
+        elif cmd == 'StopChannelListMode':
+            self.port.write(self.stop_stimulation(self.packet_count))
+        # Update packet count
+        self.packet_count = (self.packet_count + 1) % 256
 
-    # Closes port
-
-    # Send packets
-
-    # Receives packet
-
-    # Creates packet for every command part of dictionary TYPES
-
-
+# Receives packet
     # Read the received packet
     def read_packets(self):
-        #for type in Stimulator.TYPES:
-           # if Stimulator.TYPES[type] == command:
-               # return type
-
+        
         # Read port stream
         packet = self.port.read()
         # If it is a start byte, collect packet
@@ -142,40 +134,37 @@ class Stimulator:
                 packet += self.port.read()
             # Collect stop byte
             packet += self.port.read()
-            # Return packet as byte string
-            return packet
+            # Call the right ACK function
+            if(str(packet[5]) == Stimulator.TYPES['Init']):
+                return Stimulator.init()
+            elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
+                return Stimulator.unknown_cmd()
+            elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
+                return Stimulator.getmodeACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['InitChannelListModeAck']):
+                return Stimulator.init_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StartChannelListMode']):
+                return Stimulator.start_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StopChannelListModeAck']):
+                return Stimulator.stop_stimulation_ACK(packet)
+            elif(str(packet[5]) == Stimulator.TYPES['StartChannelListModeAck']):
+                return Stimulator.error_stimulation_ACK(packet)
         else:
             # Return empty string to avoid hanging
             return b''
 
-    # choose the right function for the received packet
-    def function_call_received_packet(self,packet):
-        if(str(packet[5]) == Stimulator.TYPES['InitACK']):
-            return Stimulator.init_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['UnknownCommand']):
-            return Stimulator.unknown_cmd()
-        elif(str(packet[5]) == Stimulator.TYPES['GetStimulationModeAck']):
-            return Stimulator.getmodeACK()
-        elif(str(packet[5]) == Stimulator.TYPES['InitChannelListModeAck']):
-            return Stimulator.init_stimulation_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['StartChannelListModeAck']):
-            return Stimulator.start_stimulation_ACK()
-        elif(str(packet[5]) == Stimulator.TYPES['StopChannelListModeAck']):
-            return Stimulator.stop_stimulation_ACK()
-
+# Creates packet for every command part of dictionary TYPES
 
     # Establishes connexion acknowlege
-    def init(self, packet_number):
-       packet = self.packet_construction(packet_number,'Init', self.VERSION )
-       packet_byte = packet.to_bytes(1, 'little')
-
-       return packet_byte
+    def init(self, packet):
+       return str(packet[6])
 
     # Establishes connexion acknowlege
     def init_ACK(self, packet):
-        if (str(packet[6]) == '0'):
-            return 'Connexion established'
-        elif (str(packet[6]) == '-5'):
+        if (packet[6] == self.VERSION):
+            result = '0'
+            return self.packet_construction(self.packet_count, 'InitACK', result)
+        else :
             return 'Version number is incompatible'
 
 
@@ -185,29 +174,15 @@ class Stimulator:
 
 
     # Error signal (inactivity ends connexion)  VERIFY IF IT HAVE TO BE SEND EVERY <1200MS OR SEND IF ONLY NOTHING SEND AFTER 120MS
-    def watchdog(self, packet_number):
-        packet_payload = [packet_number, Stimulator.TYPES['Watchdog']]
-        checksum = self.checksum(packet_payload)
-        data_length = self.data_length(packet_payload)
-        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
-        packet_end = [self.STOP_BYTE]
-        packet = packet_lead + packet_payload + packet_end
-        packet_byte = packet.to_bytes(1, 'little')
-
-        return packet_byte
+    def watchdog(self, packet_count):
+        packet = self.packet_construction(self.packet_count,'Watchdog')
+        return packet
 
 
     # Asking to know which mode has been chosen
-    def getMode(self, packet_number):
-        packet_payload = [packet_number, Stimulator.TYPES['GetStimulationMode']]
-        checksum = self.checksum(packet_payload)
-        data_length = self.data_length(packet_payload)
-        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
-        packet_end = [self.STOP_BYTE]
-        packet = packet_lead + packet_payload + packet_end
-        packet_byte = packet.to_bytes(1, 'little')
-
-        return packet_byte
+    def getMode(self, packet_count):
+        packet = self.packet_construction(self.packet_count, 'GetStimulationMode')
+        return packet
 
 
     # Sent by RehaStim2 in response to getMode
@@ -224,11 +199,16 @@ class Stimulator:
             return 'Transfer error'
         elif(str(packet[6]) == '-8'):
             return 'Busy error' #add a timer
+        
 
     # Initialises stimulation
-    def init_stimulation(channel_stim, ts1, ts2):
-        print("TODO")
-
+    def init_stimulation(self, packet_count, low_freq_factor): 
+        max_frequency = max(self.StimulationSignal[1])
+        max_frequency_electrode = np.where(self.StimulationSignal[1]==max_frequency)
+        low_frequency_electrode = np.where(self.StimulationSignal[1]!=max_frequency)
+        packet = self.packet_construction(self.packet_count,'InitChannelListMode', low_freq_factor, max_frequency_electrode, low_frequency_electrode, self.ts2, 1/max_frequency, None, 0 )
+        return packet
+        
 
     # Sent by RehaStim2 in response to init_stimulation
     def init_stimulation_ACK(self, packet):
@@ -245,8 +225,61 @@ class Stimulator:
                 return 'Busy error' # Add a timer?
 
     # Starts stimulation and modifies it
-    def start_stimulation(mode, pulse_width, amplitude):
-        print("TODO")
+    def start_stimulation(self,packet_count, mode): #VA PROBABLEMENT CHANGER PULSE_WIDTH ET AMPLITUDE SELON COMMENT RÉCUPÈRE DONNÉES
+        if len(self.pulse_width) == 1:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode', 
+                                              mode, self.pulse_width, None, self.amplitude)
+        elif len(self.pulse_width) == 2:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0], 
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1])
+        elif len(self.pulse_width) == 3:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2])
+        elif len(self.pulse_width) == 4:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
+                                              mode[3], self.pulse_width[3], None, self.amplitude[3])
+        elif len(self.pulse_width) == 5:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
+                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
+                                              mode[4], self.pulse_width[4], None, self.amplitude[4])
+        elif len(self.pulse_width) == 6:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
+                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
+                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
+                                              mode[5], self.pulse_width[5], None, self.amplitude[5])
+        elif len(self.pulse_width) == 7:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
+                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
+                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
+                                              mode[5], self.pulse_width[5], None, self.amplitude[5],
+                                              mode[6], self.pulse_width[6], None, self.amplitude[6])
+        elif len(self.pulse_width) == 8:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
+                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
+                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
+                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
+                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
+                                              mode[5], self.pulse_width[5], None, self.amplitude[5],
+                                              mode[6], self.pulse_width[6], None, self.amplitude[6],
+                                              mode[7], self.pulse_width[7], None, self.amplitude[7])
+        
+        return packet
 
     # Sent by RehaStim2 in response to start_stimulation
     def start_stimulation_ACK(self, packet):
@@ -264,8 +297,9 @@ class Stimulator:
 
 
     # Stops stimulation
-    def stop_stimulation():
-        print("TODO")
+    def stop_stimulation(self, packet_count):
+        packet = self.packet_construction(self.packet_count,'StopChannelListMode')
+        return packet
 
 
     # Sent by RehaStim2 in response to stop_stimulation
@@ -273,9 +307,72 @@ class Stimulator:
 
         if(str(packet[6]) == '0'):
             return ' Stimulation stopped'
-        if(str(packet[6]) == '-1'):
+        elif(str(packet[6]) == '-1'):
             return ' Transfer error'
+        
+        
+    def stimulation_error(self, packet):
+        
+        if(str(packet[6]) == '-1'):
+            return ' Emergency switch activated/not conencted' #mettre fonction qui affiche message sur interface
+        elif(str(packet[6]) == '-2'):
+            return ' Electrode error'
+        elif(str(packet[6]) == '-3'):
+            return 'Stimulation module error'
+      
+    
+    def testing_stimulation(self): # lié avec +- courant
+        self.ts1 = 3
+        self.send_packet('InitChannelListMode')
+        received_packet=self.read_packets()
+        if (received_packet == 'Stimulation initialized'):
+            self.send_packet('StartChannelListMode')
+            received_packet = self.read_packets()
+            if (received_packet == 'busy error'):
+                while():
+                    time.sleep(10)
+                self.send_packet('StartChannelListMode')
+            elif (received_packet == 'transfer error'):
+                self.send_packet('StartChannelListMode')
+            #elif (received_packet == 'Wrong mode error'):
+                #self.mode ==
+            #elif (received_packet == 'Parameter error'):
+                
+    def control_stimulation(self): #lié avec bouton start stim/update            
+        self.send_packet('InitChannelListMode')
+        received_packet=self.read_packets()
+        if (received_packet == 'Stimulation initialized'):
+            self.send_packet('StartChannelListMode')
+            received_packet = self.read_packets()
+            if (received_packet == 'busy error'):
+                while():
+                    time.sleep(10)
+                self.send_packet('StartChannelListMode')
+            elif (received_packet == 'transfer error'):
+                self.send_packet('StartChannelListMode')
+            #elif (received_packet == 'Wrong mode error'):
+                #self.mode ==
+            #elif (received_packet == 'Parameter error'):
+                
+    
+      # Function to command the stimulator with pre-defined commands
+    def throw_command(self, command):
+        print("(Stimulator) TODO : call the '" + command + "' command")
+
+        #if command type == hexadécimal of certain command, throw associated function.
+        #fonction qui lit le paquet reçu par rehastim et qui l'associe à une commande.
+
+        #command = {'Init':0x01}      
+        
+        
     '''
+    if (InstructionWindow.clicked_started()): #changer pour ouverture 
+            Stimulator.send_packet('Init')
+            Stimulator.read_packets()
+        if (Stimulator.read_packets() == 'Connexion established'):
+            Stimulator.send_packet('InitChannelListMode')
+            if(Stimulator.read_packets() == 'Stimulation initialized'):
+                if()
     Vérifier si utile pour nous ou si décide de le faire pour plus tard
 
     # Sends a unique impulsion
