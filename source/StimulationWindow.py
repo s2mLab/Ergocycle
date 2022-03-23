@@ -13,7 +13,7 @@ import time
 import numpy
 from numpy import *
 #from Parameters import Parameters
-#import sys
+import sys
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
@@ -1118,14 +1118,15 @@ class StimulationWindow(QWidget):
 
     def clicked_stop(self):
         self.end_of_stim = True
-        self.close()
+        #self.close()
+        sys.exit()
 
 import datetime
 #amplitude : self.start_parameters[1,:]
 #frequency : self.start_parameters[2,:]
 #length impulsion: self.start_parameters[3,:]
-file_object1 = open("RegisterFile_Test", "w+")
-matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", self.start_parameters[1,:]],["Frequency (Hz)", self.start_parameters[2,:]], ["Impulsion length (ms)", self.start_paramters[3,:]]])
-file_object1.write(str(datetime.now()))
-file_object1.write(matrix)
-file_object1.close
+#file_object1 = open("RegisterFile_Test", "w+")
+#matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", self.start_parameters[1,:]],["Frequency (Hz)", self.start_parameters[2,:]], ["Impulsion length (ms)", self.start_paramters[3,:]]])
+#file_object1.write(str(datetime.now()))
+#file_object1.write(matrix)
+#file_object1.close

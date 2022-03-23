@@ -305,26 +305,26 @@ class Parameters():
                 self.muscle_number[0,i] = 3
             if self.muscle[i] == "Deltoide Antérieur":
                 self.muscle_number[0,i] = 4
-            if self.muscle[i] == "Grand pectoral":
-                self.muscle_number[0,i] = 5
-            if self.muscle[i] =="Trapezius descendens":
-                self.muscle_number[0,i] = 6
-            if self.muscle[i] == "Infraspinatus":
-                self.muscle_number[0,i] = 7
-            if self.muscle[i] == "Supraspinatus":
-                self.muscle_number[0,i] = 8
-            if self.muscle[i] == "Subscapularis":
-                self.muscle_number[0,i] = 9
-            if self.muscle[i] == "Brachioradialis":
-                self.muscle_number[0,i] = 10
-            if self.muscle[i] =="Faisceau supérieur du trapeze":
-                self.muscle_number[0,i] = 11
-            if self.muscle[i] == "Flexor carpi radialis":
-                self.muscle_number[0,i] = 12
-            if self.muscle[i] == "Extensor carpi ulnaris":
-                self.muscle_number[0,i] = 13
-            if self.muscle[i] == "M. rectus abdominis":
-                self.muscle_number[0,i] = 14
+            #if self.muscle[i] == "Grand pectoral":
+                #self.muscle_number[0,i] = 5
+            #if self.muscle[i] =="Trapezius descendens":
+                #self.muscle_number[0,i] = 6
+            #if self.muscle[i] == "Infraspinatus":
+                #self.muscle_number[0,i] = 7
+            #if self.muscle[i] == "Supraspinatus":
+                #self.muscle_number[0,i] = 8
+            #if self.muscle[i] == "Subscapularis":
+                #self.muscle_number[0,i] = 9
+            #if self.muscle[i] == "Brachioradialis":
+                #self.muscle_number[0,i] = 10
+            #if self.muscle[i] =="Faisceau supérieur du trapeze":
+                #self.muscle_number[0,i] = 11
+            #if self.muscle[i] == "Flexor carpi radialis":
+                #self.muscle_number[0,i] = 12
+            #if self.muscle[i] == "Extensor carpi ulnaris":
+                #self.muscle_number[0,i] = 13
+            #if self.muscle[i] == "M. rectus abdominis":
+                #self.muscle_number[0,i] = 14
         return(self.muscle_number)
     ## Déterminer les couples dangereux ##
     def couple_amplitude_frequency_check(self):

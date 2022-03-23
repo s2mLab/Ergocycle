@@ -164,14 +164,14 @@ class InstructionWindow(QWidget):
         print("start parameters: ", self.start_parameters)
         return(self.start_parameters)
     def create_file(self, init_parameters):
-        self.file_object1 = open("InstructionWindow")
+        self.file_object1 = open("InstructionWindowTestFile", "w+")
         matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", init_parameters.start_parameters[1,:]],["Frequency (Hz)", init_parameters.start_parameters[2,:]], ["Impulsion length (ms)", init_parameters.start_paramters[3,:]]])
         self.file_object.write(str(datetime.now()))
         self.file_object.write(matrix) 
     def clicked_start(self, init_parameters):
         if self.com_start_feedback == True:
             self.get_initial_parameters(init_parameters)
-            self.create_file(init_parameters)
+            #self.create_file(init_parameters)
             #self.start_parameters = numpy.empty([4,8], dtype=int)
             #for i in range(len(self.start_parameters)):
                 #if i==0:
