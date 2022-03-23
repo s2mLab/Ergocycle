@@ -25,8 +25,8 @@ file_object.close
 #amplitude : self.start_parameters[1,:]
 #frequency : self.start_parameters[2,:]
 #length impulsion: self.start_parameters[3,:]
-
-file_object1 = open("InstructionWindow")
+file_object1 = open("RegisterFile_Test", "w+")
 matrix = np.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", self.start_parameters[1,:]],["Frequency (Hz)", self.start_parameters[2,:]], ["Impulsion length (ms)", self.start_paramters[3,:]]])
 file_object.write(str(datetime.now()))
 file_object.write(matrix)
+file_object1.close
