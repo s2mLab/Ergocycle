@@ -12,19 +12,19 @@ from sqlalchemy import false
 
 class Motor():
     # Constuctor
-    def __init__(self, nom, kp, ki, T, force, vitesse, val_max, val_min) :
+    def __init__(self, nom, kp, ki, T, couple, vitesse, val_max, val_min) :
         self._nom = nom
         #self._carte = carte
         self._kp = kp
         self._ki = ki
-        self._force = force
+        self._couple = couple
         self._vitesse = vitesse 
         self._dt = T
         self._val_max = val_max
         self._val_min = val_min
         self._est_concentrique = True
         self._est_excentrique = false
-        self._force_usager = 0
+        self._couple_usager = 0
         print("moteur construit")
     def __del__(self):
         print("moteur detruit")
@@ -40,14 +40,19 @@ class Motor():
         # self._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL 
         # self._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
         # self._carte.axis0.controller.input_vel = self._vitesse
-        # self._carte.axis0.controller.input_torque = self._force
+        # self._carte.axis0.controller.input_torque = self._couple
        
         #PI
-        erreur = self._force_usager - self._force  
+        erreur = self._couple_usager - self._couple 
+        #Modification de la condition du while
+        #variation_couple_usager = self.couple_cible - self._couple_usager
+        #seuil_acceptabilite = 0.1*self.couple_cible 
         compte = 0
         #Asservissement 
+
+        #while abs(variation_couple_usager) >= seuil_accceptabilite and self._est_concentrique
         while abs(erreur) >= 5 and self._est_concentrique : 
-             erreur = self._force_usager - self._force  
+             erreur = self._couple_usager - self._couple  
              P_o = self._kp*erreur
              integral = erreur*self._dt
              I_o = self._ki * integral
@@ -60,7 +65,7 @@ class Motor():
              compte += 1 
              print("torque", compte)
              print(self._force)           
-            #self._carte.axis0.controller.input_torque = self._force 
+             #self._carte.axis0.controller.input_torque = self._force 
 
 
         print("mode concentrique")
