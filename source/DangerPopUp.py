@@ -7,6 +7,7 @@ from inspect import Parameter
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
+#from Ergocycle.source.MainWindowStim import MainWindowStim
 from InstructionWindow import InstructionWindow
 from PIL import Image
 #import sys
@@ -95,16 +96,18 @@ class DangerPopUp(QWidget):
         self.back_to_menu_button.adjustSize()
         self.back_to_menu_button.clicked.connect(lambda:self.clicked_back())
         ### 1.6. Bouton pour poursuivre quand même ###
-        self.back_to_menu_button = QtWidgets.QPushButton(self)
-        self.back_to_menu_button.setText("   Poursuivre quand même   ")
-        self.back_to_menu_button.setStyleSheet("background-color: red; border: 1 solid;")
-        self.back_to_menu_button.move(600, 500)
-        self.back_to_menu_button.setFont(QFont('Arial', 12, weight = QFont.Bold))
-        self.back_to_menu_button.adjustSize()
-        self.back_to_menu_button.clicked.connect(lambda:self.clicked_instruction(init_parameters))
+        self.continue_button = QtWidgets.QPushButton(self)
+        self.continue_button.setText("   Poursuivre quand même   ")
+        self.continue_button.setStyleSheet("background-color: red; border: 1 solid;")
+        self.continue_button.move(600, 500)
+        self.continue_button.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.continue_button.adjustSize()
+        self.continue_button.clicked.connect(lambda:self.clicked_instruction(init_parameters))
     def clicked_back(self):
         self.close()
     def clicked_instruction(self, init_parameters):
+        #self.main_window = MainWindowStim()
         self.instruction_window = InstructionWindow(init_parameters)
-        self.close()
         self.instruction_window.show()
+        self.close()
+        #self.main_window.close()

@@ -111,7 +111,6 @@ class MainWindowStim(QMainWindow):
 
         """
 
-
         self.muscle_label = QtWidgets.QLabel(self)
         self.muscle_label.setText("Veuillez sélectionner les muscles à stimuler et l'électrode correspondante: ")
         self.muscle_label.move(10,200)
@@ -125,7 +124,8 @@ class MainWindowStim(QMainWindow):
         self.electrode1_label.adjustSize()
 
         self.electrode1_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode1_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode1_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode1_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode1_ComboBox.move(200,250)
         self.electrode1_ComboBox.setFont(QFont('Arial', 12))
         self.electrode1_ComboBox.adjustSize()
@@ -137,7 +137,8 @@ class MainWindowStim(QMainWindow):
         self.electrode2_label.adjustSize()
 
         self.electrode2_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode2_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode2_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode2_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode2_ComboBox.move(200,300)
         self.electrode2_ComboBox.setFont(QFont('Arial', 12))
         self.electrode2_ComboBox.adjustSize()
@@ -149,7 +150,8 @@ class MainWindowStim(QMainWindow):
         self.electrode3_label.adjustSize()
 
         self.electrode3_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode3_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode3_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode3_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode3_ComboBox.move(200,350)
         self.electrode3_ComboBox.setFont(QFont('Arial', 12))
         self.electrode3_ComboBox.adjustSize()
@@ -161,7 +163,8 @@ class MainWindowStim(QMainWindow):
         self.electrode4_label.adjustSize()
 
         self.electrode4_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode4_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode4_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode4_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode4_ComboBox.move(200,400)
         self.electrode4_ComboBox.setFont(QFont('Arial', 12))
         self.electrode4_ComboBox.adjustSize()
@@ -174,7 +177,8 @@ class MainWindowStim(QMainWindow):
         self.electrode5_label.adjustSize()
 
         self.electrode5_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode5_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode5_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode5_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode5_ComboBox.move(750,250)
         self.electrode5_ComboBox.setFont(QFont('Arial', 12))
         self.electrode5_ComboBox.adjustSize()
@@ -186,7 +190,8 @@ class MainWindowStim(QMainWindow):
         self.electrode6_label.adjustSize()
 
         self.electrode6_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode6_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode6_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode6_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode6_ComboBox.move(750,300)
         self.electrode6_ComboBox.setFont(QFont('Arial', 12))
         self.electrode6_ComboBox.adjustSize()
@@ -198,7 +203,8 @@ class MainWindowStim(QMainWindow):
         self.electrode7_label.adjustSize()
 
         self.electrode7_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode7_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode7_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode7_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode7_ComboBox.move(750,350)
         self.electrode7_ComboBox.setFont(QFont('Arial', 12))
         self.electrode7_ComboBox.adjustSize()
@@ -210,7 +216,8 @@ class MainWindowStim(QMainWindow):
         self.electrode8_label.adjustSize()
 
         self.electrode8_ComboBox = QtWidgets.QComboBox(self)
-        self.electrode8_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
+        self.electrode8_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur"])
+        #self.electrode8_ComboBox.addItems(["Aucun","Biceps Brachii", "Triceps Brachii", "Deltoide Postérieur", "Deltoide Antérieur","Grand pectoral","Trapezius descendens","Infraspinatus", "Supraspinatus","Subscapularis","Brachioradialis","Faisceau supérieur du trapeze", "Flexor carpi radialis","Extensor carpi ulnaris","M. rectus abdominis"])
         self.electrode8_ComboBox.move(750,400)
         self.electrode8_ComboBox.setFont(QFont('Arial', 12))
         self.electrode8_ComboBox.adjustSize()
@@ -218,7 +225,7 @@ class MainWindowStim(QMainWindow):
         self.submit_button = QtWidgets.QPushButton(self)
         self.submit_button.setText("  Soumettre  ")
         self.submit_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_button.move(1000, 400) # originalement 1400, 400
+        self.submit_button.move(1400, 400) # originalement 1400, 400 (devrait être mis a 1000,400)
         self.submit_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_button.adjustSize()
         self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
@@ -532,7 +539,7 @@ class MainWindowStim(QMainWindow):
         ### 2.5 - Initialisation du bouton soumettre ###
         self.submit_final_button.setText("  Soumettre  ")
         self.submit_final_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_final_button.move(1000, 900) # 1400, 900 originalement
+        self.submit_final_button.move(1400, 900) # 1400, 900 originalement, devrait etre a (1000, 900)
         self.submit_final_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_final_button.adjustSize()
         self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
