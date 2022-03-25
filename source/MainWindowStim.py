@@ -225,7 +225,7 @@ class MainWindowStim(QMainWindow):
         self.submit_button = QtWidgets.QPushButton(self)
         self.submit_button.setText("  Soumettre  ")
         self.submit_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_button.move(1400, 400) # originalement 1400, 400 (devrait être mis a 1000,400)
+        self.submit_button.move(1000, 400) # originalement 1400, 400 (devrait être mis a 1000,400)
         self.submit_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_button.adjustSize()
         self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
@@ -539,7 +539,7 @@ class MainWindowStim(QMainWindow):
         ### 2.5 - Initialisation du bouton soumettre ###
         self.submit_final_button.setText("  Soumettre  ")
         self.submit_final_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_final_button.move(1400, 900) # 1400, 900 originalement, devrait etre a (1000, 900)
+        self.submit_final_button.move(1000, 900) # 1400, 900 originalement, devrait etre a (1000, 900)
         self.submit_final_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.submit_final_button.adjustSize()
         self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))

@@ -33,7 +33,7 @@ class StimulationWindow(QWidget):
         self.setStyleSheet("background-color: white;")
         current_parameters = init_parameters
         self.initUI(current_parameters)
-    def initUI(self, current_parameters):  
+    def initUI(self, current_parameters):
         ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
         self.petite_imageS2M = self.imageS2M.resize((200, 150))
@@ -55,7 +55,7 @@ class StimulationWindow(QWidget):
         self.stop_button.move(1300, 50)
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
-        self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
+        self.stop_button.clicked.connect(lambda:self.clicked_stop())
         ### 1.6. ###
         #self.end_of_stim = False
         ### 1.7. Nouvelle méthode pour le timer ###
@@ -67,7 +67,7 @@ class StimulationWindow(QWidget):
         self.time_label = QLabel(self)
         self.time_label.setGeometry(750, 175, 150, 70)
         self.startWatch = True
-        # Bouton pause du timer 
+        # Bouton pause du timer
         self.pauseWatch = QPushButton("Pause", self)
         self.pauseWatch.setGeometry(900, 187, 100, 40)
         self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
@@ -146,7 +146,7 @@ class StimulationWindow(QWidget):
         #print("Amplitudes enregistrées: ", current_parameters.get_electrode1_amplitude(),  current_parameters.get_electrode2_amplitude(),  current_parameters.get_electrode3_amplitude(),  current_parameters.get_electrode4_amplitude(),  current_parameters.get_electrode5_amplitude(), current_parameters.get_electrode6_amplitude(),  current_parameters.get_electrode7_amplitude(),  current_parameters.get_electrode8_amplitude())
         #print("Fréquences enregistrées: ", init_parameters.get_electrode1_frequency(),  init_parameters.get_electrode2_frequency(),  init_parameters.get_electrode3_frequency(),  init_parameters.get_electrode4_frequency(),  init_parameters.get_electrode5_frequency(), init_parameters.get_electrode6_frequency(),  init_parameters.get_electrode7_frequency(),  init_parameters.get_electrode8_frequency())
         #print("Durées d'imp enregistrées: ", init_parameters.get_electrode1_length_imp(),  init_parameters.get_electrode2_length_imp(),  init_parameters.get_electrode3_length_imp(),  init_parameters.get_electrode4_length_imp(),  init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(),  init_parameters.get_electrode7_length_imp(),  init_parameters.get_electrode8_length_imp())
-        
+
         ### 1.8. Placer toutes les amplitudes selon l'électrode ###
         self.current_amplitude1_label = QtWidgets.QLabel(self)
         self.current_amplitude1_label.setText(str(current_parameters.get_electrode1_amplitude()))
@@ -344,12 +344,12 @@ class StimulationWindow(QWidget):
         self.increase_amplitude6_button.adjustSize()
         self.increase_amplitude7_button.adjustSize()
         self.increase_amplitude8_button.adjustSize()
-        self.increase_amplitude1_button.clicked.connect(lambda:self.increase_amplitude1(current_parameters)) 
-        self.increase_amplitude2_button.clicked.connect(lambda:self.increase_amplitude2(current_parameters)) 
+        self.increase_amplitude1_button.clicked.connect(lambda:self.increase_amplitude1(current_parameters))
+        self.increase_amplitude2_button.clicked.connect(lambda:self.increase_amplitude2(current_parameters))
         self.increase_amplitude3_button.clicked.connect(lambda:self.increase_amplitude3(current_parameters))
         self.increase_amplitude4_button.clicked.connect(lambda:self.increase_amplitude4(current_parameters))
         self.increase_amplitude5_button.clicked.connect(lambda:self.increase_amplitude5(current_parameters))
-        self.increase_amplitude6_button.clicked.connect(lambda:self.increase_amplitude6(current_parameters)) 
+        self.increase_amplitude6_button.clicked.connect(lambda:self.increase_amplitude6(current_parameters))
         self.increase_amplitude7_button.clicked.connect(lambda:self.increase_amplitude7(current_parameters))
         self.increase_amplitude8_button.clicked.connect(lambda:self.increase_amplitude8(current_parameters))
         ### 1.11.2 - "-" pour l'amplitude ###
@@ -401,13 +401,13 @@ class StimulationWindow(QWidget):
         self.decrease_amplitude6_button.adjustSize()
         self.decrease_amplitude7_button.adjustSize()
         self.decrease_amplitude8_button.adjustSize()
-        self.decrease_amplitude1_button.clicked.connect(lambda:self.decrease_amplitude1(current_parameters)) 
-        self.decrease_amplitude2_button.clicked.connect(lambda:self.decrease_amplitude2(current_parameters)) 
+        self.decrease_amplitude1_button.clicked.connect(lambda:self.decrease_amplitude1(current_parameters))
+        self.decrease_amplitude2_button.clicked.connect(lambda:self.decrease_amplitude2(current_parameters))
         self.decrease_amplitude3_button.clicked.connect(lambda:self.decrease_amplitude3(current_parameters))
         self.decrease_amplitude4_button.clicked.connect(lambda:self.decrease_amplitude4(current_parameters))
         self.decrease_amplitude5_button.clicked.connect(lambda:self.decrease_amplitude5(current_parameters))
-        self.decrease_amplitude6_button.clicked.connect(lambda:self.decrease_amplitude6(current_parameters)) 
-        self.decrease_amplitude7_button.clicked.connect(lambda:self.decrease_amplitude7(current_parameters)) 
+        self.decrease_amplitude6_button.clicked.connect(lambda:self.decrease_amplitude6(current_parameters))
+        self.decrease_amplitude7_button.clicked.connect(lambda:self.decrease_amplitude7(current_parameters))
         self.decrease_amplitude8_button.clicked.connect(lambda:self.decrease_amplitude8(current_parameters))
         ### 1.12 - Mettre les boutons "+" et "-" pour la fréquence###
         ### 1.12.1 - "+" pour la fréquence ###
@@ -463,7 +463,7 @@ class StimulationWindow(QWidget):
         self.increase_frequency2_button.clicked.connect(lambda:self.increase_frequency2(current_parameters))
         self.increase_frequency3_button.clicked.connect(lambda:self.increase_frequency3(current_parameters))
         self.increase_frequency4_button.clicked.connect(lambda:self.increase_frequency4(current_parameters))
-        self.increase_frequency5_button.clicked.connect(lambda:self.increase_frequency5(current_parameters)) 
+        self.increase_frequency5_button.clicked.connect(lambda:self.increase_frequency5(current_parameters))
         self.increase_frequency6_button.clicked.connect(lambda:self.increase_frequency6(current_parameters))
         self.increase_frequency7_button.clicked.connect(lambda:self.increase_frequency7(current_parameters))
         self.increase_frequency8_button.clicked.connect(lambda:self.increase_frequency8(current_parameters))
@@ -520,8 +520,8 @@ class StimulationWindow(QWidget):
         self.decrease_frequency2_button.clicked.connect(lambda:self.decrease_frequency2(current_parameters))
         self.decrease_frequency3_button.clicked.connect(lambda:self.decrease_frequency3(current_parameters))
         self.decrease_frequency4_button.clicked.connect(lambda:self.decrease_frequency4(current_parameters))
-        self.decrease_frequency5_button.clicked.connect(lambda:self.decrease_frequency5(current_parameters)) 
-        self.decrease_frequency6_button.clicked.connect(lambda:self.decrease_frequency6(current_parameters)) 
+        self.decrease_frequency5_button.clicked.connect(lambda:self.decrease_frequency5(current_parameters))
+        self.decrease_frequency6_button.clicked.connect(lambda:self.decrease_frequency6(current_parameters))
         self.decrease_frequency7_button.clicked.connect(lambda:self.decrease_frequency7(current_parameters))
         self.decrease_frequency8_button.clicked.connect(lambda:self.decrease_frequency8(current_parameters))
         ### 1.13 - Mettre les boutons "+" et "-" pour la durée d'impulsion ###
@@ -574,14 +574,14 @@ class StimulationWindow(QWidget):
         self.increase_imp6_button.adjustSize()
         self.increase_imp7_button.adjustSize()
         self.increase_imp8_button.adjustSize()
-        self.increase_imp1_button.clicked.connect(lambda:self.increase_imp1(current_parameters)) 
-        self.increase_imp2_button.clicked.connect(lambda:self.increase_imp2(current_parameters)) 
-        self.increase_imp3_button.clicked.connect(lambda:self.increase_imp3(current_parameters)) 
-        self.increase_imp4_button.clicked.connect(lambda:self.increase_imp4(current_parameters)) 
-        self.increase_imp5_button.clicked.connect(lambda:self.increase_imp5(current_parameters)) 
-        self.increase_imp6_button.clicked.connect(lambda:self.increase_imp6(current_parameters)) 
-        self.increase_imp7_button.clicked.connect(lambda:self.increase_imp7(current_parameters)) 
-        self.increase_imp8_button.clicked.connect(lambda:self.increase_imp8(current_parameters)) 
+        self.increase_imp1_button.clicked.connect(lambda:self.increase_imp1(current_parameters))
+        self.increase_imp2_button.clicked.connect(lambda:self.increase_imp2(current_parameters))
+        self.increase_imp3_button.clicked.connect(lambda:self.increase_imp3(current_parameters))
+        self.increase_imp4_button.clicked.connect(lambda:self.increase_imp4(current_parameters))
+        self.increase_imp5_button.clicked.connect(lambda:self.increase_imp5(current_parameters))
+        self.increase_imp6_button.clicked.connect(lambda:self.increase_imp6(current_parameters))
+        self.increase_imp7_button.clicked.connect(lambda:self.increase_imp7(current_parameters))
+        self.increase_imp8_button.clicked.connect(lambda:self.increase_imp8(current_parameters))
         ### 1.13.2 - "-" pour durée d'impulsion
         self.decrease_imp1_button = QtWidgets.QPushButton(self)
         self.decrease_imp2_button = QtWidgets.QPushButton(self)
@@ -631,14 +631,14 @@ class StimulationWindow(QWidget):
         self.decrease_imp6_button.adjustSize()
         self.decrease_imp7_button.adjustSize()
         self.decrease_imp8_button.adjustSize()
-        self.decrease_imp1_button.clicked.connect(lambda:self.decrease_imp1(current_parameters)) 
-        self.decrease_imp2_button.clicked.connect(lambda:self.decrease_imp2(current_parameters))  
-        self.decrease_imp3_button.clicked.connect(lambda:self.decrease_imp3(current_parameters)) 
-        self.decrease_imp4_button.clicked.connect(lambda:self.decrease_imp4(current_parameters)) 
-        self.decrease_imp5_button.clicked.connect(lambda:self.decrease_imp5(current_parameters)) 
-        self.decrease_imp6_button.clicked.connect(lambda:self.decrease_imp6(current_parameters))  
-        self.decrease_imp7_button.clicked.connect(lambda:self.decrease_imp7(current_parameters))  
-        self.decrease_imp8_button.clicked.connect(lambda:self.decrease_imp8(current_parameters)) 
+        self.decrease_imp1_button.clicked.connect(lambda:self.decrease_imp1(current_parameters))
+        self.decrease_imp2_button.clicked.connect(lambda:self.decrease_imp2(current_parameters))
+        self.decrease_imp3_button.clicked.connect(lambda:self.decrease_imp3(current_parameters))
+        self.decrease_imp4_button.clicked.connect(lambda:self.decrease_imp4(current_parameters))
+        self.decrease_imp5_button.clicked.connect(lambda:self.decrease_imp5(current_parameters))
+        self.decrease_imp6_button.clicked.connect(lambda:self.decrease_imp6(current_parameters))
+        self.decrease_imp7_button.clicked.connect(lambda:self.decrease_imp7(current_parameters))
+        self.decrease_imp8_button.clicked.connect(lambda:self.decrease_imp8(current_parameters))
         self.check_if_off(current_parameters)
     def check_if_off(self, current_parameters):
          if (int(current_parameters.electrode1_amplitude)==0) and (int(current_parameters.electrode1_frequency)==0) and (int(current_parameters.electrode1_length_imp)==0):
@@ -668,7 +668,7 @@ class StimulationWindow(QWidget):
              self.increase_frequency4_button.setEnabled(False)
              self.decrease_frequency4_button.setEnabled(False)
              self.increase_imp4_button.setEnabled(False)
-             self.decrease_imp4_button.setEnabled(False)  
+             self.decrease_imp4_button.setEnabled(False)
          if (int(current_parameters.electrode5_amplitude)==0) and (int(current_parameters.electrode5_frequency)==0) and (int(current_parameters.electrode5_length_imp)==0):
              self.increase_amplitude5_button.setEnabled(False)
              self.decrease_amplitude5_button.setEnabled(False)
@@ -696,7 +696,7 @@ class StimulationWindow(QWidget):
              self.increase_frequency8_button.setEnabled(False)
              self.decrease_frequency8_button.setEnabled(False)
              self.increase_imp8_button.setEnabled(False)
-             self.decrease_imp8_button.setEnabled(False) 
+             self.decrease_imp8_button.setEnabled(False)
 
     #def clocking(self):
         #current_time = QTime.elapsed()
@@ -717,7 +717,7 @@ class StimulationWindow(QWidget):
             self.timer_label_sec.adjustSize()
         self.end_of_stim = True
         self.close()
-    
+
 
     def increase_amplitude1(self, current_parameters):
         if (int(current_parameters.electrode1_amplitude)) < MAX_AMPLITUDE:
@@ -846,14 +846,14 @@ class StimulationWindow(QWidget):
         if (int(current_parameters.electrode1_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode1_frequency)) == 10:
                 current_parameters.electrode1_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode1_frequency = str(int(current_parameters.electrode1_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency2(self, current_parameters):
         if (int(current_parameters.electrode2_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode2_frequency)) == 10:
                 current_parameters.electrode2_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode2_frequency = str(int(current_parameters.electrode2_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency3(self, current_parameters):
@@ -867,35 +867,35 @@ class StimulationWindow(QWidget):
         if (int(current_parameters.electrode4_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode4_frequency)) == 10:
                 current_parameters.electrode4_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode4_frequency = str(int(current_parameters.electrode4_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency5(self, current_parameters):
         if (int(current_parameters.electrode5_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode5_frequency)) == 10:
                 current_parameters.electrode5_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode5_frequency = str(int(current_parameters.electrode5_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency6(self, current_parameters):
         if (int(current_parameters.electrode6_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode6_frequency)) == 10:
                 current_parameters.electrode6_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode6_frequency = str(int(current_parameters.electrode6_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency7(self, current_parameters):
         if (int(current_parameters.electrode7_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode7_frequency)) == 10:
                 current_parameters.electrode7_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode7_frequency = str(int(current_parameters.electrode7_frequency)- 5)
             self.update_labels(current_parameters)
     def decrease_frequency8(self, current_parameters):
         if (int(current_parameters.electrode8_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode8_frequency)) == 10:
                 current_parameters.electrode8_frequency = str(0)
-            else: 
+            else:
                 current_parameters.electrode8_frequency = str(int(current_parameters.electrode8_frequency)- 5)
             self.update_labels(current_parameters)
     ## Durée d'impulsion ##
@@ -959,56 +959,56 @@ class StimulationWindow(QWidget):
         if (int(current_parameters.electrode1_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode1_length_imp)) == 20:
                 current_parameters.electrode1_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode1_length_imp = str(int(current_parameters.electrode1_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp2(self, current_parameters):
         if (int(current_parameters.electrode2_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode2_length_imp)) == 20:
                 current_parameters.electrode2_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode2_length_imp = str(int(current_parameters.electrode2_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp3(self, current_parameters):
         if (int(current_parameters.electrode3_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode3_length_imp)) == 20:
                 current_parameters.electrode3_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode3_length_imp = str(int(current_parameters.electrode3_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp4(self, current_parameters):
         if (int(current_parameters.electrode4_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode4_length_imp)) == 20:
                 current_parameters.electrode4_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode4_length_imp = str(int(current_parameters.electrode4_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp5(self, current_parameters):
         if (int(current_parameters.electrode5_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode5_length_imp)) == 20:
                 current_parameters.electrode5_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode5_length_imp = str(int(current_parameters.electrode5_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp6(self, current_parameters):
         if (int(current_parameters.electrode6_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode6_length_imp)) == 20:
                 current_parameters.electrode6_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode6_length_imp = str(int(current_parameters.electrode6_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp7(self, current_parameters):
         if (int(current_parameters.electrode7_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode7_length_imp)) == 20:
                 current_parameters.electrode7_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode7_length_imp = str(int(current_parameters.electrode7_length_imp)- 10)
             self.update_labels(current_parameters)
     def decrease_imp8(self, current_parameters):
         if (int(current_parameters.electrode8_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode8_length_imp)) == 20:
                 current_parameters.electrode8_length_imp = str(0)
-            else: 
+            else:
                 current_parameters.electrode8_length_imp = str(int(current_parameters.electrode8_length_imp)- 10)
             self.update_labels(current_parameters)
     def update_labels(self, current_parameters):
@@ -1118,6 +1118,9 @@ class StimulationWindow(QWidget):
 
     def clicked_stop(self):
         self.end_of_stim = True
+
+        # self.event_function("stop")
+
         #self.close()
         sys.exit()
 

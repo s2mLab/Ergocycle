@@ -5,10 +5,11 @@ import csv
 import numpy as np
 from datetime import datetime
 
-class DataCrankset:
-    def __init__(datacrankset)
-        
-    
+class Crankset:
+    def __init__(self, ergocycle_command_function)
+        self.ergocycle_command_function = ergocycle_command_function
+        self.vectforce = None
+
 #-------------READ THE NI DQA CARD------------------------
 
 #     --- Settings all the constant ---
@@ -30,25 +31,25 @@ class DataCrankset:
 
         ### Flag inital Value ###
     thick = 0
-        
+
         ### To mark the time the csv file was created ###
-    
-    now = datetime.now() 
+
+    now = datetime.now()
 #     --- Start and Stop the program ---
-    
+
     def flagChanger(self):#Function to change the value of the flag
-        global thick 
+        global thick
         thick = 1
-            
-    keyboard.add_hotkey('s', flagChanger) 
-    
-    
+
+    keyboard.add_hotkey('s', flagChanger)
+
+
 #     --- Read one value for each parameters ---
     def readcard(self):
-    
-    
+
+
         task = nidaqmx.Task() # creation dune tache
-        
+
         #LEFT PEDALS CHANNELS
         #Force
         task.ai_channels.add_ai_voltage_chan("TC01/ai0")
@@ -58,7 +59,7 @@ class DataCrankset:
         task.ai_channels.add_ai_voltage_chan("TC01/ai3")
         task.ai_channels.add_ai_voltage_chan("TC01/ai4")
         task.ai_channels.add_ai_voltage_chan("TC01/ai5")
-        
+
         #RIGHT PEDAL CHANNELS
         #Force
         task.ai_channels.add_ai_voltage_chan("TC01/ai8")
@@ -68,15 +69,15 @@ class DataCrankset:
         task.ai_channels.add_ai_voltage_chan("TC01/ai6")
         task.ai_channels.add_ai_voltage_chan("TC01/ai15")
         task.ai_channels.add_ai_voltage_chan("TC01/ai7")
-        
-        
+
+
         task.start()
-        
-        
+
+
         val=task.read()
         task.stop()
-        task.close()    
-        
+        task.close()
+
         return val
 
 #     --- Write in csv file ---
@@ -84,51 +85,32 @@ class DataCrankset:
     def writef(self,t,x):
         timestr=now.strftime("%m_%d_%Y, %H;%M;%S")
         file = open(timestr + " force.csv","a") # Open the csv file
-    
-      
+
+
         # time = str(t)
         value=np.append(t,x)
-        
+
         #create the csv writter
         writer= csv.writer(file)
-        
-        #write a row to the csv file 
+
+        #write a row to the csv file
         writer.writerow(map(lambda y: [y], value))
-        
+
       # file.write(time+ "\t" + value)
         # file.write("\n")
-        
+
         #Close the csv file
         file.close()
 
 #     --- Find the Force and torque BY F=GU ---
-    
+
     def multGU(self,mat,vec):
         F=np.matmul(mat,vec)
         return F
 
 #     --- Where the magic happens ---
     def loop(self,Ts):
-    #Ts is the sampling time
-    k=0
-    while True:
-        valuef=readcard()
-        k= k+1
-    
-        
-        #Find the Force/Torque data Left
-        forceL = multGU(gL,valuef[0:6])
-        forceR = multGU(gR, valuef[6:12])
-        vectforce = np.append(forceL,forceR)    
-        writef(k*Ts,vectforce)
-        print("valeurk",vectforce[0],k)
-        
-        #To stop the while
-        if thick == 1:
-            print("You stop the acquisition")
-            break
-    
-        time.sleep(Ts)
+        pass
 
-
-
+    def getAvgMoment(self):
+	       return -1 if self.vectforce == None else ((self.vectforce[3] + self.vectforce[9]) / 2)
