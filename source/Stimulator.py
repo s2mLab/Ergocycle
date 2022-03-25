@@ -91,14 +91,18 @@ class Stimulator:
 
     # Construction of each packet
     def packet_construction(self,packet_count, packet_type, *packet_data):
+        self.packet_count = packet_count
+        self.packet_type= packet_type
         packet_command = self.TYPES[packet_type]
-        packet_payload = [self.packet_count, packet_command]
+        packet_payload = [packet_count, packet_command]    
         if packet_data!= None:
-            for i in packet_data:
-                packet_payload.append(i)
-        checksum = self.stuff_byte(crccheck.crc.Crc8.calc(packet_payload))
-        data_length = self.stuff_byte(len(packet_payload))
-        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
+            packet_data = str(packet_data).strip("()")
+            packet_data = list(packet_data.replace(",",""))
+            for i in range (0, len(packet_data)):
+                packet_payload.append(int(packet_data[i]))     
+        checksum = crccheck.crc.Crc8.calc(packet_payload)
+        data_length = len(packet_payload)       
+        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, int(checksum), self.STUFFING_BYTE, data_length]
         packet_end = [self.STOP_BYTE]
         packet = packet_lead + packet_payload + packet_end
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
@@ -164,11 +168,15 @@ class Stimulator:
 # Creates packet for every command part of dictionary TYPES
 
     # Establishes connexion acknowlege
-    def init(self, packet):
-       return str(packet[6])
+    def init(self, packet_count):
+        packet = self.packet_construction(packet_count,'Init', self.VERSION )
+        print(packet)
+        return packet
 
     # Establishes connexion acknowlege
     def init_ACK(self):
+        packet = self.packet_construction(self.packet_count, Stimulator.TYPES['InitACK'], '0')
+        print(packet)
         return self.packet_construction(self.packet_count, Stimulator.TYPES['InitACK'], '0')
 
 
