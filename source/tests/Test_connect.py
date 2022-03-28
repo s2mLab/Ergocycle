@@ -7,15 +7,16 @@ from StimulationSignal import StimulationSignal as Stimulation_Signal
 
 
 
-''' test= [240, 129, 121, 129, 3, 1, 1, 1, 15]
-a = " ".join([hex(byte) for byte in test])
+''' test= [240, 129, 121, 86, 3, 1, 1, 1, 15]
+a = b' '.join([byte.to_bytes(1, 'little') for byte in test])
+
 print (a) '''
 signal_test = Stimulation_Signal(4, 6, 5, 360, 4, 1)
 StimulationSignal_test = signal_test.set_stimulation_signal()
 
 #port_path = serial.Serial('COM4', baudrate = 460800, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
 
-rehastim = Stimulator(3,StimulationSignal_test,"COM6")
+rehastim = Stimulator(3,StimulationSignal_test,"COM5")
 
 #fonc_1=rehastim.init(1)
 
