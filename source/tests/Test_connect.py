@@ -20,7 +20,7 @@ rehastim = Stimulator(3,StimulationSignal_test,"COM5")
 
 #fonc_1=rehastim.init(1)
 
-test = rehastim.send_packet('InitAck',4)
+#test = rehastim.send_packet('InitAck',4)
 
 #test=rehastim.start_stimulation(1, signal_test.pulse_width, signal_test.amplitude)
 

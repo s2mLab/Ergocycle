@@ -70,8 +70,7 @@ class Stimulator:
         return"""
         while (1):
             if (self.port.in_waiting>0):
-                received_packet = self.read_packets()
-                #print (received_packet)
+                self.calling_ACK()
         
         
         
@@ -102,13 +101,14 @@ class Stimulator:
             packet_data = str(packet_data).strip("()")
             packet_data = list(packet_data.replace(",",""))
             for i in range (0, len(packet_data)):
-                packet_payload.append(int(packet_data[i]))     
+                packet_payload.append(int(packet_data[i]))  
+        print(packet_payload, "packet_payload")   
         checksum = crccheck.crc.Crc8.calc(packet_payload)
+        print(checksum, "checksum")
         data_length = len(packet_payload)       
         packet_lead = [self.START_BYTE, self.STUFFING_BYTE, int(checksum), self.STUFFING_BYTE, data_length]
         packet_end = [self.STOP_BYTE]
         packet = packet_lead + packet_payload + packet_end
-        print(packet, "construction")
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
@@ -117,9 +117,9 @@ class Stimulator:
         self.port.close()
 
 # Send packets
-    def send_packet(self, cmd, electrode_number):
+    def send_packet(self, cmd, electrode_number, packet_number):
         if cmd == 'InitAck':
-            self.port.write(self.init_ACK())
+            self.port.write(self.init_ACK(packet_number))
         elif cmd == 'Watchdog':
             self.port.write(self.watchdog())
         elif cmd == 'GetStimulationMode':
@@ -139,7 +139,7 @@ class Stimulator:
 
         # Read port stream
         packet = self.port.readline()
-        print(packet, "C'est lui")
+        print(packet, "Cequ'on reçoit")
         # If it is a start byte, collect packet
         if packet[0] == self.START_BYTE:
             # Collect header bytes
@@ -152,35 +152,39 @@ class Stimulator:
             # Collect stop byte
             packet += self.port.read()
             # Call the right ACK function '''
-            if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
-                return Stimulator.init_ACK(self)
-            elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
-                return Stimulator.unknown_cmd()
-            elif(str(packet[6]) == Stimulator.TYPES['GetStimulationModeAck']):
-                return Stimulator.getmodeACK(packet)
-            elif(str(packet[6]) == Stimulator.TYPES['InitChannelListModeAck']):
-                return Stimulator.init_stimulation_ACK(packet)
-            elif(str(packet[6]) == Stimulator.TYPES['StartChannelListMode']):
-                return Stimulator.start_stimulation_ACK(packet)
-            elif(str(packet[6]) == Stimulator.TYPES['StopChannelListModeAck']):
-                return Stimulator.stop_stimulation_ACK(packet)
-            elif(str(packet[6]) == Stimulator.TYPES['StartChannelListModeAck']):
-                return Stimulator.error_stimulation_ACK(packet)
+            return packet
         else:
             # Return empty string to avoid hanging
             return b''
 
 # Creates packet for every command part of dictionary TYPES
-
+    def calling_ACK(self):
+            #Call the Ack function
+        packet = self.read_packets()
+        if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
+            print(int(packet[2]))
+            return Stimulator.send_packet(self, 'InitAck', 1, int(packet[5]))
+        elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
+            return Stimulator.unknown_cmd()
+        elif(str(packet[6]) == Stimulator.TYPES['GetStimulationModeAck']):
+            return Stimulator.getmodeACK(packet)
+        elif(str(packet[6]) == Stimulator.TYPES['InitChannelListModeAck']):
+            return Stimulator.init_stimulation_ACK(packet)
+        elif(str(packet[6]) == Stimulator.TYPES['StartChannelListMode']):
+            return Stimulator.start_stimulation_ACK(packet)
+        elif(str(packet[6]) == Stimulator.TYPES['StopChannelListModeAck']):
+            return Stimulator.stop_stimulation_ACK(packet)
+        elif(str(packet[6]) == Stimulator.TYPES['StartChannelListModeAck']):
+            return Stimulator.error_stimulation_ACK(packet)
     # Establishes connexion acknowlege
     def init(self, packet_count):
         packet = self.packet_construction(packet_count,'Init', self.VERSION )
         return packet
 
     # Establishes connexion acknowlege
-    def init_ACK(self):
-        packet = self.packet_construction(self.packet_count, 'InitAck', 0)
-        print (packet, "byte")
+    def init_ACK(self, packet_count):
+        packet = self.packet_construction(packet_count, 'InitAck', 0)
+        print (packet, "Ce qu'on renvoie")
         return packet
 
 
