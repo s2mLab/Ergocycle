@@ -59,8 +59,11 @@ class Stimulator:
         self.muscle = StimulationSignal[3]
         self.ts2 = ts2
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
+        
         self.packet_count = 0
 
+        if not self.port.isOpen():
+            self.port.open()
         """
         while True:
             received_packet= self.read_packets()
@@ -114,7 +117,7 @@ class Stimulator:
 
 # Send packets
     def send_packet(self, cmd, electrode_number):
-        if cmd == 'InitACK':
+        if cmd == 'InitAck':
             self.port.write(self.initACK())
         elif cmd == 'Watchdog':
             self.port.write(self.watchdog())
@@ -175,9 +178,9 @@ class Stimulator:
 
     # Establishes connexion acknowlege
     def init_ACK(self):
-        packet = self.packet_construction(self.packet_count, Stimulator.TYPES['InitACK'], '0')
+        packet = self.packet_construction(self.packet_count, Stimulator.TYPES['InitAck'], '0')
         print(packet)
-        return self.packet_construction(self.packet_count, Stimulator.TYPES['InitACK'], '0')
+        return self.packet_construction(self.packet_count, Stimulator.TYPES['InitAck'], '0')
 
 
 

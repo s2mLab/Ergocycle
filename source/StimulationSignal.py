@@ -1,6 +1,6 @@
 # Crankset class
 class StimulationSignal:    
-    import Ergocycle as Ergocycle
+   
 
 
     # Constuctor
@@ -12,11 +12,17 @@ class StimulationSignal:
         self.muscle = muscle
         self.electrode = electrode
         
-    def set_stimulation_signal(electrode):
+    def set_stimulation_signal(self):
         frequency =[]
         amplitude = []
         pulse_width = []
         muscle = []
-        for i in range(electrode):
-            frequency.append(electrode[0,i]) # Vérifier comment sont envoyés les paramètres
+        StimulationSignal = []
+        StimulationSignal.append(self.amplitude)
+        StimulationSignal.append(self.frequency)
+        StimulationSignal.append(self.pulse_width)
+        StimulationSignal.append(self.muscle)
+        
+        return StimulationSignal
+        
             

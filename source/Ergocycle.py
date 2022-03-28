@@ -28,11 +28,11 @@ class Ergocycle:
     def __init__(self):
 
         self.assistance_screen = Screen(self.read_assistance_screen)
-        self.crankset = CranksetCommunicator(self.read_crankset)
+        #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
-        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
+       # self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         # self.stimulator = Stimulator( 2, main_sef, "COM1")
         # self.usbDriveWriter = CrankserRecorder(self.read_crankset)
 
@@ -72,12 +72,12 @@ class Ergocycle:
     def read_crankset(self, commanded_parameter, value):
     	if commanded_parameter == 1:
             self.motor._force  = value
-
+'''
     def initialise_stimulation(self):
         if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI
           Stimulator.call_init()
 
-        '''First draft to use Stimulator '''
+       
 
         #self.stimulator.testing_stimulation() à lier avec +- de la nouvelle fenêtre pour tester
 
@@ -94,3 +94,4 @@ class Ergocycle:
                 Stimulator.control_stimulation(i)
                 if(read_crankset == 360 ):
                     Stimulator.send_packet('StopChannelListMode', i)
+'''
