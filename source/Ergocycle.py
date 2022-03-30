@@ -5,8 +5,9 @@
 # from Menu import Menu
 # from Motor import Motor
 from Screen import Screen as Screen
+from StimulationScreen import StimulationScreen as StimulationScreen
 # from StimulationSignal import StimulationSignal
-from Stimulator import Stimulator as Stimulator
+#from Stimulator import Stimulator as Stimulator
 #import MainWindowStim
 #import main_sef
 #import InstructionWindow
@@ -28,6 +29,7 @@ class Ergocycle:
     def __init__(self):
 
         self.assistance_screen = Screen(self.read_assistance_screen)
+        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -40,6 +42,7 @@ class Ergocycle:
         #self.test_timer()
 
         self.assistance_screen.start_application()
+        self.stimulation_screen.start_stimulation_application()
 
     def read_assistance_screen(self, command):
         if command == "command_amplitude":
@@ -50,6 +53,11 @@ class Ergocycle:
             print("(Ergocycle) Command " + command + " not found")
 
     def read_stimulation_screen(self, command):
+        if command == "command_test":
+            print("(Ergocycle) Commanding a test "+ str(self.stimulation_screen.get_something()))
+        else:
+            print("(Ergocycle) Commanding initial test parameters NOTHING")
+            
         print("TODO: Read stimulation screen")
 
     #def command_stimulator(self):#(self, command)
@@ -65,13 +73,13 @@ class Ergocycle:
     #si command_parameter est egal a 1 , on modifie la force en fonction du vecteur force genere dans crankset
     def command_motor(self):
     	print("TODO")
+    
+    #def command_stimulation_screen(self, command, parameters):
+        #print("TODO")
 
-    def command_stimulation_screen(self, command, parameters):
-        print("TODO")
-
-    def read_crankset(self, commanded_parameter, value):
-    	if commanded_parameter == 1:
-            self.motor._force  = value
+    #def read_crankset(self, commanded_parameter, value):
+    	#if commanded_parameter == 1:
+            #self.motor._force  = value
 '''
     def initialise_stimulation(self):
         if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI

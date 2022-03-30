@@ -3,14 +3,17 @@ Created on Wed March 23 13:58:00 2022
 
 @author: Frédérique Leclerc
 """
+import numpy
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
 from PIL import Image
+from numpy import *
+#from CommandButton import CommandButton as CommandButton
 #from StartWindow import StartWindow
 #from MainWindowStim import MainWindowStim
 #from Stimulator import Stimulator
-from numpy import *
+
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 MAX_AMPLITUDE = 130
@@ -163,6 +166,7 @@ class TestingWindow(QWidget):
             self.amplitude = self.amplitude + 2
             self.test_amplitude_label.setText(str(self.amplitude))
             self.test_amplitude_label.adjustSize()
+            self.get_updated_test_parameters()
     def increase_frequency(self):
         if (self.frequency) < MAX_FREQ:
             if (self.frequency) == 0:
@@ -171,6 +175,7 @@ class TestingWindow(QWidget):
                 self.frequency = self.frequency + 5
             self.test_frequency_label.setText(str(self.frequency))
             self.test_frequency_label.adjustSize()
+            self.get_updated_test_parameters()
     def increase_imp(self):
         if (self.imp) < MAX_IMP:
             if (self.imp) == 0:
@@ -179,11 +184,13 @@ class TestingWindow(QWidget):
                 self.imp = self.imp + 10
             self.test_imp_label.setText(str(self.imp))
             self.test_imp_label.adjustSize()
+            self.get_updated_test_parameters()
     def decrease_amplitude(self):
         if (self.amplitude) > MIN_AMPLITUDE:
             self.amplitude = self.amplitude - 2
             self.test_amplitude_label.setText(str(self.amplitude))
             self.test_amplitude_label.adjustSize()
+            self.get_updated_test_parameters()
     def decrease_frequency(self):
         if self.frequency > MIN_FREQ:
             if self.frequency == 10:
@@ -192,6 +199,7 @@ class TestingWindow(QWidget):
                 self.frequency  = self.frequency - 5
             self.test_frequency_label.setText(str(self.frequency))
             self.test_frequency_label.adjustSize()
+            self.get_updated_test_parameters()
     def decrease_imp(self):
         if self.imp > MIN_IMP:
             if self.imp == 20:
@@ -200,4 +208,12 @@ class TestingWindow(QWidget):
                 self.imp  = self.imp - 10
             self.test_imp_label.setText(str(self.imp))
             self.test_imp_label.adjustSize()
+            self.get_updated_test_parameters()
+    def get_updated_test_parameters(self):
+        #self.send_test_parameters_button = CommandButton("command_augmente_amplitude")
+        #self.send_test_parameters_button.clicked.connect(lambda : self.event_function(self.send_test_parameters_button.get_command()))
+        self.test_parameters = numpy.array([self.amplitude,self.frequency,self.imp])
+        print(self.test_parameters)
+        return(self.test_parameters)
+
         
