@@ -16,7 +16,7 @@ StimulationSignal_test = signal_test.set_stimulation_signal()
 
 #port_path = serial.Serial('COM4', baudrate = 460800, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
 
-rehastim = Stimulator(3,StimulationSignal_test,"COM5")
+rehastim = Stimulator(3,StimulationSignal_test,"COM6")
 
 #fonc_1=rehastim.init(1)
 
