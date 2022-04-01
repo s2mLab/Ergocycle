@@ -3,10 +3,13 @@
 # Imports
 #from StimulationSignal import StimulationSignal
 from cgi import print_arguments
+from bitarray import bitarray
+
 import crccheck.checksum
 import numpy as np
 import serial
 import time
+import struct
 
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
@@ -88,27 +91,31 @@ class Stimulator:
 
 
     # "byte stuffing", i.e, xoring with STUFFING_KEY
-    def stuff_byte(byte):
+    def stuff_byte(self,byte):
         return ((byte & ~Stimulator.STUFFING_KEY) | (~byte & Stimulator.STUFFING_KEY))
+        #return bytes(a ^ b for (a, b) in zip(byte, bitarray(self.STUFFING_KEY)))
 
     # Construction of each packet
     def packet_construction(self,packet_count, packet_type, *packet_data):
-        self.packet_count = packet_count
         self.packet_type = packet_type
         packet_command = self.TYPES[packet_type]
-        packet_payload = [packet_count, packet_command]    
+        packet_payload = [packet_count, packet_command]  
+        data_length = 0
         if packet_data!= None:
             packet_data = str(packet_data).strip("()")
             packet_data = list(packet_data.replace(",",""))
             for i in range (0, len(packet_data)):
                 packet_payload.append(int(packet_data[i]))  
-        print(packet_payload, "packet_payload")   
+                
+         
         checksum = crccheck.crc.Crc8.calc(packet_payload)
-        print(checksum, "checksum")
-        data_length = len(packet_payload)       
-        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, int(checksum), self.STUFFING_BYTE, data_length]
+        checksum = self.stuff_byte(checksum)
+        data_length = self.stuff_byte(len(packet_payload))
+        print(data_length)
+        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
         packet_end = [self.STOP_BYTE]
         packet = packet_lead + packet_payload + packet_end
+        print(packet, 'contruct')
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
@@ -162,7 +169,8 @@ class Stimulator:
             #Call the Ack function
         packet = self.read_packets()
         if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
-            print(int(packet[2]))
+            print((packet[5]), 'packet_number recu')
+            print(packet[0], packet[1],packet[2], packet[3], packet[4], packet[5], packet[6], packet[7], packet[8])
             return Stimulator.send_packet(self, 'InitAck', 1, int(packet[5]))
         elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
             return Stimulator.unknown_cmd()
@@ -184,7 +192,7 @@ class Stimulator:
     # Establishes connexion acknowlege
     def init_ACK(self, packet_count):
         packet = self.packet_construction(packet_count, 'InitAck', 0)
-        print (packet, "Ce qu'on renvoie")
+        print (int.from_bytes(packet, 'little'), "Ce qu'on renvoie")
         return packet
 
 
