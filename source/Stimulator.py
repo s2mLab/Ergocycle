@@ -78,7 +78,8 @@ class Stimulator:
             
         self.send_packet('InitChannelListMode',1, self.packet_count)
         self.send_packet('GetStimulationMode',1,self.packet_count)
-        self.send_packet('StartChannelListMode',1, self.packet_count)
+        for i in range (5):
+            self.send_packet('StartChannelListMode',1, self.packet_count)
         print(self.read_packets())
         
         
@@ -242,7 +243,7 @@ class Stimulator:
         #max_frequency = max(self.StimulationSignal[1])
        # max_frequency_electrode = np.where(self.StimulationSignal[1]==max_frequency)
        # low_frequency_electrode = np.where(self.StimulationSignal[1]!=max_frequency)
-        packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, 1, 0, 75, 0, 250, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
+        packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, 1, 0, 75, 0, 300, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
         print (packet, "bytes")
         return packet
 
