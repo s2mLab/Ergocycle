@@ -14,7 +14,7 @@ import sys
 
 def window():
     app = QApplication(sys.argv)
-    #win = MainWindowStim()
+    win = MainWindowStim()
     win = StartWindow()
     win.show()
     sys.exit(app.exec_())

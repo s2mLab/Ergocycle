@@ -24,8 +24,8 @@ MAX_IMP = 500
 MIN_IMP = 0
 
 class TestingWindow(QWidget):
-    def __init__(self):
-        super(TestingWindow, self).__init__()
+    def __init__(self, event_function):
+        super(TestingWindow, self).__init__(event_function)
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
         self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
         self.setWindowTitle("Test des stimulations")
@@ -167,6 +167,7 @@ class TestingWindow(QWidget):
             self.test_amplitude_label.setText(str(self.amplitude))
             self.test_amplitude_label.adjustSize()
             self.get_updated_test_parameters()
+            self.event_function("command_new_test_parameters")
     def increase_frequency(self):
         if (self.frequency) < MAX_FREQ:
             if (self.frequency) == 0:

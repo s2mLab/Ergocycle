@@ -23,14 +23,14 @@ from CommandButton import CommandButton as CommandButton
 #window()
 class StimulationScreen(Screen):
     def __init__(self, event_function):
-        super(StimulationScreen, self).__init__()
+        super(StimulationScreen, self).__init__(event_function)
         self.event_function = event_function
         self.app = QApplication(sys.argv)
         self.win = StartWindow()
-        self.window.show()
-        self.test_button = CommandButton("   Débuter un entraînement   ", "test_event")
-        self.test_button.clicked.connect(lambda : self.event_function(self.test_button.get_command()))
+        #self.test_button = CommandButton("   Débuter un entraînement   ", "test_event")
+        #self.test_button.clicked.connect(lambda : self.event_function(self.test_button.get_command()))
     def start_stimulation_application(self):
+        self.win.show()
         sys.exit(self.app.exec_())
     def get_something(self):
         print("SOMETHING")

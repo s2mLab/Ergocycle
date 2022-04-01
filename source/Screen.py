@@ -58,12 +58,13 @@ class Screen:
                 print("CONNECTED BUTTON TO ERGOCYCLE")
         """
         self.window.setLayout(layout)
-        self.window.show()
+        #self.window.show()
 
 
 
     def start_application(self):
         #sys.exit(self.app.exec_())
+        self.window.show() ## était avant a la ligne 61
         self.application.exec_()
 
 #    def clicked(self):
