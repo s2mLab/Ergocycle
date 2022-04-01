@@ -58,7 +58,7 @@ class Stimulator:
 
 # Generate an error
         self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour fréquence
-
+        self.frequency = StimulationSignal[1]
         self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
         self.muscle = StimulationSignal[3]
         self.ts2 = ts2
@@ -74,6 +74,13 @@ class Stimulator:
         while (1):
             if (self.port.in_waiting>0):
                 self.calling_ACK()
+                break
+            
+        self.send_packet('InitChannelListMode',1, self.packet_count)
+        self.send_packet('GetStimulationMode',1,self.packet_count)
+        for i in range (5):
+            self.send_packet('StartChannelListMode',1, self.packet_count)
+        print(self.read_packets())
         
         
         
@@ -102,12 +109,13 @@ class Stimulator:
         packet_payload = [packet_count, packet_command]  
         data_length = 0
         if packet_data!= None:
-            packet_data = str(packet_data).strip("()")
-            packet_data = list(packet_data.replace(",",""))
+            packet_data = list(packet_data)
+            
+            print (packet_data)
             for i in range (0, len(packet_data)):
                 packet_payload.append(int(packet_data[i]))  
                 
-         
+        print (packet_payload, "packet payload")
         checksum = crccheck.crc.Crc8.calc(packet_payload)
         checksum = self.stuff_byte(checksum)
         data_length = self.stuff_byte(len(packet_payload))
@@ -134,7 +142,7 @@ class Stimulator:
         elif cmd == 'InitChannelListMode':
             self.port.write(self.init_stimulation(electrode_number)) #quoi faire avec channel_execution
         elif cmd == 'StartChannelListMode':
-            self.port.write(self.start_stimulation( self.mode, electrode_number))
+            self.port.write(self.start_stimulation())
         elif cmd == 'StopChannelListMode':
             self.port.write(self.stop_stimulation())
         # Update packet count
@@ -204,13 +212,13 @@ class Stimulator:
 
     # Error signal (inactivity ends connexion)  VERIFY IF IT HAVE TO BE SEND EVERY <1200MS OR SEND IF ONLY NOTHING SEND AFTER 120MS
     def watchdog(self):
-        packet = self.packet_construction(self.packet_count,Stimulator.TYPES['Watchdog'])
+        packet = self.packet_construction(self.packet_count,'Watchdog')
         return packet
 
 
     # Asking to know which mode has been chosen
     def getMode(self):
-        packet = self.packet_construction(self.packet_count, Stimulator.TYPES['GetStimulationMode'])
+        packet = self.packet_construction(self.packet_count, 'GetStimulationMode')
         return packet
 
 
@@ -235,7 +243,8 @@ class Stimulator:
         #max_frequency = max(self.StimulationSignal[1])
        # max_frequency_electrode = np.where(self.StimulationSignal[1]==max_frequency)
        # low_frequency_electrode = np.where(self.StimulationSignal[1]!=max_frequency)
-        packet = self.packet_construction(self.packet_count,Stimulator.TYPES['InitChannelListMode'], 0, electrode_number-1, 0, self.ts2, 1/self.frequency[electrode_number-1], None, 0 )
+        packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, 1, 0, 75, 0, 300, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
+        print (packet, "bytes")
         return packet
 
 
@@ -254,60 +263,60 @@ class Stimulator:
                 return 'Busy error' # Add a timer?
 
     # Starts stimulation and modifies it
-    def start_stimulation(self,packet_count, mode): #VA PROBABLEMENT CHANGER PULSE_WIDTH ET AMPLITUDE SELON COMMENT RÉCUPÈRE DONNÉES
-        if len(self.pulse_width) == 1:
+    def start_stimulation(self): #VA PROBABLEMENT CHANGER PULSE_WIDTH ET AMPLITUDE SELON COMMENT RÉCUPÈRE DONNÉES
+        #if len(self.pulse_width) == 1:
+        packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              0, 0, 255, 100)
+        ''' if len(self.pulse_width) == 2:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode, self.pulse_width, None, self.amplitude)
-        elif len(self.pulse_width) == 2:
-            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1])
         elif len(self.pulse_width) == 3:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2])
         elif len(self.pulse_width) == 4:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
-                                              mode[3], self.pulse_width[3], None, self.amplitude[3])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2],
+                                              0, self.pulse_width[3], None, self.amplitude[3])
         elif len(self.pulse_width) == 5:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
-                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
-                                              mode[4], self.pulse_width[4], None, self.amplitude[4])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2],
+                                              0, self.pulse_width[3], None, self.amplitude[3],
+                                              0, self.pulse_width[4], None, self.amplitude[4])
         elif len(self.pulse_width) == 6:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
-                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
-                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
-                                              mode[5], self.pulse_width[5], None, self.amplitude[5])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2],
+                                              0, self.pulse_width[3], None, self.amplitude[3],
+                                              0, self.pulse_width[4], None, self.amplitude[4],
+                                              0, self.pulse_width[5], None, self.amplitude[5])
         elif len(self.pulse_width) == 7:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
-                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
-                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
-                                              mode[5], self.pulse_width[5], None, self.amplitude[5],
-                                              mode[6], self.pulse_width[6], None, self.amplitude[6])
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2],
+                                              0, self.pulse_width[3], None, self.amplitude[3],
+                                              0, self.pulse_width[4], None, self.amplitude[4],
+                                              0, self.pulse_width[5], None, self.amplitude[5],
+                                              0, self.pulse_width[6], None, self.amplitude[6])
         elif len(self.pulse_width) == 8:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              mode[0], self.pulse_width[0], None, self.amplitude[0],
-                                              mode[1], self.pulse_width[1], None, self.amplitude[1],
-                                              mode[2], self.pulse_width[2], None, self.amplitude[2],
-                                              mode[3], self.pulse_width[3], None, self.amplitude[3],
-                                              mode[4], self.pulse_width[4], None, self.amplitude[4],
-                                              mode[5], self.pulse_width[5], None, self.amplitude[5],
-                                              mode[6], self.pulse_width[6], None, self.amplitude[6],
-                                              mode[7], self.pulse_width[7], None, self.amplitude[7])
-
+                                              0, self.pulse_width[0], None, self.amplitude[0],
+                                              0, self.pulse_width[1], None, self.amplitude[1],
+                                              0, self.pulse_width[2], None, self.amplitude[2],
+                                              0, self.pulse_width[3], None, self.amplitude[3],
+                                              0, self.pulse_width[4], None, self.amplitude[4],
+                                              0, self.pulse_width[5], None, self.amplitude[5],
+                                              0, self.pulse_width[6], None, self.amplitude[6],
+                                              0, self.pulse_width[7], None, self.amplitude[7])
+ '''
         return packet
 
     # Sent by RehaStim2 in response to start_stimulation
