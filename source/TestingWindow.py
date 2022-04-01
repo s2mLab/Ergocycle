@@ -210,6 +210,7 @@ class TestingWindow(QWidget):
             self.test_imp_label.adjustSize()
             self.get_updated_test_parameters()
     def get_updated_test_parameters(self):
+        #self.event_function("New_test_parameters") ## MAIS JE NE COMPRENDS PAS OU ON DÉFINI event_function?
         #self.send_test_parameters_button = CommandButton("command_augmente_amplitude")
         #self.send_test_parameters_button.clicked.connect(lambda : self.event_function(self.send_test_parameters_button.get_command()))
         self.test_parameters = numpy.array([self.amplitude,self.frequency,self.imp])
