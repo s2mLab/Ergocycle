@@ -39,6 +39,7 @@ class Motor():
         #       time.sleep(0.1)
         # self._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL 
         # self._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+        #self._carte.axis0.motor.config.torque_constant = 8.23 / 150
         # self._carte.axis0.controller.input_vel = self._vitesse
         # self._carte.axis0.controller.input_torque = self._couple
        
@@ -77,6 +78,7 @@ class Motor():
               time.sleep(0.1)
         self._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL 
         self._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL
+        self._carte.axis0.motor.config.torque_constant = 8.23 / 150
         self._carte.axis0.controller.input_vel = self._vitesse
         self._carte.axis0.controller.input_torque = self._force
 
@@ -110,7 +112,7 @@ type = moteur._nom
 print ("force usager debut: " , moteur._force_usager)
 #print("le moteur  est de type", type)
 moteur._force_usager = 25
-print ("force usager apres: " , moteur._force_usager)
+print ("force usager apres: ", moteur._force_usager)
 print ("test")
 # erreur_test = moteur._force - moteur._force_usager
 # print(erreur_test)
