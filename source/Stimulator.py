@@ -11,6 +11,8 @@ import serial
 import time
 import struct
 
+from StimulationSignal import StimulationSignal
+
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
 # ts1:            main stimulation period in ms (1-1024.5 ms in 0.5 steps)
@@ -54,10 +56,20 @@ class Stimulator:
     # ---- packet_count = initialise the packet count                      ---- #
 
         self.StimulationSignal = StimulationSignal
-        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
+        idx = []
+        self.electrode_number = 0
+        for i in range(0,8):
+            if self.StimulationSignal[0][i]==0:
+                idx.append(i)
+            else:
+                self.electrode_number += (2)**(i)
+        StimulationSignal = np.delete(StimulationSignal, idx, 1)
 
+
+        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
+        
 # Generate an error
-        self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour fréquence
+        self.ts1 = int((1000/StimulationSignal[1] - 1)/0.5) #à vérifier si bon indice pour fréquence
         self.frequency = StimulationSignal[1]
         self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
         self.muscle = StimulationSignal[3]
@@ -76,7 +88,8 @@ class Stimulator:
                 self.calling_ACK()
                 break
             
-        self.send_packet('InitChannelListMode',1, self.packet_count)
+        self.send_packet('InitChannelListMode',5, self.packet_count)
+        #self.send_packet('InitChannelListMode',2, self.packet_count)
         self.send_packet('GetStimulationMode',1,self.packet_count)
         for i in range (5):
             self.send_packet('StartChannelListMode',1, self.packet_count)
@@ -104,24 +117,26 @@ class Stimulator:
 
     # Construction of each packet
     def packet_construction(self,packet_count, packet_type, *packet_data):
+        start_byte = self.START_BYTE
+        stop_byte = self.STOP_BYTE
         self.packet_type = packet_type
         packet_command = self.TYPES[packet_type]
         packet_payload = [packet_count, packet_command]  
         data_length = 0
         if packet_data!= None:
             packet_data = list(packet_data)
-            
             print (packet_data)
             for i in range (0, len(packet_data)):
-                packet_payload.append(int(packet_data[i]))  
-                
+                if packet_data[i] == 240 or packet_data[i] == 15:
+                    packet_data[i] = self.stuff_byte(packet_data[i])
+            packet_payload += packet_data
         print (packet_payload, "packet payload")
         checksum = crccheck.crc.Crc8.calc(packet_payload)
         checksum = self.stuff_byte(checksum)
         data_length = self.stuff_byte(len(packet_payload))
         print(data_length)
-        packet_lead = [self.START_BYTE, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
-        packet_end = [self.STOP_BYTE]
+        packet_lead = [start_byte, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
+        packet_end = [stop_byte]
         packet = packet_lead + packet_payload + packet_end
         print(packet, 'contruct')
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
@@ -132,7 +147,7 @@ class Stimulator:
         self.port.close()
 
 # Send packets
-    def send_packet(self, cmd, electrode_number, packet_number):
+    def send_packet(self, cmd, packet_number):
         if cmd == 'InitAck':
             self.port.write(self.init_ACK(packet_number))
         elif cmd == 'Watchdog':
@@ -140,7 +155,7 @@ class Stimulator:
         elif cmd == 'GetStimulationMode':
             self.port.write(self.getMode())
         elif cmd == 'InitChannelListMode':
-            self.port.write(self.init_stimulation(electrode_number)) #quoi faire avec channel_execution
+            self.port.write(self.init_stimulation()) #quoi faire avec channel_execution
         elif cmd == 'StartChannelListMode':
             self.port.write(self.start_stimulation())
         elif cmd == 'StopChannelListMode':
@@ -239,11 +254,13 @@ class Stimulator:
 
 
     # Initialises stimulation
-    def init_stimulation(self, electrode_number):
+    def init_stimulation(self):
         #max_frequency = max(self.StimulationSignal[1])
        # max_frequency_electrode = np.where(self.StimulationSignal[1]==max_frequency)
        # low_frequency_electrode = np.where(self.StimulationSignal[1]!=max_frequency)
-        packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, 1, 0, 75, 0, 300, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
+        print (self.ts1, "TS1")
+        MSB, LSB = self.MSB_LSB_main_stim()
+        packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, self.electrode_number, 0, 2, MSB, LSB, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
         print (packet, "bytes")
         return packet
 
@@ -265,8 +282,10 @@ class Stimulator:
     # Starts stimulation and modifies it
     def start_stimulation(self): #VA PROBABLEMENT CHANGER PULSE_WIDTH ET AMPLITUDE SELON COMMENT RÉCUPÈRE DONNÉES
         #if len(self.pulse_width) == 1:
+        #for i in range (len(StimulationSignal)):
+        #    MSB[i], LSB[i] = self.MSB_LSB_pulse_stim()
         packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, 0, 255, 100)
+                                              0, 0, 15, 100, 0, 1, 240, 100)
         ''' if len(self.pulse_width) == 2:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
                                               0, self.pulse_width[0], None, self.amplitude[0],
@@ -358,7 +377,7 @@ class Stimulator:
         elif(str(packet[6]) == '-3'):
             return 'Stimulation module error'
 
-
+    ''' 
     def testing_stimulation(self, electrode_number): # lié avec +- courant
         self.ts1 = 3 #à vérifier
         self.send_packet('InitChannelListMode', electrode_number)
@@ -374,9 +393,9 @@ class Stimulator:
                 self.send_packet('StartChannelListMode')
             #elif (received_packet == 'Wrong mode error'):
                 #self.mode ==
-            #elif (received_packet == 'Parameter error'):
+            #elif (received_packet == 'Parameter error'): '''
 
-    def control_stimulation(self, electrode_number): #lié avec bouton start stim/update ET position pédalier
+        ''' def control_stimulation(self, electrode_number): #lié avec bouton start stim/update ET position pédalier
         self.send_packet('InitChannelListMode', electrode_number)
         received_packet=self.read_packets()
 
@@ -391,7 +410,7 @@ class Stimulator:
                 self.send_packet('StartChannelListMode')
             #elif (received_packet == 'Wrong mode error'):
                 #self.mode ==
-            #elif (received_packet == 'Parameter error'):
+            #elif (received_packet == 'Parameter error'): '''
 
 
       # Function to command the stimulator with pre-defined commands
@@ -403,7 +422,46 @@ class Stimulator:
 
         #command = {'Init':0x01}
 
+    def MSB_LSB_main_stim (self):
+        if self.ts1 <= 255:
+            LSB = self.ts1
+            MSB = 0;
+        elif 256 <= self.ts1 <= 511:
+            LSB = self.ts1-256
+            MSB = 1;
+        elif 512 <= self.ts1 <= 767:
+            LSB = self.ts1-512
+            MSB = 2;   
+        elif 768 <= self.ts1 <= 1023:
+            LSB = self.ts1-768
+            MSB = 3;    
+        elif 1024 <= self.ts1 <= 1279:
+            LSB = self.ts1-1024
+            MSB = 4;   
+        elif 1280 <= self.ts1 <= 1535:
+            LSB = self.ts1-1280
+            MSB = 5;  
+        elif 1536 <= self.ts1 <= 1791:
+            LSB = self.ts1-1536
+            MSB = 6;  
+        elif 1792 <= self.ts1 <= 2047:
+            LSB = self.ts1-1792
+            MSB = 7;  
+        elif self.ts1 == 2048:
+            LSB = 0
+            MSB = 8; 
 
+        return MSB, int(LSB)
+
+
+    def MSB_LSB_pulse_stim (self):
+        if self.pulse_width <= 255:
+            LSB = self.pulse_width
+            MSB = 0;
+        elif 256 <= self.pulse_width <= 500:
+            LSB = self.pulse_width-256
+            MSB = 1;
+        return MSB,int(LSB)
     '''
     if (InstructionWindow.clicked_started()): #changer pour ouverture
             Stimulator.send_packet('Init')
