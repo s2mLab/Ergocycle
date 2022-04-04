@@ -66,16 +66,25 @@ class Stimulator:
         StimulationSignal = np.delete(StimulationSignal, idx, 1)
 
 
-        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
-        
+         #à vérifier si bon indice
+        self.amplitude = []
+        self.ts1 = []
+        self.frequency = []
+        self.pulse_width = []
+        self.muscle = []
+        self.ts2 = []
 # Generate an error
-        self.ts1 = int((1000/StimulationSignal[1] - 1)/0.5) #à vérifier si bon indice pour fréquence
-        self.frequency = StimulationSignal[1]
-        self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
-        self.muscle = StimulationSignal[3]
-        self.ts2 = ts2
+        for i in range (8-len(idx)):
+            self.amplitude.append(StimulationSignal[0][i])
+            self.ts1.append(int((1000/StimulationSignal[1][i] - 1)/0.5)) #à vérifier si bon indice pour fréquence
+            self.frequency.append(StimulationSignal[1][i])
+            self.pulse_width.append(StimulationSignal[2][i]) #à vérifier si bon indice
+            self.muscle.append(StimulationSignal[3][i])
+            self.ts2 = ts2
+
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
+        print(self.ts1, 'ts1')
 
         """
         while True:
@@ -88,11 +97,11 @@ class Stimulator:
                 self.calling_ACK()
                 break
             
-        self.send_packet('InitChannelListMode',5, self.packet_count)
+        self.send_packet('InitChannelListMode', self.packet_count)
         #self.send_packet('InitChannelListMode',2, self.packet_count)
-        self.send_packet('GetStimulationMode',1,self.packet_count)
+        self.send_packet('GetStimulationMode',self.packet_count)
         for i in range (5):
-            self.send_packet('StartChannelListMode',1, self.packet_count)
+            self.send_packet('StartChannelListMode', self.packet_count)
         print(self.read_packets())
         
         
@@ -194,7 +203,7 @@ class Stimulator:
         if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
             print((packet[5]), 'packet_number recu')
             print(packet[0], packet[1],packet[2], packet[3], packet[4], packet[5], packet[6], packet[7], packet[8])
-            return Stimulator.send_packet(self, 'InitAck', 1, int(packet[5]))
+            return Stimulator.send_packet(self, 'InitAck', int(packet[5]))
         elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
             return Stimulator.unknown_cmd()
         elif(str(packet[6]) == Stimulator.TYPES['GetStimulationModeAck']):
@@ -255,11 +264,9 @@ class Stimulator:
 
     # Initialises stimulation
     def init_stimulation(self):
-        #max_frequency = max(self.StimulationSignal[1])
-       # max_frequency_electrode = np.where(self.StimulationSignal[1]==max_frequency)
-       # low_frequency_electrode = np.where(self.StimulationSignal[1]!=max_frequency)
-        print (self.ts1, "TS1")
+       
         MSB, LSB = self.MSB_LSB_main_stim()
+           
         packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, self.electrode_number, 0, 2, MSB, LSB, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
         print (packet, "bytes")
         return packet
@@ -282,60 +289,67 @@ class Stimulator:
     # Starts stimulation and modifies it
     def start_stimulation(self): #VA PROBABLEMENT CHANGER PULSE_WIDTH ET AMPLITUDE SELON COMMENT RÉCUPÈRE DONNÉES
         #if len(self.pulse_width) == 1:
-        #for i in range (len(StimulationSignal)):
-        #    MSB[i], LSB[i] = self.MSB_LSB_pulse_stim()
-        packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, 0, 15, 100, 0, 1, 240, 100)
-        ''' if len(self.pulse_width) == 2:
+        MSB_matrix =[]
+        LSB_matrix =[]
+        for i in range (len(self.amplitude)):
+            MSB, LSB = self.MSB_LSB_pulse_stim(self.pulse_width[i])
+            MSB_matrix.append(MSB)
+            LSB_matrix.append(LSB)
+        print(self.amplitude[0], 'matrice')
+        if (len(self.amplitude)) ==1:
+
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1])
-        elif len(self.pulse_width) == 3:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]))
+        if len(self.amplitude) == 2:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2])
-        elif len(self.pulse_width) == 4:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]))
+        elif len(self.amplitude) == 3:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2],
-                                              0, self.pulse_width[3], None, self.amplitude[3])
-        elif len(self.pulse_width) == 5:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]))
+        elif len(self.amplitude) == 4:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2],
-                                              0, self.pulse_width[3], None, self.amplitude[3],
-                                              0, self.pulse_width[4], None, self.amplitude[4])
-        elif len(self.pulse_width) == 6:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]),
+                                              0, int(MSB_matrix[3]), int(LSB_matrix[3]), int(self.amplitude[3]))
+        elif len(self.amplitude) == 5:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2],
-                                              0, self.pulse_width[3], None, self.amplitude[3],
-                                              0, self.pulse_width[4], None, self.amplitude[4],
-                                              0, self.pulse_width[5], None, self.amplitude[5])
-        elif len(self.pulse_width) == 7:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]),
+                                              0, int(MSB_matrix[3]), int(LSB_matrix[3]), int(self.amplitude[3]),
+                                              0, int(MSB_matrix[4]), int(LSB_matrix[4]), int(self.amplitude[4]))
+        elif len(self.amplitude) == 6:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2],
-                                              0, self.pulse_width[3], None, self.amplitude[3],
-                                              0, self.pulse_width[4], None, self.amplitude[4],
-                                              0, self.pulse_width[5], None, self.amplitude[5],
-                                              0, self.pulse_width[6], None, self.amplitude[6])
-        elif len(self.pulse_width) == 8:
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]),
+                                              0, int(MSB_matrix[3]), int(LSB_matrix[3]), int(self.amplitude[3]),
+                                              0, int(MSB_matrix[4]), int(LSB_matrix[4]), int(self.amplitude[4]),
+                                              0, int(MSB_matrix[5]), int(LSB_matrix[5]), int(self.amplitude[5]))
+        elif len(self.amplitude) == 7:
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
-                                              0, self.pulse_width[0], None, self.amplitude[0],
-                                              0, self.pulse_width[1], None, self.amplitude[1],
-                                              0, self.pulse_width[2], None, self.amplitude[2],
-                                              0, self.pulse_width[3], None, self.amplitude[3],
-                                              0, self.pulse_width[4], None, self.amplitude[4],
-                                              0, self.pulse_width[5], None, self.amplitude[5],
-                                              0, self.pulse_width[6], None, self.amplitude[6],
-                                              0, self.pulse_width[7], None, self.amplitude[7])
- '''
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]),
+                                              0, int(MSB_matrix[3]), int(LSB_matrix[3]), int(self.amplitude[3]),
+                                              0, int(MSB_matrix[4]), int(LSB_matrix[4]), int(self.amplitude[4]),
+                                              0, int(MSB_matrix[5]), int(LSB_matrix[5]), int(self.amplitude[5]),
+                                              0, int(MSB_matrix[6]), int(LSB_matrix[6]), int(self.amplitude[6]))
+        elif len(self.amplitude) == 8:
+            packet = self.packet_construction(self.packet_count,'StartChannelListMode',
+                                              0, int(MSB_matrix[0]), int(LSB_matrix[0]), int(self.amplitude[0]),
+                                              0, int(MSB_matrix[1]), int(LSB_matrix[1]), int(self.amplitude[1]),
+                                              0, int(MSB_matrix[2]), int(LSB_matrix[2]), int(self.amplitude[2]),
+                                              0, int(MSB_matrix[3]), int(LSB_matrix[3]), int(self.amplitude[3]),
+                                              0, int(MSB_matrix[4]), int(LSB_matrix[4]), int(self.amplitude[4]),
+                                              0, int(MSB_matrix[5]), int(LSB_matrix[5]), int(self.amplitude[5]),
+                                              0, int(MSB_matrix[6]), int(LSB_matrix[6]), int(self.amplitude[6]),
+                                              0, int(MSB_matrix[7]), int(LSB_matrix[7]), int(self.amplitude[7]))
+
         return packet
 
     # Sent by RehaStim2 in response to start_stimulation
@@ -377,40 +391,9 @@ class Stimulator:
         elif(str(packet[6]) == '-3'):
             return 'Stimulation module error'
 
-    ''' 
-    def testing_stimulation(self, electrode_number): # lié avec +- courant
-        self.ts1 = 3 #à vérifier
-        self.send_packet('InitChannelListMode', electrode_number)
-        received_packet=self.read_packets()
-        if (received_packet == 'Stimulation initialized'):
-            self.send_packet('StartChannelListMode', electrode_number)
-            received_packet = self.read_packets()
-            if (received_packet == 'busy error'):
-                while():
-                    time.sleep(10)
-                self.send_packet('StartChannelListMode')
-            elif (received_packet == 'transfer error'):
-                self.send_packet('StartChannelListMode')
-            #elif (received_packet == 'Wrong mode error'):
-                #self.mode ==
-            #elif (received_packet == 'Parameter error'): '''
 
-        ''' def control_stimulation(self, electrode_number): #lié avec bouton start stim/update ET position pédalier
-        self.send_packet('InitChannelListMode', electrode_number)
-        received_packet=self.read_packets()
 
-        if (received_packet == 'Stimulation initialized'):
-            self.send_packet('StartChannelListMode', electrode_number)
-            received_packet = self.read_packets()
-            if (received_packet == 'busy error'):
-                while():
-                    time.sleep(10)
-                self.send_packet('StartChannelListMode')
-            elif (received_packet == 'transfer error'):
-                self.send_packet('StartChannelListMode')
-            #elif (received_packet == 'Wrong mode error'):
-                #self.mode ==
-            #elif (received_packet == 'Parameter error'): '''
+
 
 
       # Function to command the stimulator with pre-defined commands
@@ -423,68 +406,43 @@ class Stimulator:
         #command = {'Init':0x01}
 
     def MSB_LSB_main_stim (self):
-        if self.ts1 <= 255:
-            LSB = self.ts1
+        if self.ts1[0] <= 255:
+            LSB = self.ts1[0]
             MSB = 0;
-        elif 256 <= self.ts1 <= 511:
-            LSB = self.ts1-256
+        elif 256 <= self.ts1[0] <= 511:
+            LSB = self.ts1[0]-256
             MSB = 1;
-        elif 512 <= self.ts1 <= 767:
-            LSB = self.ts1-512
+        elif 512 <= self.ts1[0] <= 767:
+            LSB = self.ts1[0]-512
             MSB = 2;   
-        elif 768 <= self.ts1 <= 1023:
-            LSB = self.ts1-768
+        elif 768 <= self.ts1[0] <= 1023:
+            LSB = self.ts1[0]-768
             MSB = 3;    
-        elif 1024 <= self.ts1 <= 1279:
-            LSB = self.ts1-1024
+        elif 1024 <= self.ts1[0] <= 1279:
+            LSB = self.ts1[0]-1024
             MSB = 4;   
-        elif 1280 <= self.ts1 <= 1535:
-            LSB = self.ts1-1280
+        elif 1280 <= self.ts1[0] <= 1535:
+            LSB = self.ts1[0]-1280
             MSB = 5;  
-        elif 1536 <= self.ts1 <= 1791:
-            LSB = self.ts1-1536
+        elif 1536 <= self.ts1[0] <= 1791:
+            LSB = self.ts1[0]-1536
             MSB = 6;  
-        elif 1792 <= self.ts1 <= 2047:
-            LSB = self.ts1-1792
+        elif 1792 <= self.ts1[0] <= 2047:
+            LSB = self.ts1[0]-1792
             MSB = 7;  
-        elif self.ts1 == 2048:
+        elif self.ts1[0] == 2048:
             LSB = 0
             MSB = 8; 
 
         return MSB, int(LSB)
 
 
-    def MSB_LSB_pulse_stim (self):
-        if self.pulse_width <= 255:
-            LSB = self.pulse_width
+    def MSB_LSB_pulse_stim (self, pulse_width):
+        if pulse_width <= 255:
+            LSB = pulse_width
             MSB = 0;
-        elif 256 <= self.pulse_width <= 500:
-            LSB = self.pulse_width-256
+        elif 256 <= pulse_width <= 500:
+            LSB = pulse_width-256
             MSB = 1;
-        return MSB,int(LSB)
-    '''
-    if (InstructionWindow.clicked_started()): #changer pour ouverture
-            Stimulator.send_packet('Init')
-            Stimulator.read_packets()
-        if (Stimulator.read_packets() == 'Connexion established'):
-            Stimulator.send_packet('InitChannelListMode')
-            if(Stimulator.read_packets() == 'Stimulation initialized'):
-                if()
-    Vérifier si utile pour nous ou si décide de le faire pour plus tard
-
-    # Sends a unique impulsion
-    def single_pulse():
-        print("TODO")
-
-
-    # Sent by RehaStim2 in response to single_pulse
-    def single_pulse_ACK():
-        print("TODO")
-
-    POSSIBLEMENT PAS UNE COMMANDE EN SOI
-
-    # Error message sent by RehaStim2
-    def error():
-        print("TODO")
-
-    '''
+        return MSB,LSB
+    
