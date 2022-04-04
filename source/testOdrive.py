@@ -33,12 +33,14 @@ def test_couple (couple, carte : odrive):
     start = time.time()
     end = time.time()
     count = 0  
-    while (end - start) <= 15 :
+    while (end - start) <= 30 :
         end = time.time()
         vitesse = carte.axis0.encoder.vel_estimate 
         courant = carte.axis0.motor.current_control.Iq_setpoint  
         if vitesse == 0.0 : 
             carte.axis0.controller.input_torque += 1
+        elif vitesse != 0.0 : 
+            carte.axis0.controller.input_torque = couple
         print ("le torque est: ", carte.axis0.controller.input_torque)
     
     carte.axis0.controller.input_torque = 0.0
