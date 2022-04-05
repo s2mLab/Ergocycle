@@ -18,8 +18,10 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
 class StartWindow(QWidget):
-    def __init__(self):
-        super(StartWindow, self).__init__()
+    def __init__(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+    #def __init__(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        #super(StartWindow, self).__init__(event_function) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        super(StartWindow, self).__init__() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
         self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
@@ -66,8 +68,8 @@ class StartWindow(QWidget):
         self.main_menu.show()
         self.close()
         self.update()
-    def clicked_test(self):
-        self.test_menu = TestingWindow()
+    def clicked_test(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        self.test_menu = TestingWindow() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         self.test_menu.setWindowModality(2)
         self.test_menu.show()
         self.get_initial_test_parameters()
