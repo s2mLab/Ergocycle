@@ -33,6 +33,8 @@ class ActivityMenu(QWidget):
         self.setGeometry(700, 400, SCREEN_WIDTH/4, SCREEN_HEIGTH/3)
         self.setWindowTitle("Performances")
         self.setStyleSheet("background-color: white;")
+        self.button_dictionary = {}
+        
         
         current_parameters = init_parameters
         
@@ -83,6 +85,7 @@ class ActivityMenu(QWidget):
         self.increase_speed_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_speed_button.adjustSize()
         self.increase_speed_button.clicked.connect(lambda:self.increase_speed(current_parameters))  
+        self.button_dictionary[self.increase_speed_button] = "increase_speed"
         
         self.decrease_speed_button = QtWidgets.QPushButton(self)
         self.decrease_speed_button.setText("     -     ")

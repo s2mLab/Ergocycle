@@ -54,6 +54,6 @@ class MotorParameters():
     
     def set_training_length(self, combo_box):
         self.training_length = int(combo_box.currentText())
-    
-    def notify_ui(self):
-        print("UI Notified")
+        
+    def increase_target_speed(self):
+        self.target_speed += 1

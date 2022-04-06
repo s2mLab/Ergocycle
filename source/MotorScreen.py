@@ -14,29 +14,30 @@ from ActivityMenu import ActivityMenu
 from MotorParameters import MotorParameters
 import sys
 from CommandButton import CommandButton as CommandButton
+# from Ergocycle import read_assistance_screen
 
 class MotorScreen(Screen):
     def __init__(self, event_function):
         super(MotorScreen, self).__init__(event_function)
-        self.event_function = event_function
+        #self.event_function = event_function
         self.app = QApplication(sys.argv)
         
-        self.motor_parameters = MotorParameters()
+        # self.motor_parameters = MotorParameters()
         # self.main_window_motor
         
         # self.connect_buttons(self.main_window_motor)
-        self.window_counter = 0
         self.current_menu = 0
-        self.manage_active_window()
         
     
-    def manage_active_window(self):
+    def manage_active_window(self, motor_parameters):
         if self.window_counter == 0:
-            self.current_menu = MainWindowMotor(self.motor_parameters)
+            self.current_menu = MainWindowMotor(motor_parameters)
             self.connect_buttons(self.current_menu)
         elif self.window_counter == 1:
             self.current_menu.close()
-            self.current_menu = ActivityMenu(self.motor_parameters)
+            self.current_menu = ActivityMenu(motor_parameters)
+            self.current_menu.show()
+            self.connect_buttons(self.current_menu)
         
         
         
@@ -47,7 +48,7 @@ class MotorScreen(Screen):
             #print(widget)
             #print(type(widget))
             button.clicked.connect(lambda : self.event_function(window.button_dictionary[button]))
-            self.event_function(window.button_dictionary[button])
+            # self.event_function(window.button_dictionary[button])
                 
             print(f"CONNECTED BUTTON {window.button_dictionary[button]} TO ERGOCYCLE")
         

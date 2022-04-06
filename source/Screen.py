@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QLineEdit
 from CommandButton import CommandButton as CommandButton
+# from Ergocycle import read_assistance_screen
 
 from MainWindowMotor import MainWindowMotor
 from MotorParameters import MotorParameters
@@ -31,6 +32,7 @@ class Screen:
         self.height = SCREEN_HEIGTH
 
         #self.speed = 100
+        self.window_counter = 0
 
         self.application = QApplication([])
         self.stim_application = QApplication([])
@@ -92,6 +94,9 @@ class Screen:
         sys.exit(self.application.exec_())
 
 #    def clicked(self):
+    
+    def next_window(self):
+        self.window_counter += 1
 
 
     def get_amplitude(self):

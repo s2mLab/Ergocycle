@@ -153,9 +153,9 @@ class MainWindowMotor(QMainWindow):
         motor_parameters.set_target_speed(self.target_speed_ComboBox)
         motor_parameters.set_training_length(self.training_length_ComboBox)
         
-        self.activity_window = ActivityMenu(motor_parameters)
-        self.close()
-        self.activity_window.show()
+        #self.activity_window = ActivityMenu(motor_parameters)
+        #self.close()
+        #self.activity_window.show()
         
         # self.update(init_parameters)
         

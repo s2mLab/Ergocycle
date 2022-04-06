@@ -33,8 +33,11 @@ class Ergocycle():
     # Constuctor
     def __init__(self):
 
-        self.assistance_screen = MotorScreen(self.read_assistance_screen) # , "main")
-        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
+        self.motor_parameters = MotorParameters()
+        self.assistance_screen = MotorScreen(self.read_assistance_screen)
+        
+        self.assistance_screen.manage_active_window(self.motor_parameters)
+        # self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -49,17 +52,26 @@ class Ergocycle():
         #self.test_timer()
 
         self.assistance_screen.start_application()
-        self.stimulation_screen.start_stimulation_application()
+        # self.stimulation_screen.start_stimulation_application()
 
-    def read_assistance_screen(self, command): # , screen, param1, param2):
+    def read_assistance_screen(self, command):
         if command == "command_amplitude":
             print("(Ergocycle) Commanding amplitude") # + str(self.assistance_screen.get_amplitude()))
         elif command == "test_event":
             print("(Ergocycle) TESTING EVENT")
         elif command == "start_training":
-            print("(Ergocycle) Beginning training...")
-            #self.assistance_screen.
-            #self.assistance_screen.window_counter = 1 # TODO: j'essaie de changer une variable pour changer de menu mais ça reconnait pas le paramètre
+            self.assistance_screen.next_window()
+            self.assistance_screen.current_menu.submit_clicked(self.motor_parameters)
+            
+            print("(Ergocycle) Beginning training with parameters :")
+            print(self.motor_parameters.get_training_type())
+            print(self.motor_parameters.get_target_speed())
+            print(self.motor_parameters.get_training_length())
+            
+            self.assistance_screen.manage_active_window(self.motor_parameters)
+        elif command == "increase_speed":
+            self.motor_parameters.increase_target_speed()
+            print("(Ergocycle) Speed increased")
         
             
             # self.motor_parameters.set_training_type(window.training_type_ComboBox)
