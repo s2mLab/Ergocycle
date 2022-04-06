@@ -33,6 +33,7 @@ class Screen:
         #self.speed = 100
 
         self.application = QApplication([])
+        self.stim_application = QApplication([])
 
         #self.window = QWidget()
         #self.window.setWindowTitle("Titre")
@@ -79,7 +80,9 @@ class Screen:
         #self.window.setLayout(layout)
         
 
-
+    def start_stimulation_application(self):
+        self.current_menu.show()
+        sys.exit(self.application.exec_())
 
     def start_application(self):
         #sys.exit(self.application.exec_())

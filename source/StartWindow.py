@@ -27,6 +27,7 @@ class StartWindow(QWidget):
         #self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
+        self.button_dictionary = {}
         self.initUI()
     def initUI(self):  
         ### 1.2. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###

@@ -13,8 +13,8 @@ from MotorScreen import MotorScreen
 #import main_sef
 #import InstructionWindow
 from MotorParameters import MotorParameters
-from Observer import Observer
-from Observable import Observable
+#from Observer import Observer
+#from Observable import Observable
 
 import threading
 
@@ -34,7 +34,7 @@ class Ergocycle():
     def __init__(self):
 
         self.assistance_screen = MotorScreen(self.read_assistance_screen) # , "main")
-        #self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
+        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -49,7 +49,7 @@ class Ergocycle():
         #self.test_timer()
 
         self.assistance_screen.start_application()
-        #self.stimulation_screen.start_stimulation_application()
+        self.stimulation_screen.start_stimulation_application()
 
     def read_assistance_screen(self, command): # , screen, param1, param2):
         if command == "command_amplitude":

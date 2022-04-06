@@ -30,10 +30,11 @@ class StimulationScreen(Screen):
     def __init__(self, event_function):
         super(StimulationScreen, self).__init__(event_function)
         self.event_function = event_function
-        self.app = QApplication(sys.argv)
+        self.app= QApplication(sys.argv)
         self.win = StartWindow()
         self.window_counter = 0
         self.current_menu = 0
+        self.manage_active_window()
         #self.manage_active_window()
         #parameters = Parameters()
         #start_win = StartWindow()
@@ -43,9 +44,9 @@ class StimulationScreen(Screen):
 
         #self.test_button = CommandButton("   Débuter un entraînement   ", "test_event")
         #self.test_button.clicked.connect(lambda : self.event_function(self.test_button.get_command()))
-    def start_stimulation_application(self):
-        self.win.show()
-        sys.exit(self.app.exec_())
+    #def start_stimulation_application(self):
+        #self.win.show()
+        #sys.exit(self.app.exec_())
     def get_initial_test_parameters(self, start_win):
         self.initial_test_parameters = start_win.get_initial_test_parameters()
         return(self.initial_test_parameters)
@@ -61,10 +62,10 @@ class StimulationScreen(Screen):
     def get_something(self):
         self.get_smth = "Ca fonctionne!"
         return(self.get_smth)
-    #def manage_active_window(self):
-        #if self.window_counter == 0:
-            #self.current_menu = StartWindow()
-            #self.connect_buttons(self.current_menu)
+    def manage_active_window(self):
+        if self.window_counter == 0:
+            self.current_menu = StartWindow()
+            self.connect_buttons(self.current_menu)
         #elif self.window_counter == 1:
             #self.current_menu.close()
             #self.current_menu = ActivityMenu(self.motor_parameters)
