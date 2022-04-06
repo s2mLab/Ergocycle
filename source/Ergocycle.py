@@ -53,8 +53,20 @@ class Ergocycle:
             print("(Ergocycle) Command " + command + " not found")
 
     def read_stimulation_screen(self, command):
-        if command == "command_test":
-            print("(Ergocycle) Commanding a test "+ str(self.stimulation_screen.get_something()))
+        if command == "USER CLICKING":
+            print("(Ergocycle) Commanding a test ")#+ str(self.stimulation_screen.get_something()))
+        elif command == "start_test":
+            print("Ergocycle commanding to get initial test parameters") #+str(self.stimulation_screen.get_initial_test_parameters)
+        elif command == "updated_test_parameters":
+            print("Ergocycle commanding to get updated test parameters")#+str(self.stimulation_screen.get_updated_test_parameters)
+        elif command == "start_training":
+            print("Ergocycle commanding to get initial training parameters")#+str(self.stimulation_screen.get_initial_training_parameters)
+        elif command == "updated_training_parameters":
+            print("Ergocycle commanding to get updated training parameters")#+str(self.stimulation_screen.get_updated_training_parameters)
+        elif command == "pause_stimulation":
+            print("Ergocycle commanding to pause stimulation")
+        elif command == "stop_stimulation":
+            print("Ergocycle commanding to stop stimulation")
         else:
             print("(Ergocycle) Commanding initial test parameters NOTHING")
             

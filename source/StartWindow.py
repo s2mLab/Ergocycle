@@ -14,16 +14,17 @@ from MainWindowStim import MainWindowStim
 from PIL import Image
 from numpy import *
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
-
 class StartWindow(QWidget):
     def __init__(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
     #def __init__(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         #super(StartWindow, self).__init__(event_function) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         super(StartWindow, self).__init__() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
-        self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
+        self.SCREEN_WIDTH = 1920
+        self.SCREEN_HEIGTH = 1080
+        self.setFixedWidth(self.SCREEN_WIDTH)
+        self.setFixedHeight(self.SCREEN_HEIGTH)
+        #self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
         self.initUI()
@@ -38,29 +39,29 @@ class StartWindow(QWidget):
         self.logo_label.resize(self.logo_jpg.width(), self.logo_jpg.height())
         ### 1.3. Titre menu des instructions ###
         self.title_label = QtWidgets.QLabel(self)
-        self.title_label.setText("Bienvenue dans l'interface usager des stimulations électriques \nfonctionnelles")
-        self.title_label.move(200,40)
-        self.title_label.setFont(QFont('Arial', 15, weight = QFont.Bold))
+        self.title_label.setText("Bienvenue dans l'interface usager des stimulations électriques fonctionnelles")
+        self.title_label.move(400,75)
+        self.title_label.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.title_label.adjustSize()
         self.question_label = QtWidgets.QLabel(self)
         self.question_label.setText("Désirez-vous débuter un entraînement en stimulation ou effectuer des tests?")
-        self.question_label.move(150,200)
-        self.question_label.setFont(QFont('Arial', 15))
+        self.question_label.move(500,300)
+        self.question_label.setFont(QFont('Arial', 16))
         self.question_label.adjustSize()
         ### 1.4. Bouton pour débuter l'entraînement ###
         self.training_button = QtWidgets.QPushButton(self)
         self.training_button.setText("   Débuter un entraînement   ")
         self.training_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.training_button.move(200, 400)
-        self.training_button.setFont(QFont('Arial', 15, weight = QFont.Bold))
+        self.training_button.move(300, 600)
+        self.training_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.training_button.adjustSize()
         self.training_button.clicked.connect(lambda:self.clicked_training())
         ### 1.5. Bouton pour faire des tests ###
         self.test_button = QtWidgets.QPushButton(self)
         self.test_button.setText("  Effectuer des tests  ")
         self.test_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.test_button.move(700, 400)
-        self.test_button.setFont(QFont('Arial', 15, weight = QFont.Bold))
+        self.test_button.move(1250, 600)
+        self.test_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
         self.test_button.adjustSize()
         self.test_button.clicked.connect(lambda:self.clicked_test())
     def clicked_training(self): 

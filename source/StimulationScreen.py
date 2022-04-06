@@ -32,6 +32,9 @@ class StimulationScreen(Screen):
         self.event_function = event_function
         self.app = QApplication(sys.argv)
         self.win = StartWindow()
+        self.window_counter = 0
+        self.current_menu = 0
+        #self.manage_active_window()
         #parameters = Parameters()
         #start_win = StartWindow()
         #testing_win = TestingWindow()
@@ -43,9 +46,8 @@ class StimulationScreen(Screen):
     def start_stimulation_application(self):
         self.win.show()
         sys.exit(self.app.exec_())
-    def get_initial_test_parameters(self):
-        self.get_initial_test_parameters = "USER CLICKING"
-        #self.initial_test_parameters = start_win.get_initial_test_parameters()
+    def get_initial_test_parameters(self, start_win):
+        self.initial_test_parameters = start_win.get_initial_test_parameters()
         return(self.initial_test_parameters)
     def get_updated_test_parameters(self, testing_win):
         self.updated_test_parameters = testing_win.get_updated_test_parameters()
@@ -57,7 +59,20 @@ class StimulationScreen(Screen):
         self.updated_training_parameters = self.get_initial_parameters(Parameters)
         return(self.updated_test_parameters)  
     def get_something(self):
-        print("USER CLICKING")
+        self.get_smth = "Ca fonctionne!"
+        return(self.get_smth)
+    #def manage_active_window(self):
+        #if self.window_counter == 0:
+            #self.current_menu = StartWindow()
+            #self.connect_buttons(self.current_menu)
+        #elif self.window_counter == 1:
+            #self.current_menu.close()
+            #self.current_menu = ActivityMenu(self.motor_parameters)
+    def connect_buttons(self, window):
+        print(f"{len(window.button_dictionary)} Buttons:")
+        for button in window.button_dictionary:
+            button.clicked.connect(lambda:self.event_function(window.button_dictionary[button]))
+            print(f"CONNECTED BUTTON {window.button_dictionary[button]} TO ERGOCYCLE.")
         #self.InitUI()
     #def InitUI(self):
         #self.app = QApplication(sys.argv)
