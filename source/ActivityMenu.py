@@ -59,19 +59,19 @@ class ActivityMenu(QWidget):
         self.power_label.adjustSize()
         
         self.current_power_label = QtWidgets.QLabel(self)
-        self.current_power_label.setText(str(current_parameters.get_speed()))
+        self.current_power_label.setText(str(current_parameters.get_target_speed()))
         self.current_power_label.move(350,100)
         self.current_power_label.setFont(QFont('Arial', 12))
         self.current_power_label.adjustSize()
         
-        self.speed_label = QtWidgets.QLabel(self)
-        self.speed_label.setText("Vitesse/RPM")
-        self.speed_label.move(75,150)
-        self.speed_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
-        self.speed_label.adjustSize()
+        self.current_speed_label = QtWidgets.QLabel(self)
+        self.current_speed_label.setText("Vitesse/RPM")
+        self.current_speed_label.move(75,150)
+        self.current_speed_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.current_speed_label.adjustSize()
         
         self.current_speed_label = QtWidgets.QLabel(self)
-        # self.current_speed_label.setText(str(current_parameters.get_speed()))
+        # self.current_speed_label.setText(str(current_parameters.get_current_speed()))
         self.current_speed_label.move(350,150)
         self.current_speed_label.setFont(QFont('Arial', 12))
         # self.current_speed_label.adjustSize()
@@ -171,29 +171,29 @@ class ActivityMenu(QWidget):
         self.error_window = ErrorMenu()
         self.error_window.show()
 
-    def get_current_speed(self, current_parameters): # Peut-être à enlever
-        return current_parameters.get_speed()
+    def get_current_speed(self, current_parameters): # Prendre les mesures des capteurs
+        return current_parameters.get_target_speed()
 
-    def increase_speed(self, current_parameters):
-        if (current_parameters.speed < MAX_SPEED):
-            current_parameters.speed += 1
+    def increase_speed(self, current_parameters): # Envoyer la commande au contrôle du moteur
+        if (current_parameters.target_speed < MAX_SPEED):
+            current_parameters.target_speed += 1
             self.update_labels(current_parameters)
 
-    def decrease_speed(self, current_parameters):
-        if (current_parameters.speed > MIN_SPEED):
-            current_parameters.speed -= 1
+    def decrease_speed(self, current_parameters):  # Envoyer la commande au contrôle du moteur
+        if (current_parameters.target_speed > MIN_SPEED):
+            current_parameters.target_speed -= 1
             self.update_labels(current_parameters)
 
     def get_current_training_length(self, current_parameters): # Peut-être à enlever
         return current_parameters.training_length
         self.update_labels(current_parameters)
 
-    def increase_training_length(self, current_parameters):
+    def increase_training_length(self, current_parameters): # Peut-être à enlever
         if(current_parameters.training_length < MAX_TRAINING_LENGTH):
             current_parameters.training_length += 1
             self.update_labels(current_parameters)
 
-    def decrease_training_length(self, current_parameters):
+    def decrease_training_length(self, current_parameters): # Peut-être à enlever
         if(current_parameters.training_length > MIN_TRAINING_LENGTH):
             current_parameters.training_length -= 1
             self.update_labels(current_parameters)
@@ -204,10 +204,12 @@ class ActivityMenu(QWidget):
         self.stop_window.confirmation_button.clicked.connect(lambda:self.close())
         
     def update_labels(self, current_parameters):
-        self.current_speed_label.setText(str(current_parameters.get_speed()))
+        self.current_speed_label.setText(str(current_parameters.get_target_speed()))
         self.current_speed_label.adjustSize()
         
         # self.update_measures(measured)
+        
+        #TODO: faire la lecture des mesures
         
         self.current_distance_label.setText(str(current_parameters.get_training_length()))
         self.current_distance_label.adjustSize()
@@ -215,12 +217,12 @@ class ActivityMenu(QWidget):
         self.current_training_length_label.setText(str(current_parameters.get_training_length()))
         self.current_training_length_label.adjustSize()
         
-        if (current_parameters.get_speed() > (25 * 1.1)): # Remplacer 25 par la vitesse cible
+        if (current_parameters.get_current_speed() > (25 * 1.1)): # Remplacer 25 par la vitesse cible
             self.current_speed_label.setStyleSheet("color: red")
             self.correction_label.setText("Ralentissez")
             self.correction_label.setStyleSheet("color: red")
             self.correction_label.move(190,330)
-        elif (current_parameters.get_speed() < (25 * 0.9)): # Remplacer 25 par la vitesse cible
+        elif (current_parameters.get_current_speed() < (25 * 0.9)): # Remplacer 25 par la vitesse cible
             self.current_speed_label.setStyleSheet("color: red")
             self.correction_label.setText("Accélérez")
             self.correction_label.setStyleSheet("color: red")

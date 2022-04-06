@@ -6,11 +6,15 @@
 # from Motor import Motor
 from Screen import Screen as Screen
 from StimulationScreen import StimulationScreen as StimulationScreen
+from MotorScreen import MotorScreen
 # from StimulationSignal import StimulationSignal
 #from Stimulator import Stimulator as Stimulator
 #import MainWindowStim
 #import main_sef
 #import InstructionWindow
+from MotorParameters import MotorParameters
+from Observer import Observer
+from Observable import Observable
 
 import threading
 
@@ -21,34 +25,49 @@ Choices for the events:
 """
 
 
-class Ergocycle:
+
+class Ergocycle():
 
     #INIT_TIMER = 0.5
 
     # Constuctor
     def __init__(self):
 
-        self.assistance_screen = Screen(self.read_assistance_screen)
-        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
+        self.assistance_screen = MotorScreen(self.read_assistance_screen) # , "main")
+        #self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
-       # self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
+        # self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         # self.stimulator = Stimulator( 2, main_sef, "COM1")
         # self.usbDriveWriter = CrankserRecorder(self.read_crankset)
+        # self.motor_parameters = MotorParameters()
+        # self.motor_parameters.register_observer(self)
 
 
         #self.test_timer()
 
         self.assistance_screen.start_application()
-        self.stimulation_screen.start_stimulation_application()
+        #self.stimulation_screen.start_stimulation_application()
 
-    def read_assistance_screen(self, command):
+    def read_assistance_screen(self, command): # , screen, param1, param2):
         if command == "command_amplitude":
-            print("(Ergocycle) Commanding amplitude " + str(self.assistance_screen.get_amplitude()))
+            print("(Ergocycle) Commanding amplitude") # + str(self.assistance_screen.get_amplitude()))
         elif command == "test_event":
             print("(Ergocycle) TESTING EVENT")
+        elif command == "start_training":
+            print("(Ergocycle) Beginning training...")
+            #self.assistance_screen.
+            #self.assistance_screen.window_counter = 1 # TODO: j'essaie de changer une variable pour changer de menu mais ça reconnait pas le paramètre
+        
+            
+            # self.motor_parameters.set_training_type(window.training_type_ComboBox)
+            # self.motor_parameters.set_target_speed(window.target_speed_ComboBox)
+            # self.motor_parameters.set_training_length(window.training_length_ComboBox)
+            
+            
+            
         else:
             print("(Ergocycle) Command " + command + " not found")
 
