@@ -59,7 +59,7 @@ class Ergocycle():
         elif command == "start_training":
             print("(Ergocycle) Beginning training...")
             #self.assistance_screen.
-            #self.assistance_screen.window_counter = 1 # j'essaie de changer une variable pour changer de menu mais ça reconnait pas le paramètre
+            #self.assistance_screen.window_counter = 1 # TODO: j'essaie de changer une variable pour changer de menu mais ça reconnait pas le paramètre
         
             
             # self.motor_parameters.set_training_type(window.training_type_ComboBox)
