@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
 from PIL import Image
 from numpy import *
-#from CommandButton import CommandButton as CommandButton
+from CommandButton import CommandButton as CommandButton
 #from StartWindow import StartWindow
 #from MainWindowStim import MainWindowStim
 #from Stimulator import Stimulator
@@ -24,14 +24,17 @@ MAX_IMP = 500
 MIN_IMP = 0
 
 class TestingWindow(QWidget):
-    def __init__(self, event_function):
-        super(TestingWindow, self).__init__(event_function)
+    def __init__(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+    #def __init__(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        #super(TestingWindow, self).__init__(event_function) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        super(TestingWindow, self).__init__() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
         self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
         self.setWindowTitle("Test des stimulations")
         self.setStyleSheet("background-color: white;")
         self.initUI()
-    def initUI(self):  
+    #def initUI(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+    def initUI(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         ### 1.2. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
         self.petite_imageS2M = self.imageS2M.resize((200, 150))
@@ -86,12 +89,14 @@ class TestingWindow(QWidget):
         self.test_imp_label.adjustSize()
         ### 1.4.3 - Boutons "+" ###
         self.increase_amp_button = QtWidgets.QPushButton(self)
+        #self.increase_amp_button = CommandButton("+","get_updated_test_parameters")
         self.increase_amp_button.setText(" + ")
         self.increase_amp_button.move(650,200)
         self.increase_amp_button.setFont(QFont('Arial', 14))
         self.increase_amp_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_amp_button.adjustSize()
-        self.increase_amp_button.clicked.connect(lambda:self.increase_amplitude()) 
+        self.increase_amp_button.clicked.connect(lambda:self.increase_amplitude()) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+        #self.increase_amp_button.clicked.connect(lambda:self.increase_amplitude(event_function)) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
 
         self.increase_freq_button = QtWidgets.QPushButton(self)
         self.increase_freq_button.setText(" + ")
@@ -161,13 +166,16 @@ class TestingWindow(QWidget):
         #self.close()
         #self.update()
 
-    def increase_amplitude(self):
+    #def increase_amplitude(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+    def increase_amplitude(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
         if (self.amplitude) < MAX_AMPLITUDE:
             self.amplitude = self.amplitude + 2
             self.test_amplitude_label.setText(str(self.amplitude))
             self.test_amplitude_label.adjustSize()
             self.get_updated_test_parameters()
-            self.event_function("command_new_test_parameters")
+            #self.increase_amp_command_button = CommandButton(" + ","command_test")
+            #self.increase_amp_command_button.clicked.connect(lambda : self.increase_amp_command_button.get_command())
+            #event_function("command_new_test_parameters") ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
     def increase_frequency(self):
         if (self.frequency) < MAX_FREQ:
             if (self.frequency) == 0:

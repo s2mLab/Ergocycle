@@ -28,7 +28,7 @@ class InstructionWindow(QWidget):
         self.setWindowTitle("Instructions d'installation des électrodes")
         self.setStyleSheet("background-color: white;")
         ### 1.2. Information du module de communication ###
-        self.com_start_feedback = True ## à changer pour get_start_status quand on va avoir info du module de communication
+        self.com_start_feedback = True ## à changer pour get_start_status quand on va avoir info du module de communication ou UI moteur
         self.initUI(init_parameters)
     def initUI(self, init_parameters):  
         ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
