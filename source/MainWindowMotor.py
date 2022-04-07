@@ -77,18 +77,18 @@ class MainWindowMotor(QMainWindow):
         self.training_type_ComboBox.adjustSize()
         # self.layout.addWidget(self.training_type_ComboBox, 1, 2, Qt.AlignLeft)
         
-        self.target_speed_label = QLabel(self)
-        self.target_speed_label.setText("Vitesse/Puissance cible")
-        self.target_speed_label.move(300,500)
-        self.target_speed_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
-        self.target_speed_label.adjustSize()
+        self.target_power_label = QLabel(self)
+        self.target_power_label.setText("Puissance cible (W)")
+        self.target_power_label.move(300,500)
+        self.target_power_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
+        self.target_power_label.adjustSize()
         # self.layout.addWidget(self.target_speed_label, 2, 0, Qt.AlignRight)
         
-        self.target_speed_ComboBox = QComboBox(self)
-        self.target_speed_ComboBox.addItems(["25", "50", "75", "100"])
-        self.target_speed_ComboBox.move(1300,500)
-        self.target_speed_ComboBox.setFont(QFont('Arial', 24))
-        self.target_speed_ComboBox.adjustSize()
+        self.target_power_ComboBox = QComboBox(self)
+        self.target_power_ComboBox.addItems(["25", "50", "75", "100"])
+        self.target_power_ComboBox.move(1300,500)
+        self.target_power_ComboBox.setFont(QFont('Arial', 24))
+        self.target_power_ComboBox.adjustSize()
         # self.layout.addWidget(self.target_speed_ComboBox, 2, 2, Qt.AlignLeft)
         
         self.training_length_label = QLabel(self)
@@ -150,7 +150,7 @@ class MainWindowMotor(QMainWindow):
         #TODO: envoyer ces paramètres au contrôle du moteur
         
         motor_parameters.set_training_type(self.training_type_ComboBox)
-        motor_parameters.set_target_speed(self.target_speed_ComboBox)
+        motor_parameters.set_target_power(self.target_power_ComboBox)
         motor_parameters.set_training_length(self.training_length_ComboBox)
         
         #self.activity_window = ActivityMenu(motor_parameters)

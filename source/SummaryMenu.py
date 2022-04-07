@@ -53,3 +53,5 @@ class SummaryMenu(QWidget):
         self.label.move(300,300)
         self.label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.label.adjustSize()
+        
+        # TODO: Déterminer quelles données on veut afficher

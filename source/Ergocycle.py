@@ -65,9 +65,10 @@ class Ergocycle():
             self.assistance_screen.next_window()
             self.assistance_screen.current_menu.submit_clicked(self.motor_parameters)
             
-            print("(Ergocycle) Beginning training with parameters :")
+            print("(Ergocycle) Beginning training...")
+            print("Initial parameters :")
             print(f"Mode : {self.motor_parameters.get_training_type()}")
-            print(f"Target speed : {self.motor_parameters.get_target_speed()} RPM")
+            print(f"Target power : {self.motor_parameters.get_target_power()} W")
             print(f"Training length : {self.motor_parameters.get_training_length()} min")
             
             self.assistance_screen.manage_active_window(self.motor_parameters)
@@ -76,31 +77,31 @@ class Ergocycle():
             # TODO: Activer le moteur et démarrer l'entraînement
             # TODO: Démarrer la prise de données
             
-        elif command == "increase_target_speed":
-            self.motor_parameters.increase_target_speed()
+        elif command == "increase_target_power":
+            self.motor_parameters.increase_target_power()
             self.assistance_screen.current_menu.update_labels(self.motor_parameters)
-            print("(Ergocycle) Target speed increased")
+            print("(Ergocycle) Target power increased")
             
             # TODO: Augmenter la vitesse/torque du moteur
         
-        elif command == "decrease_target_speed":
-            self.motor_parameters.decrease_target_speed()
+        elif command == "decrease_target_power":
+            self.motor_parameters.decrease_target_power()
             self.assistance_screen.current_menu.update_labels(self.motor_parameters)
-            print("(Ergocycle) Target speed decreased")
+            print("(Ergocycle) Target power decreased")
             
             # TODO: Diminuer la vitesse/torque du moteur
             
         elif command == "increase_training_length":
             self.motor_parameters.increase_training_length()
             self.assistance_screen.current_menu.update_labels(self.motor_parameters)
-            print("Training length increased")
+            print("(Ergocycle) Training length increased")
             
             # TODO: Augmenter la durée de l'entraînement
         
         elif command == "decrease_training_length":
             self.motor_parameters.decrease_training_length()
             self.assistance_screen.current_menu.update_labels(self.motor_parameters)
-            print("Training length decreased")
+            print("(Ergocycle) Training length decreased")
             
             # TODO: Diminuer la durée de l'entraînement
             
@@ -125,7 +126,7 @@ class Ergocycle():
 
     def read_stimulation_screen(self, command):
         if command == "USER CLICKING":
-            print("(Ergocycle) Commanding a test ")#+ str(self.stimulation_screen.get_something()))
+            print("(Ergocycle) Commanding a test ") # + str(self.stimulation_screen.get_something()))
         elif command == "start_test":
             print("Ergocycle commanding to get initial test parameters") #+str(self.stimulation_screen.get_initial_test_parameters)
         elif command == "updated_test_parameters":
