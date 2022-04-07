@@ -33,6 +33,7 @@ class MotorParameters():
         self.current_speed = 0
         self.training_length = 0
         self.target_speed = 0
+        self.distance = 0
         
     def get_training_type(self):
         return self.training_type
@@ -68,3 +69,6 @@ class MotorParameters():
     def decrease_training_length(self):
         if(self.training_length > MIN_TRAINING_LENGTH):
             self.training_length -= 1
+    
+    def get_distance(self):
+        return self.distance

@@ -27,61 +27,57 @@ MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 # À modifier
 
 class ActivityMenu(QWidget):
-    def __init__(self, init_parameters):
+    def __init__(self, motor_parameters):
         super(ActivityMenu, self).__init__()
         
-        self.setGeometry(700, 400, SCREEN_WIDTH/4, SCREEN_HEIGTH/3)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
         self.setWindowTitle("Performances")
         self.setStyleSheet("background-color: white;")
         self.button_dictionary = {}
         
-        
-        current_parameters = init_parameters
-        
-        # measured = MotorParameters()
-        
-        self.initUI(current_parameters)
+        self.initUI(motor_parameters)
 
     def initUI(self, current_parameters):
         self.logo_label = QtWidgets.QLabel(self)
-        self.pixmap = QPixmap('s2m_logo_resized.jpg') # Modifier la taille de l'image au besoin
+        self.pixmap = QPixmap('image_400.jpg') # Modifier la taille de l'image au besoin
         self.logo_label.setPixmap(self.pixmap)
-        self.logo_label.resize(self.pixmap.width(), self.pixmap.height())
+        # self.logo_label.resize(self.pixmap.width(), self.pixmap.height())
+        self.logo_label.adjustSize()
         
         self.menu_label = QtWidgets.QLabel(self)
         self.menu_label.setText("Performances")
-        self.menu_label.move(175,40)
-        self.menu_label.setFont(QFont('Arial', 15, weight = QFont.Bold))
+        self.menu_label.move(825,100)
+        self.menu_label.setFont(QFont('Arial', 32, weight = QFont.Bold))
         self.menu_label.adjustSize()
         
         self.power_label = QtWidgets.QLabel(self)
         self.power_label.setText("Puissance")
-        self.power_label.move(75,100)
-        self.power_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.power_label.move(300, 250)
+        self.power_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.power_label.adjustSize()
         
         self.current_power_label = QtWidgets.QLabel(self)
         self.current_power_label.setText(str(current_parameters.get_target_speed()))
-        self.current_power_label.move(350,100)
-        self.current_power_label.setFont(QFont('Arial', 12))
+        self.current_power_label.move(1300,250)
+        self.current_power_label.setFont(QFont('Arial', 24))
         self.current_power_label.adjustSize()
         
         self.current_speed_label = QtWidgets.QLabel(self)
         self.current_speed_label.setText("Vitesse/RPM")
-        self.current_speed_label.move(75,150)
-        self.current_speed_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.current_speed_label.move(300,400)
+        self.current_speed_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.current_speed_label.adjustSize()
         
         self.current_speed_label = QtWidgets.QLabel(self)
-        # self.current_speed_label.setText(str(current_parameters.get_current_speed()))
-        self.current_speed_label.move(350,150)
-        self.current_speed_label.setFont(QFont('Arial', 12))
-        # self.current_speed_label.adjustSize()
+        self.current_speed_label.setText(str(current_parameters.get_current_speed()))
+        self.current_speed_label.move(1300,400)
+        self.current_speed_label.setFont(QFont('Arial', 24))
+        self.current_speed_label.adjustSize()
         
         self.increase_speed_button = QtWidgets.QPushButton(self)
         self.increase_speed_button.setText("     +     ")
-        self.increase_speed_button.move(270, 148)
-        self.increase_speed_button.setFont(QFont('Arial', 14))
+        self.increase_speed_button.move(1100, 248)
+        self.increase_speed_button.setFont(QFont('Arial', 28))
         self.increase_speed_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_speed_button.adjustSize()
         # self.increase_speed_button.clicked.connect(lambda:self.increase_speed(current_parameters))  
@@ -89,8 +85,8 @@ class ActivityMenu(QWidget):
         
         self.decrease_speed_button = QtWidgets.QPushButton(self)
         self.decrease_speed_button.setText("     -     ")
-        self.decrease_speed_button.move(385, 148)
-        self.decrease_speed_button.setFont(QFont('Arial', 14))
+        self.decrease_speed_button.move(1420, 248)
+        self.decrease_speed_button.setFont(QFont('Arial', 28))
         self.decrease_speed_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.decrease_speed_button.adjustSize()
         #self.decrease_speed_button.clicked.connect(lambda:self.decrease_speed(current_parameters))  
@@ -98,44 +94,44 @@ class ActivityMenu(QWidget):
         
         self.distance_label = QtWidgets.QLabel(self)
         self.distance_label.setText("Distance parcourue")
-        self.distance_label.move(75,200)
-        self.distance_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.distance_label.move(300, 500)
+        self.distance_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.distance_label.adjustSize()
         
         self.current_distance_label = QtWidgets.QLabel(self)
-        # self.current_distance_label.setText(str(current_parameters.get_training_length()))
-        self.current_distance_label.move(350,200)
-        self.current_distance_label.setFont(QFont('Arial', 12))
-        # self.current_distance_label.adjustSize()
+        self.current_distance_label.setText(str(current_parameters.get_distance()))
+        self.current_distance_label.move(1300, 500)
+        self.current_distance_label.setFont(QFont('Arial', 24))
+        self.current_distance_label.adjustSize()
         
         self.time_label = QtWidgets.QLabel(self)
         self.time_label.setText("Temps écoulé")
-        self.time_label.move(75,250)
-        self.time_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.time_label.move(300, 650)
+        self.time_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.time_label.adjustSize()
         
         self.current_time_label = QtWidgets.QLabel(self)
         self.current_time_label.setText(str(current_parameters.get_training_length()))
-        self.current_time_label.move(350,250)
-        self.current_time_label.setFont(QFont('Arial', 12))
-        # self.current_time_label.adjustSize()
+        self.current_time_label.move(1300, 650)
+        self.current_time_label.setFont(QFont('Arial', 24))
+        self.current_time_label.adjustSize()
         
         self.training_length_label = QtWidgets.QLabel(self)
         self.training_length_label.setText("Durée de l'entraînement")
-        self.training_length_label.move(75,300)
-        self.training_length_label.setFont(QFont('Arial', 12, weight = QFont.Bold))
+        self.training_length_label.move(300, 800)
+        self.training_length_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.training_length_label.adjustSize()
         
         self.current_training_length_label = QtWidgets.QLabel(self)
-        # self.current_training_length_label.setText(str(current_parameters.get_training_length()))
-        self.current_training_length_label.move(350,300)
-        self.current_training_length_label.setFont(QFont('Arial', 12))
-        # self.current_training_length_label.adjustSize()
+        self.current_training_length_label.setText(str(current_parameters.get_training_length()))
+        self.current_training_length_label.move(1300, 800)
+        self.current_training_length_label.setFont(QFont('Arial', 24))
+        self.current_training_length_label.adjustSize()
         
         self.increase_training_length_button = QtWidgets.QPushButton(self)
         self.increase_training_length_button.setText("     +     ")
-        self.increase_training_length_button.move(270, 300)
-        self.increase_training_length_button.setFont(QFont('Arial', 14))
+        self.increase_training_length_button.move(1100, 798)
+        self.increase_training_length_button.setFont(QFont('Arial', 28))
         self.increase_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_training_length_button.adjustSize()
         # self.increase_training_length_button.clicked.connect(lambda:self.increase_training_length(current_parameters))  
@@ -143,8 +139,8 @@ class ActivityMenu(QWidget):
         
         self.decrease_training_length_button = QtWidgets.QPushButton(self)
         self.decrease_training_length_button.setText("     -     ")
-        self.decrease_training_length_button.move(385, 300)
-        self.decrease_training_length_button.setFont(QFont('Arial', 14))
+        self.decrease_training_length_button.move(1420, 798)
+        self.decrease_training_length_button.setFont(QFont('Arial', 28))
         self.decrease_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.decrease_training_length_button.adjustSize()
         # self.decrease_training_length_button.clicked.connect(lambda:self.decrease_training_length(current_parameters)) 
@@ -152,14 +148,14 @@ class ActivityMenu(QWidget):
         
         self.correction_label = QtWidgets.QLabel(self)
         self.correction_label.setText("")
-        self.correction_label.setFont(QFont('Arial', 14, weight = QFont.Bold))
+        self.correction_label.setFont(QFont('Arial', 28, weight = QFont.Bold))
         self.correction_label.adjustSize()
         
         self.stop_button = QtWidgets.QPushButton(self)
         self.stop_button.setText("  ARRÊT  ")
         self.stop_button.setStyleSheet("background-color: red; border: 2 solid;")
-        self.stop_button.move(330, 34)
-        self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
+        self.stop_button.move(1300, 90)
+        self.stop_button.setFont(QFont('Arial', 40, weight = QFont.Bold))
         self.stop_button.adjustSize()
         # self.stop_button.clicked.connect(lambda:self.stop_clicked())   
         self.button_dictionary[self.stop_button] = "stop_training"
@@ -167,8 +163,8 @@ class ActivityMenu(QWidget):
         self.error_button = QtWidgets.QPushButton(self) # Effacer cette section quand les erreurs pourront être détectées
         self.error_button.setText("  ERREUR  ")
         self.error_button.setStyleSheet("background-color: red; border: 2 solid;")
-        self.error_button.move(170, 370)
-        self.error_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
+        self.error_button.move(250, 875)
+        self.error_button.setFont(QFont('Arial', 42, weight = QFont.Bold))
         self.error_button.adjustSize()
         self.error_button.clicked.connect(lambda:self.simulate_error())
         
@@ -230,17 +226,17 @@ class ActivityMenu(QWidget):
             self.current_speed_label.setStyleSheet("color: red")
             self.correction_label.setText("Ralentissez")
             self.correction_label.setStyleSheet("color: red")
-            self.correction_label.move(190,330)
+            self.correction_label.move(850,875)
         elif (current_parameters.get_current_speed() < (25 * 0.9)): # Remplacer 25 par la vitesse cible
             self.current_speed_label.setStyleSheet("color: red")
             self.correction_label.setText("Accélérez")
             self.correction_label.setStyleSheet("color: red")
-            self.correction_label.move(190,330)
+            self.correction_label.move(875,875)
         else:
             self.current_speed_label.setStyleSheet("color: green")
             self.correction_label.setText("Maintenez cette vitesse")
             self.correction_label.setStyleSheet("color: green")
-            self.correction_label.move(130,330)
+            self.correction_label.move(850,875)
         self.correction_label.adjustSize()
         
     # def update_measures(self, measured):
