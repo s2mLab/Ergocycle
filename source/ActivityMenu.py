@@ -84,8 +84,8 @@ class ActivityMenu(QWidget):
         self.increase_speed_button.setFont(QFont('Arial', 14))
         self.increase_speed_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_speed_button.adjustSize()
-        self.increase_speed_button.clicked.connect(lambda:self.increase_speed(current_parameters))  
-        self.button_dictionary[self.increase_speed_button] = "increase_speed"
+        # self.increase_speed_button.clicked.connect(lambda:self.increase_speed(current_parameters))  
+        self.button_dictionary[self.increase_speed_button] = "increase_target_speed"
         
         self.decrease_speed_button = QtWidgets.QPushButton(self)
         self.decrease_speed_button.setText("     -     ")
@@ -93,7 +93,8 @@ class ActivityMenu(QWidget):
         self.decrease_speed_button.setFont(QFont('Arial', 14))
         self.decrease_speed_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.decrease_speed_button.adjustSize()
-        self.decrease_speed_button.clicked.connect(lambda:self.decrease_speed(current_parameters))  
+        #self.decrease_speed_button.clicked.connect(lambda:self.decrease_speed(current_parameters))  
+        self.button_dictionary[self.decrease_speed_button] = "decrease_target_speed"
         
         self.distance_label = QtWidgets.QLabel(self)
         self.distance_label.setText("Distance parcourue")
@@ -137,7 +138,8 @@ class ActivityMenu(QWidget):
         self.increase_training_length_button.setFont(QFont('Arial', 14))
         self.increase_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.increase_training_length_button.adjustSize()
-        self.increase_training_length_button.clicked.connect(lambda:self.increase_training_length(current_parameters))  
+        # self.increase_training_length_button.clicked.connect(lambda:self.increase_training_length(current_parameters))  
+        self.button_dictionary[self.increase_training_length_button] = "increase_training_length"
         
         self.decrease_training_length_button = QtWidgets.QPushButton(self)
         self.decrease_training_length_button.setText("     -     ")
@@ -145,7 +147,8 @@ class ActivityMenu(QWidget):
         self.decrease_training_length_button.setFont(QFont('Arial', 14))
         self.decrease_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.decrease_training_length_button.adjustSize()
-        self.decrease_training_length_button.clicked.connect(lambda:self.decrease_training_length(current_parameters)) 
+        # self.decrease_training_length_button.clicked.connect(lambda:self.decrease_training_length(current_parameters)) 
+        self.button_dictionary[self.decrease_training_length_button] = "decrease_training_length"
         
         self.correction_label = QtWidgets.QLabel(self)
         self.correction_label.setText("")
@@ -158,7 +161,8 @@ class ActivityMenu(QWidget):
         self.stop_button.move(330, 34)
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
-        self.stop_button.clicked.connect(lambda:self.stop_clicked())   
+        # self.stop_button.clicked.connect(lambda:self.stop_clicked())   
+        self.button_dictionary[self.stop_button] = "stop_training"
         
         self.error_button = QtWidgets.QPushButton(self) # Effacer cette section quand les erreurs pourront être détectées
         self.error_button.setText("  ERREUR  ")
@@ -174,37 +178,39 @@ class ActivityMenu(QWidget):
         self.error_window = ErrorMenu()
         self.error_window.show()
 
-    def get_current_speed(self, current_parameters): # Prendre les mesures des capteurs
-        return current_parameters.get_target_speed()
+    # def get_current_speed(self, current_parameters): # Prendre les mesures des capteurs
+    #     return current_parameters.get_target_speed()
 
-    def increase_speed(self, current_parameters): # Envoyer la commande au contrôle du moteur
-        if (current_parameters.target_speed < MAX_SPEED):
-            current_parameters.target_speed += 1
-            self.update_labels(current_parameters)
+    # def increase_speed(self, current_parameters): # Envoyer la commande au contrôle du moteur
+    #     if (current_parameters.target_speed < MAX_SPEED):
+    #         current_parameters.target_speed += 1
+    #         self.update_labels(current_parameters)
 
-    def decrease_speed(self, current_parameters):  # Envoyer la commande au contrôle du moteur
-        if (current_parameters.target_speed > MIN_SPEED):
-            current_parameters.target_speed -= 1
-            self.update_labels(current_parameters)
+    # def decrease_speed(self, current_parameters):  # Envoyer la commande au contrôle du moteur
+    #     if (current_parameters.target_speed > MIN_SPEED):
+    #         current_parameters.target_speed -= 1
+    #         self.update_labels(current_parameters)
 
-    def get_current_training_length(self, current_parameters): # Peut-être à enlever
-        return current_parameters.training_length
-        self.update_labels(current_parameters)
+    # def get_current_training_length(self, current_parameters): # Peut-être à enlever
+    #     return current_parameters.training_length
+    #     self.update_labels(current_parameters)
 
-    def increase_training_length(self, current_parameters): # Peut-être à enlever
-        if(current_parameters.training_length < MAX_TRAINING_LENGTH):
-            current_parameters.training_length += 1
-            self.update_labels(current_parameters)
+    # def increase_training_length(self, current_parameters): # Peut-être à enlever
+    #     if(current_parameters.training_length < MAX_TRAINING_LENGTH):
+    #         current_parameters.training_length += 1
+    #         self.update_labels(current_parameters)
 
-    def decrease_training_length(self, current_parameters): # Peut-être à enlever
-        if(current_parameters.training_length > MIN_TRAINING_LENGTH):
-            current_parameters.training_length -= 1
-            self.update_labels(current_parameters)
+    # def decrease_training_length(self, current_parameters): # Peut-être à enlever
+    #     if(current_parameters.training_length > MIN_TRAINING_LENGTH):
+    #         current_parameters.training_length -= 1
+    #         self.update_labels(current_parameters)
       
     def stop_clicked(self):
         self.stop_window = StopMenu()
         self.stop_window.show()
         self.stop_window.confirmation_button.clicked.connect(lambda:self.close())
+        # self.button_dictionary[self.stop_button] = "stop_training"
+        
         
     def update_labels(self, current_parameters):
         self.current_speed_label.setText(str(current_parameters.get_target_speed()))

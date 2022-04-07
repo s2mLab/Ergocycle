@@ -57,3 +57,14 @@ class MotorParameters():
         
     def increase_target_speed(self):
         self.target_speed += 1
+        
+    def decrease_target_speed(self):
+        self.target_speed -= 1
+    
+    def increase_training_length(self):
+        if(self.training_length < MAX_TRAINING_LENGTH):
+            self.training_length += 1
+    
+    def decrease_training_length(self):
+        if(self.training_length > MIN_TRAINING_LENGTH):
+            self.training_length -= 1

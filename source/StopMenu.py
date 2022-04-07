@@ -28,6 +28,8 @@ class StopMenu(QWidget):
         self.setWindowTitle("Confirmation")
         self.setStyleSheet("background-color: white;")
         
+        self.button_dictionary = {}
+        
         self.initUI()
 
     def initUI(self):        
@@ -54,7 +56,8 @@ class StopMenu(QWidget):
         self.confirmation_button.setFont(QFont('Arial', 14))
         self.confirmation_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.confirmation_button.adjustSize()
-        self.confirmation_button.clicked.connect(lambda:self.stop_training())  
+        # self.confirmation_button.clicked.connect(lambda:self.stop_training())
+        self.button_dictionary[self.confirmation_button] = "confirmed_stop_training"
         
         self.continue_button = QtWidgets.QPushButton(self)
         self.continue_button.setText("    Non    ")
@@ -62,11 +65,12 @@ class StopMenu(QWidget):
         self.continue_button.setFont(QFont('Arial', 14))
         self.continue_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.continue_button.adjustSize()
-        self.continue_button.clicked.connect(lambda:self.close())
+        self.button_dictionary[self.continue_button] = "continue_training"
+        # self.continue_button.clicked.connect(lambda:self.close())
         
-    def stop_training(self):
-        # print("Séance terminée")
-        self.summaryMenu = SummaryMenu()
-        # super().close()
-        self.close()
-        self.summaryMenu.show()
+    # def stop_training(self):
+    #     # print("Séance terminée")
+    #     self.summaryMenu = SummaryMenu()
+    #     # super().close()
+    #     self.close()
+    #     self.summaryMenu.show()

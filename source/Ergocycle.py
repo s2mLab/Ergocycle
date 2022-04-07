@@ -55,30 +55,70 @@ class Ergocycle():
         # self.stimulation_screen.start_stimulation_application()
 
     def read_assistance_screen(self, command):
-        if command == "command_amplitude":
-            print("(Ergocycle) Commanding amplitude") # + str(self.assistance_screen.get_amplitude()))
-        elif command == "test_event":
-            print("(Ergocycle) TESTING EVENT")
-        elif command == "start_training":
+        # if command == "command_amplitude":
+        #     print("(Ergocycle) Commanding amplitude") # + str(self.assistance_screen.get_amplitude()))
+            
+        # elif command == "test_event":
+        #     print("(Ergocycle) TESTING EVENT")
+            
+        if command == "start_training":
             self.assistance_screen.next_window()
             self.assistance_screen.current_menu.submit_clicked(self.motor_parameters)
             
             print("(Ergocycle) Beginning training with parameters :")
-            print(self.motor_parameters.get_training_type())
-            print(self.motor_parameters.get_target_speed())
-            print(self.motor_parameters.get_training_length())
+            print(f"Mode : {self.motor_parameters.get_training_type()}")
+            print(f"Target speed : {self.motor_parameters.get_target_speed()} RPM")
+            print(f"Training length : {self.motor_parameters.get_training_length()} min")
             
             self.assistance_screen.manage_active_window(self.motor_parameters)
-        elif command == "increase_speed":
+            
+            # TODO: Prévenir le UI de stimulation que le training doit commencer
+            # TODO: Activer le moteur et démarrer l'entraînement
+            # TODO: Démarrer la prise de données
+            
+        elif command == "increase_target_speed":
             self.motor_parameters.increase_target_speed()
-            print("(Ergocycle) Speed increased")
+            self.assistance_screen.current_menu.update_labels(self.motor_parameters)
+            print("(Ergocycle) Target speed increased")
+            
+            # TODO: Augmenter la vitesse/torque du moteur
         
+        elif command == "decrease_target_speed":
+            self.motor_parameters.decrease_target_speed()
+            self.assistance_screen.current_menu.update_labels(self.motor_parameters)
+            print("(Ergocycle) Target speed decreased")
             
-            # self.motor_parameters.set_training_type(window.training_type_ComboBox)
-            # self.motor_parameters.set_target_speed(window.target_speed_ComboBox)
-            # self.motor_parameters.set_training_length(window.training_length_ComboBox)
+            # TODO: Diminuer la vitesse/torque du moteur
             
+        elif command == "increase_training_length":
+            self.motor_parameters.increase_training_length()
+            self.assistance_screen.current_menu.update_labels(self.motor_parameters)
+            print("Training length increased")
             
+            # TODO: Augmenter la durée de l'entraînement
+        
+        elif command == "decrease_training_length":
+            self.motor_parameters.decrease_training_length()
+            self.assistance_screen.current_menu.update_labels(self.motor_parameters)
+            print("Training length decreased")
+            
+            # TODO: Diminuer la durée de l'entraînement
+            
+        elif command == "stop_training":
+            self.assistance_screen.next_window()
+            self.assistance_screen.manage_active_window(self.motor_parameters)
+            # self.assistance_screen.current_menu.stop_clicked()
+            print("(Ergocycle) Waiting for confirmation...")
+        
+        elif command == "continue_training":
+            print("(Ergocycle) Continuing training...")
+        
+        elif command == "confirmed_stop_training":
+            print("(Ergocycle) Stopping training...")
+            
+            # TODO: Éteindre le moteur et arrêter l'entraînement
+            # TODO: Arrêter la prise de données
+            # TODO: Enregistrer les données dans un fichier
             
         else:
             print("(Ergocycle) Command " + command + " not found")

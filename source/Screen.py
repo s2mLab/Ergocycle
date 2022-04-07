@@ -97,6 +97,7 @@ class Screen:
     
     def next_window(self):
         self.window_counter += 1
+        # print(self.window_counter)
 
 
     def get_amplitude(self):
