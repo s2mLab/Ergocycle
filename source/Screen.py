@@ -14,6 +14,8 @@ from CommandButton import CommandButton as CommandButton
 from MainWindowMotor import MainWindowMotor
 from MotorParameters import MotorParameters
 
+from PyQt5.QtCore import QTimer, QTime
+
 # Imports (classes)
 from Menu import Menu
 

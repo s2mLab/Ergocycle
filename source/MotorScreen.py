@@ -26,9 +26,6 @@ class MotorScreen(Screen):
         #self.event_function = event_function
         self.app = QApplication(sys.argv)
         
-        # self.motor_parameters = MotorParameters()
-        # self.main_window_motor
-        
         self.button_dictionary = {}
         
         # self.connect_buttons(self.main_window_motor)
@@ -85,11 +82,13 @@ class MotorScreen(Screen):
         self.next_window()
         self.manage_active_window(motor_parameters)
         self.confirm_menu.close()
+        self.event_function("confirmed_stop_training")
     
     def continue_button_clicked(self, motor_parameters):
         self.window_counter -= 1
         self.manage_active_window(motor_parameters)
         self.confirm_menu.close()
+        self.event_function("continue_training")
         
         # print(f"{window.layout.count()} Widgets:")
         # for i in range(0, window.layout.count()):

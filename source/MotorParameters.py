@@ -5,17 +5,7 @@ Created on Thu Mar 17 20:40:36 2022
 @author: Nicolas Pelletier-Côté
 """
 
-# from PyQt5 import QtWidgets
-# from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
-# from PyQt5.QtGui import QFont, QPixmap
-# import time
-# import sys
-
-# from MainWindowMotor import MainWindowMotor
-# from ActivityMenu import ActivityMenu
-# from ErrorMenu import ErrorMenu
-# from StopMenu import StopMenu
-# from SummaryMenu import SummaryMenu
+from PyQt5.QtCore import QTimer, QTime
 
 # from Observable import Observable
 
@@ -34,7 +24,7 @@ class MotorParameters():
         self.target_power = 0
         self.training_length = 0
         self.distance = 0
-        self.time = 0
+        
         
     def get_training_type(self):
         return self.training_type
@@ -76,6 +66,3 @@ class MotorParameters():
     
     def get_distance(self):
         return self.distance
-    
-    def get_time(self):
-        return self.time

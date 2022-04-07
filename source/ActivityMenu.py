@@ -8,14 +8,12 @@ Created on Thu Mar 17 20:41:31 2022
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QFont, QPixmap
+from PyQt5.QtCore import QTimer, QTime
 # import time
 # import sys
 
-# from MainWindowMotor import MainWindowMotor
-# from MotorParameters import MotorParameters
 from ErrorMenu import ErrorMenu
 from StopMenu import StopMenu
-# from SummaryMenu import SummaryMenu
 
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
@@ -33,7 +31,21 @@ class ActivityMenu(QWidget):
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
         self.setWindowTitle("Performances")
         self.setStyleSheet("background-color: white;")
-        self.button_dictionary = {}
+        # self.button_dictionary = {}
+        
+        # self.timer = QTimer(self)
+        # self.time = QTime(0, 0, 0)
+        # self.timer.setInterval(1000)
+        
+        # self.counter = 0
+        # self.second = '00'
+        # self.minute = '00'
+        # self.count = '00'
+        # self.start_timer - False
+        
+        
+        # self.timer.timeout.connect(self.timer_event)
+        # self.timer.start(1000)
         
         self.initUI(motor_parameters)
 
@@ -111,10 +123,12 @@ class ActivityMenu(QWidget):
         self.time_label.adjustSize()
         
         self.current_time_label = QtWidgets.QLabel(self)
-        self.current_time_label.setText(str(current_parameters.get_time()))
+        # self.current_time_label.setText(str(current_parameters.get_time()))
         self.current_time_label.move(1300, 600)
         self.current_time_label.setFont(QFont('Arial', 24))
         self.current_time_label.adjustSize()
+        # self.motor_parameters.start_time()
+        # self.current_time_label.setText(self.motor_parameters.time.toString('hh:mm:ss'))
         
         self.training_length_label = QtWidgets.QLabel(self)
         self.training_length_label.setText("Durée de l'entraînement (min)")
@@ -144,7 +158,7 @@ class ActivityMenu(QWidget):
         self.decrease_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.decrease_training_length_button.adjustSize()
         # self.decrease_training_length_button.clicked.connect(lambda:self.decrease_training_length(current_parameters)) 
-        self.button_dictionary[self.decrease_training_length_button] = "decrease_training_length"
+        # self.button_dictionary[self.decrease_training_length_button] = "decrease_training_length"
         
         self.correction_label = QtWidgets.QLabel(self)
         self.correction_label.setText("")
@@ -158,7 +172,7 @@ class ActivityMenu(QWidget):
         self.stop_button.setFont(QFont('Arial', 40, weight = QFont.Bold))
         self.stop_button.adjustSize()
         # self.stop_button.clicked.connect(lambda:self.stop_clicked())   
-        self.button_dictionary[self.stop_button] = "stop_training"
+        # self.button_dictionary[self.stop_button] = "stop_training"
         
         self.error_button = QtWidgets.QPushButton(self) # Effacer cette section quand les erreurs pourront être détectées
         self.error_button.setText("  ERREUR  ")
@@ -170,36 +184,9 @@ class ActivityMenu(QWidget):
         
         self.update_labels(current_parameters)
         
-    def simulate_error(self):
+    def simulate_error(self): # À enlever
         self.error_window = ErrorMenu()
         self.error_window.show()
-
-    # def get_current_speed(self, current_parameters): # Prendre les mesures des capteurs
-    #     return current_parameters.get_target_speed()
-
-    # def increase_speed(self, current_parameters): # Envoyer la commande au contrôle du moteur
-    #     if (current_parameters.target_speed < MAX_SPEED):
-    #         current_parameters.target_speed += 1
-    #         self.update_labels(current_parameters)
-
-    # def decrease_speed(self, current_parameters):  # Envoyer la commande au contrôle du moteur
-    #     if (current_parameters.target_speed > MIN_SPEED):
-    #         current_parameters.target_speed -= 1
-    #         self.update_labels(current_parameters)
-
-    # def get_current_training_length(self, current_parameters): # Peut-être à enlever
-    #     return current_parameters.training_length
-    #     self.update_labels(current_parameters)
-
-    # def increase_training_length(self, current_parameters): # Peut-être à enlever
-    #     if(current_parameters.training_length < MAX_TRAINING_LENGTH):
-    #         current_parameters.training_length += 1
-    #         self.update_labels(current_parameters)
-
-    # def decrease_training_length(self, current_parameters): # Peut-être à enlever
-    #     if(current_parameters.training_length > MIN_TRAINING_LENGTH):
-    #         current_parameters.training_length -= 1
-    #         self.update_labels(current_parameters)
       
     def stop_clicked(self):
         self.stop_window = StopMenu()
@@ -209,15 +196,13 @@ class ActivityMenu(QWidget):
         
         
     def update_labels(self, current_parameters):
+        
+        # TODO: Faire la lecture des mesures
         self.measured_power_label.setText(str(current_parameters.get_current_power()))
         self.measured_power_label.adjustSize()
         
         self.current_target_power_label.setText(str(current_parameters.get_target_power()))
         self.current_target_power_label.adjustSize()
-        
-        # self.update_measures(measured)
-        
-        #TODO: faire la lecture des mesures
         
         self.current_distance_label.setText(str(current_parameters.get_distance()))
         self.current_distance_label.adjustSize()
@@ -226,22 +211,18 @@ class ActivityMenu(QWidget):
         self.current_training_length_label.adjustSize()
         
         if (current_parameters.get_current_power() > (current_parameters.get_target_power() * 1.1)): # Remplacer 25 par la vitesse cible
-            self.current_power_label.setStyleSheet("color: red")
+            self.measured_power_label.setStyleSheet("color: red")
             self.correction_label.setText("Diminuer votre puissance")
             self.correction_label.setStyleSheet("color: red")
             self.correction_label.move(725,875)
         elif (current_parameters.get_current_power() < (current_parameters.get_target_power() * 0.9)): # Remplacer 25 par la vitesse cible
-            self.current_power_label.setStyleSheet("color: red")
+            self.measured_power_label.setStyleSheet("color: red")
             self.correction_label.setText("Augmenter votre puissance")
             self.correction_label.setStyleSheet("color: red")
             self.correction_label.move(725,875)
         else:
-            self.current_power_label.setStyleSheet("color: green")
+            self.measured_power_label.setStyleSheet("color: green")
             self.correction_label.setText("Maintenez cette puissance")
             self.correction_label.setStyleSheet("color: green")
             self.correction_label.move(725,875)
         self.correction_label.adjustSize()
-        
-    # def update_measures(self, measured):
-        # measured.set_speed(20) # Modifier
-        # Mettre à jour les mesures ici

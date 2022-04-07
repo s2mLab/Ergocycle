@@ -11,12 +11,6 @@ from PyQt5.QtGui import QFont, QPixmap
 # import time
 # import sys
 
-# from MainWindowMotor import MainWindowMotor
-# from Parameters import Parameters
-# from ActivityMenu import ActivityMenu
-# from ErrorMenu import ErrorMenu
-# from StopMenu import StopMenu
-
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
