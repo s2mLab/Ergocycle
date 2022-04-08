@@ -11,12 +11,6 @@ from PyQt5.QtGui import QFont, QPixmap
 # import time
 # import sys
 
-# from MainWindowMotor import MainWindowMotor
-# from Parameters import Parameters
-# from ActivityMenu import ActivityMenu
-# from ErrorMenu import ErrorMenu
-# from StopMenu import StopMenu
-
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
@@ -53,3 +47,5 @@ class SummaryMenu(QWidget):
         self.label.move(300,300)
         self.label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.label.adjustSize()
+        
+        # TODO: Déterminer quelles données on veut afficher

@@ -11,12 +11,6 @@ from PyQt5.QtGui import QFont, QPixmap
 # import time
 # import sys
 
-# from MainWindowMotor import MainWindowMotor
-# from MotorParameters import MotorParameters
-# from ActivityMenu import ActivityMenu
-# from ErrorMenu import ErrorMenu
-from SummaryMenu import SummaryMenu
-
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
@@ -28,7 +22,7 @@ class StopMenu(QWidget):
         self.setWindowTitle("Confirmation")
         self.setStyleSheet("background-color: white;")
         
-        self.button_dictionary = {}
+        # self.button_dictionary = {}
         
         self.initUI()
 
@@ -57,7 +51,7 @@ class StopMenu(QWidget):
         self.confirmation_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.confirmation_button.adjustSize()
         # self.confirmation_button.clicked.connect(lambda:self.stop_training())
-        self.button_dictionary[self.confirmation_button] = "confirmed_stop_training"
+        # self.button_dictionary[self.confirmation_button] = "confirmed_stop_training"
         
         self.continue_button = QtWidgets.QPushButton(self)
         self.continue_button.setText("    Non    ")
@@ -65,7 +59,7 @@ class StopMenu(QWidget):
         self.continue_button.setFont(QFont('Arial', 24))
         self.continue_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
         self.continue_button.adjustSize()
-        self.button_dictionary[self.continue_button] = "continue_training"
+        # self.button_dictionary[self.continue_button] = "continue_training"
         # self.continue_button.clicked.connect(lambda:self.close())
         
     # def stop_training(self):
