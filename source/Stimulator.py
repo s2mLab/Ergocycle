@@ -2,8 +2,7 @@
 
 # Imports
 #from StimulationSignal import StimulationSignal
-from cgi import print_arguments
-from bitarray import bitarray
+
 
 import crccheck.checksum
 import numpy as np
@@ -11,7 +10,7 @@ import serial
 import time
 import struct
 
-from StimulationSignal import StimulationSignal
+
 
 # channel_stim:   list of active channels
 # freq:           main stimulation frequency in Hz (NOTE: this overrides ts1)
@@ -56,11 +55,13 @@ class Stimulator:
     # ---- packet_count = initialise the packet count                      ---- #
 
         self.StimulationSignal = StimulationSignal
-        idx = []
         self.electrode_number = 0
+        idx = []
+            
         for i in range(0,8):
-            if self.StimulationSignal[0][i]==0:
+            if StimulationSignal[0][i]==0:
                 idx.append(i)
+                
             else:
                 self.electrode_number += (2)**(i)
         StimulationSignal = np.delete(StimulationSignal, idx, 1)
@@ -84,7 +85,7 @@ class Stimulator:
 
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
-        print(self.ts1, 'ts1')
+        
 
         """
         while True:
@@ -96,13 +97,19 @@ class Stimulator:
             if (self.port.in_waiting>0):
                 self.calling_ACK()
                 break
-            
+        self.set_stim_biceps_DeltPost() 
+        print(self.set_stim_biceps_DeltPost())
+        starttime = time.time()
+        timer = 0
         self.send_packet('InitChannelListMode', self.packet_count)
-        #self.send_packet('InitChannelListMode',2, self.packet_count)
-        self.send_packet('GetStimulationMode',self.packet_count)
-        for i in range (5):
+        while timer < 5.00:
+            timer = round(time.time()-starttime,2)
             self.send_packet('StartChannelListMode', self.packet_count)
-        print(self.read_packets())
+            time.sleep(1/self.frequency[0])
+            if timer >=(5.00-(1/self.frequency[0])):
+                break
+            
+       
         
         
         
@@ -113,6 +120,44 @@ class Stimulator:
         self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour avoir fréquence
         self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
         self.muscle = StimulationSignal[3]
+
+    def set_stim_biceps_DeltPost(self):
+        idx = []
+        biceps_DeltPost = np.copy(self.StimulationSignal)
+        for j in range(np.shape(self.StimulationSignal)[1]): 
+            
+            if(self.StimulationSignal[3][j] == 1 or self.StimulationSignal[3][j]== 3):
+                biceps_DeltPost[:,j]=0
+                
+        for i in range(0,8):
+            print(biceps_DeltPost[0][i])
+            if biceps_DeltPost[0][i]==0:
+                idx.append(i)
+                
+            else:
+                self.electrode_number += (2)**(i)
+        biceps_DeltPost = np.delete(biceps_DeltPost, idx, 1)
+                
+        self.StimulationSignal = biceps_DeltPost
+    
+    def set_stim_triceps_DeltAnt(self):
+        idx = []
+        triceps_DeltAnt = np.copy(self.StimulationSignal)
+        for j in range(np.shape(self.StimulationSignal)[1]): 
+            
+            if(self.StimulationSignal[3][j] == 1 or self.StimulationSignal[3][j]== 3):
+                triceps_DeltAnt[:,j]=0
+                
+        for i in range(0,8):
+            if triceps_DeltAnt[0][i]==0:
+                idx.append(i)
+                
+            else:
+                self.electrode_number += (2)**(i)
+        triceps_DeltAnt = np.delete(triceps_DeltAnt, idx, 1)
+                
+        self.StimulationSignal = triceps_DeltAnt
+                
 
     # Function to modify the time between pulses if doublet or triplet are chose
     def set_t2(self,t2):
@@ -134,20 +179,20 @@ class Stimulator:
         data_length = 0
         if packet_data!= None:
             packet_data = list(packet_data)
-            print (packet_data)
+            
             for i in range (0, len(packet_data)):
                 if packet_data[i] == 240 or packet_data[i] == 15:
                     packet_data[i] = self.stuff_byte(packet_data[i])
             packet_payload += packet_data
-        print (packet_payload, "packet payload")
+        
         checksum = crccheck.crc.Crc8.calc(packet_payload)
         checksum = self.stuff_byte(checksum)
         data_length = self.stuff_byte(len(packet_payload))
-        print(data_length)
+        
         packet_lead = [start_byte, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
         packet_end = [stop_byte]
         packet = packet_lead + packet_payload + packet_end
-        print(packet, 'contruct')
+        
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
@@ -178,7 +223,6 @@ class Stimulator:
 
         # Read port stream
         packet = self.port.readline()
-        print(packet, "Cequ'on reçoit")
         # If it is a start byte, collect packet
         if packet[0] == self.START_BYTE:
             # Collect header bytes
@@ -201,8 +245,7 @@ class Stimulator:
             #Call the Ack function
         packet = self.read_packets()
         if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
-            print((packet[5]), 'packet_number recu')
-            print(packet[0], packet[1],packet[2], packet[3], packet[4], packet[5], packet[6], packet[7], packet[8])
+            
             return Stimulator.send_packet(self, 'InitAck', int(packet[5]))
         elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
             return Stimulator.unknown_cmd()
@@ -224,7 +267,7 @@ class Stimulator:
     # Establishes connexion acknowlege
     def init_ACK(self, packet_count):
         packet = self.packet_construction(packet_count, 'InitAck', 0)
-        print (int.from_bytes(packet, 'little'), "Ce qu'on renvoie")
+        
         return packet
 
 
@@ -268,7 +311,6 @@ class Stimulator:
         MSB, LSB = self.MSB_LSB_main_stim()
            
         packet = self.packet_construction(self.packet_count,'InitChannelListMode', 0, self.electrode_number, 0, 2, MSB, LSB, 0 ) # Channel est 1,2,4,8,16,32,64,128 pour chaque et l'addition donne l'activation de plusieurs channels
-        print (packet, "bytes")
         return packet
 
 
@@ -295,7 +337,7 @@ class Stimulator:
             MSB, LSB = self.MSB_LSB_pulse_stim(self.pulse_width[i])
             MSB_matrix.append(MSB)
             LSB_matrix.append(LSB)
-        print(self.amplitude[0], 'matrice')
+        
         if (len(self.amplitude)) ==1:
 
             packet = self.packet_construction(self.packet_count,'StartChannelListMode',
