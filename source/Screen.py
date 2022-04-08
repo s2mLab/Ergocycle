@@ -1,14 +1,14 @@
 # Screen class
 
 # Imports (libraries)
-import sys
-import math
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtWidgets import QHBoxLayout
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtWidgets import QLineEdit
-from CommandButton import CommandButton as CommandButton
+# import sys
+# import math
+# from PyQt5.QtWidgets import QApplication
+# from PyQt5.QtWidgets import QHBoxLayout
+# from PyQt5.QtWidgets import QWidget
+# from PyQt5.QtWidgets import QLabel
+# from PyQt5.QtWidgets import QLineEdit
+# from CommandButton import CommandButton as CommandButton
 # from Ergocycle import read_assistance_screen
 
 from MainWindowMotor import MainWindowMotor
@@ -30,14 +30,14 @@ class Screen:
 
         self.event_function = event_function
 
-        self.width = SCREEN_WIDTH
-        self.height = SCREEN_HEIGTH
+        # self.width = SCREEN_WIDTH
+        # self.height = SCREEN_HEIGTH
 
         #self.speed = 100
         self.window_counter = 0
 
-        self.application = QApplication([])
-        self.stim_application = QApplication([])
+        # self.application = QApplication([])
+        # self.stim_application = QApplication([])
 
         #self.window = QWidget()
         #self.window.setWindowTitle("Titre")
@@ -84,16 +84,17 @@ class Screen:
         #self.window.setLayout(layout)
         
 
-    def start_stimulation_application(self):
-        self.current_menu.show()
-        sys.exit(self.application.exec_())
+    # def start_stimulation_application(self):
+        # self.current_menu.show()
+        # sys.exit(self.application.exec_())
 
-    def start_application(self):
+    # def start_application(self):
         #sys.exit(self.application.exec_())
         #self.motor_menu_window.show() ## était avant a la ligne 61
         #self.application.exec_()
-        self.current_menu.show()
-        sys.exit(self.application.exec_())
+        # self.current_menu.show()
+        # sys.exit(self.application.exec_())
+        # print("")
 
 #    def clicked(self):
     

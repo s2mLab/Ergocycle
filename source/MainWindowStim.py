@@ -232,7 +232,7 @@ class MainWindowStim(QMainWindow):
         self.submit_button.move(1600, 400) # originalement 1400, 400 (devrait être mis a 1000,400)
         self.submit_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.submit_button.adjustSize()
-        self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
+        # self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
 
         self.param_label = QtWidgets.QLabel(self)
         self.electrode11_label = QtWidgets.QLabel(self)
@@ -546,7 +546,7 @@ class MainWindowStim(QMainWindow):
         self.submit_final_button.move(1600, 900) # 1400, 900 originalement, devrait etre a (1000, 900)
         self.submit_final_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.submit_final_button.adjustSize()
-        self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
+        # self.submit_final_button.clicked.connect(lambda:self.clicked_next(init_parameters))
 
     def set_electrode_off(self, init_parameters):
         ### 3.1 - Enregistrer les valeurs des paramètres entrées pour les électrodes utilisées ###

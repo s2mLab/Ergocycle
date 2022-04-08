@@ -24,7 +24,7 @@ class MotorScreen(Screen):
     def __init__(self, event_function):
         super(MotorScreen, self).__init__(event_function)
         #self.event_function = event_function
-        self.app = QApplication(sys.argv)
+        # self.app = QApplication(sys.argv)
         
         self.button_dictionary = {}
         
@@ -34,9 +34,10 @@ class MotorScreen(Screen):
         
     
     def manage_active_window(self, motor_parameters):
-        # print(f"window_counter = {self.window_counter}")
+        
         if self.window_counter == 0:
             self.current_menu = MainWindowMotor(motor_parameters)
+            self.current_menu.show()
             # self.connect_buttons(self.current_menu)
             self.current_menu.submit_button.clicked.connect(lambda : self.event_function("start_training"))
             

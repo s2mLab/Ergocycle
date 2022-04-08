@@ -28,7 +28,7 @@ MAX_TRAINING_LENGTH = 120 # À modifier
 class MainWindowMotor(QMainWindow):
     def __init__(self, motor_param):
         super(MainWindowMotor, self).__init__()
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
         self.setWindowTitle("Menu Principal")
         self.setStyleSheet("background-color: white;")
         # self.button_dictionary = {}
@@ -88,7 +88,7 @@ class MainWindowMotor(QMainWindow):
         self.submit_button = QtWidgets.QPushButton(self)
         self.submit_button.setText("  Débuter  ")
         self.submit_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.submit_button.move(850, 850)
+        self.submit_button.move(840, 850)
         self.submit_button.setFont(QFont('Arial', 36, weight = QFont.Bold))
         self.submit_button.adjustSize()
         # self.button_dictionary[self.submit_button] = "start_training"

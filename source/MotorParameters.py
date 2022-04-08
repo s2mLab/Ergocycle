@@ -33,8 +33,8 @@ class MotorParameters():
         self.training_type = combo_box.currentText()
     
     def get_current_power(self):
+        # TODO: Ajouter la commande pour aller chercher les mesures de puissance
         return self.current_power
-    # TODO: Ajouter la commande pour aller chercher les mesures de puissance
     
     def get_target_power(self):
         return self.target_power
@@ -51,10 +51,12 @@ class MotorParameters():
     def increase_target_power(self):
         if(self.target_power < MAX_TARGET_POWER):
             self.target_power += 1
+            # TODO : Communiquer avec le moteur
         
     def decrease_target_power(self):
         if(self.target_power > MIN_TARGET_POWER):
             self.target_power -= 1
+            # TODO : Communiquer avec le moteur
     
     def increase_training_length(self):
         if(self.training_length < MAX_TRAINING_LENGTH):
@@ -63,6 +65,7 @@ class MotorParameters():
     def decrease_training_length(self):
         if(self.training_length > MIN_TRAINING_LENGTH):
             self.training_length -= 1
+            # TODO : Vérifier que la durée actuelle est inférieure à la nouvelle durée
     
     def get_distance(self):
         return self.distance
