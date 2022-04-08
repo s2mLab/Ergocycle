@@ -431,26 +431,3 @@ class Ergocycle():
     #def read_crankset(self, commanded_parameter, value):
     	#if commanded_parameter == 1:
             #self.motor._force  = value
-'''
-    def initialise_stimulation(self):
-        if(MainWindowStim.InitUI): #changer pour que ce soit évènement lié  l'ouverture du UI
-          Stimulator.call_init()
-
-       
-
-        #self.stimulator.testing_stimulation() à lier avec +- de la nouvelle fenêtre pour tester
-
-        #Possible de lier commande en-dessous avec MainWindowStim.submit_button?
-        parameters = InstructionWindow.get_initial_parameters(MainWindowStim.init_parameter)
-
-        for i in range (len(parameters)):
-            if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 0 or 2) and read_crankset == 40 ): #where 0 = biceps et 2 = post. deltoide, 40 if in degrees
-                Stimulator.control_stimulation(i)
-                if(read_crankset == 190 ):
-                    Stimulator.send_packet('StopChannelListMode', i)
-
-            if(MainWindowStim.submit_button.clicked.connect() and (parameters[4][i] == 1 or 3) and read_crankset == 200 ): #where 1 = triceps et 3 = ant. deltoide, 200 if in degrees
-                Stimulator.control_stimulation(i)
-                if(read_crankset == 360 ):
-                    Stimulator.send_packet('StopChannelListMode', i)
-'''

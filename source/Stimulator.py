@@ -54,7 +54,7 @@ class Stimulator:
     # ---- port = open port from port_path                                 ---- #
     # ---- packet_count = initialise the packet count                      ---- #
 
-        self.StimulationSignal = StimulationSignal
+        self.matrice = StimulationSignal
         self.electrode_number = 0
         idx = []
             
@@ -65,16 +65,16 @@ class Stimulator:
             else:
                 self.electrode_number += (2)**(i)
         StimulationSignal = np.delete(StimulationSignal, idx, 1)
+        self.idx = idx
 
-
-         #à vérifier si bon indice
+        '''
         self.amplitude = []
         self.ts1 = []
         self.frequency = []
         self.pulse_width = []
         self.muscle = []
         self.ts2 = []
-# Generate an error
+
         for i in range (8-len(idx)):
             self.amplitude.append(StimulationSignal[0][i])
             self.ts1.append(int((1000/StimulationSignal[1][i] - 1)/0.5)) #à vérifier si bon indice pour fréquence
@@ -82,7 +82,8 @@ class Stimulator:
             self.pulse_width.append(StimulationSignal[2][i]) #à vérifier si bon indice
             self.muscle.append(StimulationSignal[3][i])
             self.ts2 = ts2
-
+        '''
+        self.set_StimulationSignal(StimulationSignal)
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
         
@@ -98,54 +99,72 @@ class Stimulator:
                 self.calling_ACK()
                 break
         self.set_stim_biceps_DeltPost() 
-        print(self.set_stim_biceps_DeltPost())
+       
+        self.set_StimulationSignal(self.StimulationSignal)
+        
         starttime = time.time()
         timer = 0
         self.send_packet('InitChannelListMode', self.packet_count)
+        
         while timer < 5.00:
             timer = round(time.time()-starttime,2)
             self.send_packet('StartChannelListMode', self.packet_count)
+            print(self.read_packets()[7])
             time.sleep(1/self.frequency[0])
-            if timer >=(5.00-(1/self.frequency[0])):
+            if timer >=(5.00-(1/self.frequency[0])): 
                 break
-            
+       
        
         
         
         
     # Function to modify the stimulation's parameters
     def set_StimulationSignal(self,StimulationSignal):
-        self.StimulationSignal = StimulationSignal
-        self.amplitude = StimulationSignal[0] #à vérifier si bon indice
-        self.ts1 = 1/StimulationSignal[1] #à vérifier si bon indice pour avoir fréquence
-        self.pulse_width = StimulationSignal[2] #à vérifier si bon indice
-        self.muscle = StimulationSignal[3]
+        self.amplitude = []
+        self.ts1 = []
+        self.frequency = []
+        self.pulse_width = []
+        self.muscle = []
+        
+
+        for i in range (8-len(self.idx)):
+            self.amplitude.append(StimulationSignal[0][i])
+            self.ts1.append(int((1000/StimulationSignal[1][i] - 1)/0.5)) #à vérifier si bon indice pour fréquence
+            self.frequency.append(StimulationSignal[1][i])
+            self.pulse_width.append(StimulationSignal[2][i]) #à vérifier si bon indice
+            self.muscle.append(StimulationSignal[3][i])
+            
 
     def set_stim_biceps_DeltPost(self):
         idx = []
-        biceps_DeltPost = np.copy(self.StimulationSignal)
-        for j in range(np.shape(self.StimulationSignal)[1]): 
+        self.electrode_number = 0
+        biceps_DeltPost = np.copy(self.matrice)
+        for j in range(np.shape(self.matrice)[1]): 
             
-            if(self.StimulationSignal[3][j] == 1 or self.StimulationSignal[3][j]== 3):
+            if(self.matrice[3][j] == 1 or self.matrice[3][j]== 3):
                 biceps_DeltPost[:,j]=0
-                
+       
+        
         for i in range(0,8):
-            print(biceps_DeltPost[0][i])
+            
             if biceps_DeltPost[0][i]==0:
                 idx.append(i)
                 
             else:
                 self.electrode_number += (2)**(i)
-        biceps_DeltPost = np.delete(biceps_DeltPost, idx, 1)
                 
+        biceps_DeltPost = np.delete(biceps_DeltPost, idx, 1)
+          
         self.StimulationSignal = biceps_DeltPost
-    
+        self.idx = idx
+         
     def set_stim_triceps_DeltAnt(self):
         idx = []
-        triceps_DeltAnt = np.copy(self.StimulationSignal)
-        for j in range(np.shape(self.StimulationSignal)[1]): 
+        triceps_DeltAnt = np.copy(self.matrice)
+        self.electrode_number = 0
+        for j in range(np.shape(self.matrice)[1]): 
             
-            if(self.StimulationSignal[3][j] == 1 or self.StimulationSignal[3][j]== 3):
+            if(self.matrice[3][j] == 2 or self.matrice[3][j]== 4):
                 triceps_DeltAnt[:,j]=0
                 
         for i in range(0,8):
@@ -157,7 +176,7 @@ class Stimulator:
         triceps_DeltAnt = np.delete(triceps_DeltAnt, idx, 1)
                 
         self.StimulationSignal = triceps_DeltAnt
-                
+        self.idx = idx      
 
     # Function to modify the time between pulses if doublet or triplet are chose
     def set_t2(self,t2):
@@ -192,7 +211,7 @@ class Stimulator:
         packet_lead = [start_byte, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
         packet_end = [stop_byte]
         packet = packet_lead + packet_payload + packet_end
-        
+        print(packet)
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
