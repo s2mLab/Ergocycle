@@ -165,7 +165,7 @@ class Ergocycle():
             
         elif command == "increase_imp":
             self.stimulation_screen.current_menu.increase_imp(self.stim_test_parameters)
-            print("(Ergocycle) Test imp increased")
+            print("(Ergocycle) Test impulsion increased")
             print(f"Updated test imp : {self.stim_test_parameters.imp}")
         
         elif command == "decrease_amp":
@@ -180,13 +180,14 @@ class Ergocycle():
             
         elif command == "decrease_imp":
             self.stimulation_screen.current_menu.decrease_imp(self.stim_test_parameters)
-            print("(Ergocycle) Test imp decreased")
+            print("(Ergocycle) Test impulsion decreased")
             print(f"Updated test parameters : {self.stim_test_parameters.imp}")
             
         elif command == "back_button_clicked":
             self.stimulation_screen.current_menu.close()
             self.stimulation_screen.next_window()
             self.stimulation_screen.manage_active_window(self.stim_parameters)
+            print("(Ergocycle) Done testing")
         
         # elif command == "updated_test_parameters":
         #     print("Ergocycle commanding to get updated test parameters") # +str(self.stimulation_screen.get_updated_test_parameters)
@@ -210,31 +211,200 @@ class Ergocycle():
             if self.stimulation_screen.current_menu.is_completed(self.stim_parameters) == True:
                 ### 4.5.1 - Vérification du danger et appel au bon menu (DangerPopUp ou InstructionWindow) ###
                 if self.stimulation_screen.current_menu.danger_check(self.stim_parameters) == True:
-                    # self.stimulation_screen.current_menu.danger_pop_up_window = DangerPopUp(self.stim_parameters)
-                    # self.stimulation_screen.current_menu.danger_pop_up_window.setWindowModality(2) ## Bloque les inputs des autres fenêtres
-                    # self.stimulation_screen.current_menu.danger_pop_up_window.show()
-                    # self.stimulation_screen.current_menu.update()
                     self.stimulation_screen.window_counter = -2
                     self.stimulation_screen.manage_active_window(self.stim_parameters)
-                    print("Danger")
+                    print("(Ergocycle) Verify unsafe parameters")
                 else:
-                    # self.instruction_window = InstructionWindow(init_parameters)
-                    # self.close()
-                    # self.instruction_window.show()
-                    # self.update()
                     self.stimulation_screen.next_window()
                     self.stimulation_screen.manage_active_window(self.stim_parameters)
-                    print("All good")
+                    print("(Ergocycle) Starting stimulations...")
+                    self.read_stimulation_screen("show_instructions")
             
+        elif command == "back_to_menu":
+            print("(Ergocycle) Waiting for change of parameters...")
             
+        elif command == "continue_to_instructions":
+            print("(Ergocycle) Continuing with unsafe parameters...")
+            self.read_stimulation_screen("show_instructions")
+        
+        elif command == "show_instructions": # À modifier ou effacer
+            print("(Ergocycle) Instructions...")
+        
+        elif command == "start_stimulations":
+            # self.stimulation_screen.current_menu.clicked_start(self.stim_parameters)
+            if self.stimulation_screen.current_menu.com_start_feedback == True:
+                self.stimulation_screen.current_menu.get_initial_parameters(self.stim_parameters)
+                self.stimulation_screen.next_window()
+                self.stimulation_screen.manage_active_window(self.stim_parameters)
+                print("(Ergocycle) Starting stimulations...")
+            else:
+                self.stimulation_screen.current_menu.start_button.setEnabled(False)
+        
+        elif command == "increase_amplitude1":
+            self.stimulation_screen.current_menu.increase_amplitude1(self.stim_parameters)
+            print("(Ergocycle) Amplitude 1 increased")
+            # TODO : Lire la nouvelle matrice?
+        elif command == "increase_amplitude2":
+            self.stimulation_screen.current_menu.increase_amplitude2(self.stim_parameters)
+            print("(Ergocycle) Amplitude 2 increased")
+        elif command == "increase_amplitude3":
+            self.stimulation_screen.current_menu.increase_amplitude3(self.stim_parameters)
+            print("(Ergocycle) Amplitude 3 increased")
+        elif command == "increase_amplitude4":
+            self.stimulation_screen.current_menu.increase_amplitude4(self.stim_parameters)
+            print("(Ergocycle) Amplitude 4 increased")
+        elif command == "increase_amplitude5":
+            self.stimulation_screen.current_menu.increase_amplitude5(self.stim_parameters)
+            print("(Ergocycle) Amplitude 5 increased")
+        elif command == "increase_amplitude6":
+            self.stimulation_screen.current_menu.increase_amplitude6(self.stim_parameters)
+            print("(Ergocycle) Amplitude 6 increased")
+        elif command == "increase_amplitude7":
+            self.stimulation_screen.current_menu.increase_amplitude7(self.stim_parameters)
+            print("(Ergocycle) Amplitude 7 increased")
+        elif command == "increase_amplitude8":
+            self.stimulation_screen.current_menu.increase_amplitude8(self.stim_parameters)
+            print("(Ergocycle) Amplitude 8 increased")
+            
+        elif command == "decrease_amplitude1":
+            self.stimulation_screen.current_menu.decrease_amplitude1(self.stim_parameters)
+            print("(Ergocycle) Amplitude 1 decreased")
+        elif command == "decrease_amplitude2":
+            self.stimulation_screen.current_menu.decrease_amplitude2(self.stim_parameters)
+            print("(Ergocycle) Amplitude 2 decreased")
+        elif command == "decrease_amplitude3":
+            self.stimulation_screen.current_menu.decrease_amplitude3(self.stim_parameters)
+            print("(Ergocycle) Amplitude 3 decreased")
+        elif command == "decrease_amplitude4":
+            self.stimulation_screen.current_menu.decrease_amplitude4(self.stim_parameters)
+            print("(Ergocycle) Amplitude 4 decreased")
+        elif command == "decrease_amplitude5":
+            self.stimulation_screen.current_menu.decrease_amplitude5(self.stim_parameters)
+            print("(Ergocycle) Amplitude 5 decreased")
+        elif command == "decrease_amplitude6":
+            self.stimulation_screen.current_menu.decrease_amplitude6(self.stim_parameters)
+            print("(Ergocycle) Amplitude 6 decreased")
+        elif command == "decrease_amplitude7":
+            self.stimulation_screen.current_menu.decrease_amplitude7(self.stim_parameters)
+            print("(Ergocycle) Amplitude 7 decreased")
+        elif command == "decrease_amplitude8":
+            self.stimulation_screen.current_menu.decrease_amplitude8(self.stim_parameters)
+            print("(Ergocycle) Amplitude 8 decreased")
+            
+        elif command == "increase_frequency1":
+            self.stimulation_screen.current_menu.increase_frequency1(self.stim_parameters)
+            print("(Ergocycle) Frequency 1 increased")
+        elif command == "increase_frequency2":
+            self.stimulation_screen.current_menu.increase_frequency2(self.stim_parameters)
+            print("(Ergocycle) Frequency 2 increased")
+        elif command == "increase_frequency3":
+            self.stimulation_screen.current_menu.increase_frequency3(self.stim_parameters)
+            print("(Ergocycle) Frequency 3 increased")
+        elif command == "increase_frequency4":
+            self.stimulation_screen.current_menu.increase_frequency4(self.stim_parameters)
+            print("(Ergocycle) Frequency 4 increased")
+        elif command == "increase_frequency5":
+            self.stimulation_screen.current_menu.increase_frequency5(self.stim_parameters)
+            print("(Ergocycle) Frequency 5 increased")
+        elif command == "increase_frequency6":
+            self.stimulation_screen.current_menu.increase_frequency6(self.stim_parameters)
+            print("(Ergocycle) Frequency 6 increased")
+        elif command == "increase_frequency7":
+            self.stimulation_screen.current_menu.increase_frequency7(self.stim_parameters)
+            print("(Ergocycle) Frequency 7 increased")
+        elif command == "increase_frequency8":
+            self.stimulation_screen.current_menu.increase_frequency8(self.stim_parameters)
+            print("(Ergocycle) Frequency 8 increased")
+        
+        elif command == "decrease_frequency1":
+            self.stimulation_screen.current_menu.decrease_frequency1(self.stim_parameters)
+            print("(Ergocycle) Frequency 1 decreased")
+        elif command == "decrease_frequency2":
+            self.stimulation_screen.current_menu.decrease_frequency2(self.stim_parameters)
+            print("(Ergocycle) Frequency 2 decreased")
+        elif command == "decrease_frequency3":
+            self.stimulation_screen.current_menu.decrease_frequency3(self.stim_parameters)
+            print("(Ergocycle) Frequency 3 decreased")
+        elif command == "decrease_frequency4":
+            self.stimulation_screen.current_menu.decrease_frequency4(self.stim_parameters)
+            print("(Ergocycle) Frequency 4 decreased")
+        elif command == "decrease_frequency5":
+            self.stimulation_screen.current_menu.decrease_frequency5(self.stim_parameters)
+            print("(Ergocycle) Frequency 5 decreased")
+        elif command == "decrease_frequency6":
+            self.stimulation_screen.current_menu.decrease_frequency6(self.stim_parameters)
+            print("(Ergocycle) Frequency 6 decreased")
+        elif command == "decrease_frequency7":
+            self.stimulation_screen.current_menu.decrease_frequency7(self.stim_parameters)
+            print("(Ergocycle) Frequency 7 decreased")
+        elif command == "decrease_frequency8":
+            self.stimulation_screen.current_menu.decrease_frequency8(self.stim_parameters)
+            print("(Ergocycle) Frequency 8 decreased")
+            
+        elif command == "increase_imp1":
+            self.stimulation_screen.current_menu.increase_imp1(self.stim_parameters)
+            print("(Ergocycle) Impulsion 1 increased")
+        elif command == "increase_imp2":
+            self.stimulation_screen.current_menu.increase_imp2(self.stim_parameters)
+            print("(Ergocycle) Impulsion 2 increased")
+        elif command == "increase_imp3":
+            self.stimulation_screen.current_menu.increase_imp3(self.stim_parameters)
+            print("(Ergocycle) Impulsion 3 increased")
+        elif command == "increase_imp4":
+            self.stimulation_screen.current_menu.increase_imp4(self.stim_parameters)
+            print("(Ergocycle) Impulsion 4 increased")
+        elif command == "increase_imp5":
+            self.stimulation_screen.current_menu.increase_imp5(self.stim_parameters)
+            print("(Ergocycle) Impulsion 5 increased")
+        elif command == "increase_imp6":
+            self.stimulation_screen.current_menu.increase_imp6(self.stim_parameters)
+            print("(Ergocycle) Impulsion 6 increased")
+        elif command == "increase_imp7":
+            self.stimulation_screen.current_menu.increase_imp7(self.stim_parameters)
+            print("(Ergocycle) Impulsion 7 increased")
+        elif command == "increase_imp8":
+            self.stimulation_screen.current_menu.increase_imp8(self.stim_parameters)
+            print("(Ergocycle) Impulsion 8 increased")
+        
+        elif command == "decrease_imp1":
+            self.stimulation_screen.current_menu.decrease_imp1(self.stim_parameters)
+            print("(Ergocycle) Impulsion 1 decreased")
+        elif command == "decrease_imp2":
+            self.stimulation_screen.current_menu.decrease_imp2(self.stim_parameters)
+            print("(Ergocycle) Impulsion 2 decreased")
+        elif command == "decrease_imp3":
+            self.stimulation_screen.current_menu.decrease_imp3(self.stim_parameters)
+            print("(Ergocycle) Impulsion 3 decreased")
+        elif command == "decrease_imp4":
+            self.stimulation_screen.current_menu.decrease_imp4(self.stim_parameters)
+            print("(Ergocycle) Impulsion 4 decreased")
+        elif command == "decrease_imp5":
+            self.stimulation_screen.current_menu.decrease_imp5(self.stim_parameters)
+            print("(Ergocycle) Impulsion 5 decreased")
+        elif command == "decrease_imp6":
+            self.stimulation_screen.current_menu.decrease_imp6(self.stim_parameters)
+            print("(Ergocycle) Impulsion 6 decreased")
+        elif command == "decrease_imp7":
+            self.stimulation_screen.current_menu.decrease_imp7(self.stim_parameters)
+            print("(Ergocycle) Impulsion 7 decreased")
+        elif command == "decrease_imp8":
+            self.stimulation_screen.current_menu.decrease_imp8(self.stim_parameters)
+            print("(Ergocycle) Impulsion 8 decreased")
+        
         elif command == "pause_stimulation":
-            print("Ergocycle commanding to pause stimulation")
+            self.stimulation_screen.current_menu.pause()
+            print("(Ergocycle) Stimulations paused...")
+            
+            # TODO : Passer le temps en paramètre si on prend le temps d'Ergocycle
             
         elif command == "stop_stimulation":
-            print("Ergocycle commanding to stop stimulation")
+            self.stimulation_screen.current_menu.clicked_stop()
+            self.stimulation_screen.next_window()
+            self.stimulation_screen.manage_active_window(self.stim_parameters)
+            print("(Ergocycle) Stopping stimulations...")
             
         else:
-            print("(Ergocycle) Commanding initial test parameters NOTHING")
+            print("(Ergocycle) Command " + command + " not found")
             
         # print("TODO: Read stimulation screen")
 

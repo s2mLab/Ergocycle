@@ -13,8 +13,8 @@ from StimulationWindow import StimulationWindow
 from Parameters import Parameters
 from DangerPopUp import DangerPopUp
 
-#SCREEN_WIDTH = 1920
-#SCREEN_HEIGTH = 1080
+SCREEN_WIDTH = 1920
+SCREEN_HEIGTH = 1080 - 30
 
 MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 # À modifier
@@ -25,11 +25,11 @@ class MainWindowStim(QMainWindow):
     def __init__(self):
         super(MainWindowStim, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre du menu principal ###
-        self.SCREEN_WIDTH = 1920
-        self.SCREEN_HEIGTH = 1080
-        self.setFixedWidth(self.SCREEN_WIDTH)
-        self.setFixedHeight(self.SCREEN_HEIGTH)
-        #self.setGeometry(100, 50, SCREEN_WIDTH/1.2, SCREEN_HEIGTH/1.15)
+        # self.SCREEN_WIDTH = 1920
+        # self.SCREEN_HEIGTH = 1080
+        # self.setFixedWidth(self.SCREEN_WIDTH)
+        # self.setFixedHeight(self.SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
         self.setWindowTitle("Menu principal des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
         ## 1.2. ##
@@ -624,20 +624,21 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode7_length_imp(self.electrode7_ComboBox_length_imp)
         init_parameters.set_electrode8_length_imp(self.electrode8_ComboBox_length_imp)
         ### 4.5 - Vérification que toutes les informations sont entrées (appel a la fonction is_completed) ###
-        if self.is_completed(init_parameters) == True:
-            ### 4.5.1 - Vérification du danger et appel au bon menu (DangerPopUp ou InstructionWindow) ###
-            if self.danger_check(init_parameters) == True:
-                self.danger_pop_up_window = DangerPopUp(init_parameters)
-                self.danger_pop_up_window.setWindowModality(2) ## Bloque les inputs des autres fenêtres
-                self.danger_pop_up_window.show()
-                self.update()
-            else:
-                self.instruction_window = InstructionWindow(init_parameters)
-                self.close()
-                self.instruction_window.show()
-                self.update()
+        # if self.is_completed(init_parameters) == True:
+        #     ### 4.5.1 - Vérification du danger et appel au bon menu (DangerPopUp ou InstructionWindow) ###
+        #     if self.danger_check(init_parameters) == True:
+        #         self.danger_pop_up_window = DangerPopUp(init_parameters)
+        #         self.danger_pop_up_window.setWindowModality(2) ## Bloque les inputs des autres fenêtres
+        #         self.danger_pop_up_window.show()
+        #         self.update()
+        #     else:
+        #         self.instruction_window = InstructionWindow(init_parameters)
+        #         self.close()
+        #         self.instruction_window.show()
+        #         self.update()
         ### 4.6 - S'il manque des information, on affiche un message d'erreur ###
-        else:
+        # else:
+        if self.is_completed(init_parameters) == False:
             self.error_label.setText("Attention! Assurez-vous d'entrer trois valeurs de paramètres pour chaque électrode utilisées. Réessayer.")
             self.error_label.move(200,100)
             self.error_label.setFont(QFont('Arial', 20, weight = QFont.Bold))

@@ -94,7 +94,7 @@ class DangerPopUp(QWidget):
         self.back_to_menu_button.move(200, 500)
         self.back_to_menu_button.setFont(QFont('Arial', 12, weight = QFont.Bold))
         self.back_to_menu_button.adjustSize()
-        self.back_to_menu_button.clicked.connect(lambda:self.clicked_back())
+        # self.back_to_menu_button.clicked.connect(lambda:self.clicked_back())
         ### 1.6. Bouton pour poursuivre quand même ###
         self.continue_button = QtWidgets.QPushButton(self)
         self.continue_button.setText("   Poursuivre quand même   ")
@@ -102,7 +102,7 @@ class DangerPopUp(QWidget):
         self.continue_button.move(600, 500)
         self.continue_button.setFont(QFont('Arial', 12, weight = QFont.Bold))
         self.continue_button.adjustSize()
-        self.continue_button.clicked.connect(lambda:self.clicked_instruction(init_parameters))
+        # self.continue_button.clicked.connect(lambda:self.clicked_instruction(init_parameters))
     def clicked_back(self):
         self.close()
     def clicked_instruction(self, init_parameters):

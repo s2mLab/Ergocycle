@@ -16,7 +16,7 @@ from numpy import *
 import sys
 
 SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+SCREEN_HEIGTH = 1080 - 30
 MAX_AMPLITUDE = 130
 MIN_AMPLITUDE = 0
 MAX_FREQ = 50
@@ -28,11 +28,11 @@ class StimulationWindow(QWidget):
     def __init__(self, init_parameters):
         super(StimulationWindow, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
-        #self.setGeometry(100, 50, SCREEN_WIDTH/1.2, SCREEN_HEIGTH/1.15)
-        self.SCREEN_WIDTH = 1920
-        self.SCREEN_HEIGTH = 1080
-        self.setFixedWidth(self.SCREEN_WIDTH)
-        self.setFixedHeight(self.SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        # self.SCREEN_WIDTH = 1920
+        # self.SCREEN_HEIGTH = 1080
+        # self.setFixedWidth(self.SCREEN_WIDTH)
+        # self.setFixedHeight(self.SCREEN_HEIGTH)
         self.setWindowTitle("Menu des stimulations")
         self.setStyleSheet("background-color: white;")
         current_parameters = init_parameters
@@ -59,7 +59,7 @@ class StimulationWindow(QWidget):
         self.stop_button.move(1600, 50)
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
-        self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
+        # self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
         ### 1.6. ###
         #self.end_of_stim = False
         ### 1.7. Nouvelle méthode pour le timer ###
@@ -76,7 +76,7 @@ class StimulationWindow(QWidget):
         self.pauseWatch.setGeometry(1200, 187, 100, 40)
         self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
         self.pauseWatch.setFont(QFont('Arial', 20))
-        self.pauseWatch.pressed.connect(self.pause)
+        # self.pauseWatch.pressed.connect(self.pause)
         # objet timer
         timer = QTimer(self)
         timer.timeout.connect(self.showCounter)
@@ -348,7 +348,7 @@ class StimulationWindow(QWidget):
         self.increase_amplitude6_button.adjustSize()
         self.increase_amplitude7_button.adjustSize()
         self.increase_amplitude8_button.adjustSize()
-        self.increase_amplitude1_button.clicked.connect(lambda:self.increase_amplitude1(current_parameters)) 
+        # self.increase_amplitude1_button.clicked.connect(lambda:self.increase_amplitude1(current_parameters)) 
         self.increase_amplitude2_button.clicked.connect(lambda:self.increase_amplitude2(current_parameters)) 
         self.increase_amplitude3_button.clicked.connect(lambda:self.increase_amplitude3(current_parameters))
         self.increase_amplitude4_button.clicked.connect(lambda:self.increase_amplitude4(current_parameters))
@@ -1119,7 +1119,7 @@ class StimulationWindow(QWidget):
         self.end_of_stim = True
         #self.event_function("stop_stim")
         #self.close()
-        sys.exit()
+        # sys.exit()
 
 import datetime
 #amplitude : self.start_parameters[1,:]

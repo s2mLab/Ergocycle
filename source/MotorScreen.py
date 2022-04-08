@@ -87,7 +87,7 @@ class MotorScreen(Screen):
     
     def continue_button_clicked(self, motor_parameters):
         self.window_counter -= 1
-        self.manage_active_window(motor_parameters)
+        # self.manage_active_window(motor_parameters)
         self.confirm_menu.close()
         self.event_function("continue_training")
         
