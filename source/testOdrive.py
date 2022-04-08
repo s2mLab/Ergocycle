@@ -4,6 +4,7 @@ import odrive
 from odrive.enums import *
 import time
 import math
+import Motor 
 
 def test_vitesse (vitesse, carte : odrive):
     carte.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION 
@@ -65,8 +66,10 @@ print("starting calibration...")
 my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
 while my_drive.axis0.current_state != AXIS_STATE_IDLE:
     time.sleep(0.1)
-
+moteur = Motor('tsdz2', 0.1 , 0.5, 0.1, 0.5 , 50, 35, -35, 1, my_drive)
+moteur._couple_usager = 8 
+moteur.concentric_mode()
 #decommenter pour effectuer les tests
 #test_vitesse(1, my_drive)
-test_couple (0.5, my_drive)
+#test_couple (0.5, my_drive) 
 #my_drive.axis0.requested_state = AXIS_STATE_IDLE
