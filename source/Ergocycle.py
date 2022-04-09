@@ -4,7 +4,11 @@
 # from Crankset import Crankset
 # from Menu import Menu
 # from Motor import Motor
+<<<<<<< HEAD
 import numpy as numpy
+=======
+import numpy
+>>>>>>> fred
 from Screen import Screen as Screen
 from StimulationScreen import StimulationScreen as StimulationScreen
 from MotorScreen import MotorScreen
@@ -211,7 +215,7 @@ class Ergocycle():
             
         elif command == "start_training":
             self.stimulation_screen.next_window()
-            self.stimulation_screen.current_menu.get_initial_test_parameters(self.stim_parameters)
+            self.stimulation_screen.current_menu.get_test_parameters(self.stim_parameters)
             self.stimulation_screen.manage_active_window(self.stim_parameters)
             print("Ergocycle commanding to get initial training parameters") # +str(self.stimulation_screen.get_initial_training_parameters)
             
