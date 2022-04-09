@@ -156,8 +156,7 @@ class TestingWindow(QWidget):
     def clicked_back(self):
         self.close()
 
-    #def increase_amplitude(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-    def increase_amplitude(self, test_parameters): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
+    def increase_amplitude(self, test_parameters):
         # if (self.amplitude) < MAX_AMPLITUDE:
         #     self.amplitude = self.amplitude + 2
         #     self.test_amplitude_label.setText(str(self.amplitude))
@@ -181,7 +180,7 @@ class TestingWindow(QWidget):
         #     self.test_frequency_label.setText(str(self.frequency))
         #     self.test_frequency_label.adjustSize()
         #     self.get_updated_test_parameters(test_parameters)
-        if (self.frequency) < MAX_FREQ:
+        if (test_parameters.frequency) < MAX_FREQ:
             if (test_parameters.frequency) == 0:
                 test_parameters.frequency = 10
             else:

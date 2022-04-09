@@ -88,7 +88,7 @@ class StartWindow(QWidget):
     #     self.get_initial_test_parameters()
     #     self.update()
         
-    def get_initial_test_parameters(self, stim_parameters):
+    def get_test_parameters(self, stim_parameters):
         stim_parameters = numpy.array([0,30,200])
         #print(self.test_parameters)
         # return(self.test_parameters)
