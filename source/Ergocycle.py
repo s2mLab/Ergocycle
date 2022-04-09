@@ -4,6 +4,7 @@
 # from Crankset import Crankset
 # from Menu import Menu
 # from Motor import Motor
+import numpy as numpy
 from Screen import Screen as Screen
 from StimulationScreen import StimulationScreen as StimulationScreen
 from MotorScreen import MotorScreen
@@ -50,6 +51,7 @@ class Ergocycle():
         self.stim_test_parameters = TestParameters()
         self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         self.stimulation_screen.manage_active_window(self.stim_parameters)
+        self.stimulation_signal = []
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -148,46 +150,61 @@ class Ergocycle():
         
         if command == "start_test":
             self.stimulation_screen.window_counter = -1
-            self.stimulation_screen.current_menu.get_initial_test_parameters(self.stim_test_parameters)
+            self.stimulation_screen.current_menu.get_test_parameters(self.stim_test_parameters)
             self.stimulation_screen.manage_active_window(self.stim_test_parameters)
             print("Ergocycle commanding to get initial test parameters") # +str(self.stimulation_screen.get_initial_test_parameters)
-            print(f"Initial test parameters : {self.stim_test_parameters}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"Initial test parameters : {self.stimulation_signal}")
             
         elif command == "increase_amp":
             self.stimulation_screen.current_menu.increase_amplitude(self.stim_test_parameters)
             print("(Ergocycle) Test amplitude increased")
-            print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
             
         elif command == "increase_frequency":
             self.stimulation_screen.current_menu.increase_frequency(self.stim_test_parameters)
             print("(Ergocycle) Test frequency increased")
-            print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
             
         elif command == "increase_imp":
             self.stimulation_screen.current_menu.increase_imp(self.stim_test_parameters)
             print("(Ergocycle) Test impulsion increased")
-            print(f"Updated test imp : {self.stim_test_parameters.imp}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test imp : {self.stim_test_parameters.imp}")
         
         elif command == "decrease_amp":
             self.stimulation_screen.current_menu.decrease_amplitude(self.stim_test_parameters)
             print("(Ergocycle) Test amplitude decreased")
-            print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
             
         elif command == "decrease_frequency":
             self.stimulation_screen.current_menu.decrease_frequency(self.stim_test_parameters)
             print("(Ergocycle) Test frequency decreased")
-            print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
             
         elif command == "decrease_imp":
             self.stimulation_screen.current_menu.decrease_imp(self.stim_test_parameters)
             print("(Ergocycle) Test impulsion decreased")
-            print(f"Updated test parameters : {self.stim_test_parameters.imp}")
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            print(f"UPDATED test parameters : {self.stimulation_signal}")
+            #print(f"Updated test parameters : {self.stim_test_parameters.imp}")
             
         elif command == "back_button_clicked":
             self.stimulation_screen.current_menu.close()
             self.stimulation_screen.next_window()
             self.stimulation_screen.manage_active_window(self.stim_parameters)
             print("(Ergocycle) Done testing")
+            self.stimulation_signal = self.stim_test_parameters.set_to_off()
+            print(f"Initial test parameters : {self.stimulation_signal}")
         
         # elif command == "updated_test_parameters":
         #     print("Ergocycle commanding to get updated test parameters") # +str(self.stimulation_screen.get_updated_test_parameters)
