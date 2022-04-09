@@ -75,7 +75,7 @@ class StimulationWindow(QWidget):
         self.pauseWatch = QPushButton("Pause", self)
         self.pauseWatch.setGeometry(1200, 187, 100, 40)
         self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
-        self.pauseWatch.setFont(QFont('Arial', 20))
+        self.pauseWatch.setFont(QFont('Arial', 16))
         # self.pauseWatch.pressed.connect(self.pause)
         # objet timer
         timer = QTimer(self)
@@ -1059,6 +1059,8 @@ class StimulationWindow(QWidget):
         self.current_imp_label7_label.adjustSize()
         self.current_imp_label8_label.setText(current_parameters.get_electrode8_length_imp())
         self.current_imp_label8_label.adjustSize()
+        #self.update_parameters = numpy.empty([4,8],dtype=int)
+    def get_updated_parameters(self, current_parameters):
         self.update_parameters = numpy.empty([4,8],dtype=int)
         for i in range(len(self.update_parameters)):
             if i==0:
@@ -1069,7 +1071,8 @@ class StimulationWindow(QWidget):
                 self.update_parameters[i,:]=[current_parameters.get_electrode1_length_imp(),current_parameters.get_electrode2_length_imp(), current_parameters.get_electrode3_length_imp(), current_parameters.get_electrode4_length_imp(), current_parameters.get_electrode5_length_imp(), current_parameters.get_electrode6_length_imp(), current_parameters.get_electrode7_length_imp(),current_parameters.get_electrode8_length_imp()]
             if i==3:
                     self.update_parameters[i,:]=current_parameters.get_muscle_number()
-        print("updated parameters: ", self.update_parameters)
+        return(self.update_parameters)
+        #print("updated parameters: ", self.update_parameters)
     def showCounter(self):
         # Check the value of startWatch  variable to start or stop the Stop Watch
         if self.startWatch:
@@ -1107,11 +1110,13 @@ class StimulationWindow(QWidget):
 
     def pause(self):
         if self.pauseWatch.text() == 'Pause':
+            self.pauseWatch.setFont(QFont('Arial', 12))
             self.pauseWatch.setText('Reprendre')
             self.startWatch = False
             self.end_of_stim = True
         else:
             self.startWatch = True
+            self.pauseWatch.setFont(QFont('Arial', 16))
             self.pauseWatch.setText('Pause')
             self.end_of_stim = False
 

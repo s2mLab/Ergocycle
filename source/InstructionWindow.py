@@ -165,7 +165,7 @@ class InstructionWindow(QWidget):
                     self.start_parameters[i,:]=[init_parameters.get_electrode1_length_imp(),init_parameters.get_electrode2_length_imp(), init_parameters.get_electrode3_length_imp(), init_parameters.get_electrode4_length_imp(), init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(), init_parameters.get_electrode7_length_imp(),init_parameters.get_electrode8_length_imp()]
                 if i==3:
                     self.start_parameters[i,:]=init_parameters.get_muscle_number()
-        print("Start parameters: \n", self.start_parameters)
+        #print("Start parameters: \n", self.start_parameters)
         return(self.start_parameters)
     def create_file(self, init_parameters):
         self.file_object1 = open("InstructionWindowTestFile", "w+")

@@ -50,21 +50,21 @@ class StimulationScreen(Screen):
         #self.win.show()
         #sys.exit(self.app.exec_())
         
-    def get_initial_test_parameters(self, start_win):
-        self.initial_test_parameters = start_win.get_initial_test_parameters()
-        return(self.initial_test_parameters)
+    #def get_initial_test_parameters(self, start_win):
+        #self.initial_test_parameters = start_win.get_initial_test_parameters()
+        #return(self.initial_test_parameters)
     
-    def get_updated_test_parameters(self, testing_win):
-        self.updated_test_parameters = testing_win.get_updated_test_parameters()
-        return(self.updated_test_parameters)
+    #def get_updated_test_parameters(self, testing_win):
+        #self.updated_test_parameters = testing_win.get_updated_test_parameters()
+        #return(self.updated_test_parameters)
     
-    def get_initial_training_parameters(self, instruction_win):
-        self.initial_training_parameters = instruction_win.get_initial_parameters(Parameters)
-        return(self.initial_training_parameters)
+    #def get_initial_training_parameters(self, instruction_win):
+        #self.initial_training_parameters = instruction_win.get_initial_parameters(Parameters)
+        #return(self.initial_training_parameters)
     
-    def get_updated_training_parameters(self):
-        self.updated_training_parameters = self.get_initial_parameters(Parameters)
-        return(self.updated_test_parameters)  
+    #def get_updated_training_parameters(self):
+        #self.updated_training_parameters = self.get_initial_parameters(Parameters)
+        #return(self.updated_test_parameters)  
     
     def manage_active_window(self, stim_parameters):
         

@@ -25,5 +25,6 @@ class TestParameters():
         initial_test_parameters = numpy.array([[amp],[freq],[imp],[muscle]])
         return(initial_test_parameters)
     def set_to_off(self):
-        zero_parameters = numpy.array([[0],[0],[0],[0]])
+        zero_parameters = []
+        #zero_parameters = numpy.array([[0],[0],[0],[0]])
         return(zero_parameters)
