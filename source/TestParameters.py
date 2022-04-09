@@ -1,3 +1,4 @@
+import numpy as numpy
 # -*- coding: utf-8 -*-
 """
 Created on Thu Apr  7 21:06:49 2022
@@ -19,3 +20,10 @@ class TestParameters():
         self.amplitude = 0
         self.frequency = 30
         self.imp = 200
+        self.muscle = 1
+    def get_test_parameters(self,amp,freq,imp,muscle):
+        initial_test_parameters = numpy.array([[amp],[freq],[imp],[muscle]])
+        return(initial_test_parameters)
+    def set_to_off(self):
+        zero_parameters = numpy.array([[0],[0],[0],[0]])
+        return(zero_parameters)

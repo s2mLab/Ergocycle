@@ -66,10 +66,6 @@ class StimulationScreen(Screen):
         self.updated_training_parameters = self.get_initial_parameters(Parameters)
         return(self.updated_test_parameters)  
     
-    def get_something(self):
-        self.get_smth = "Ca fonctionne!"
-        return(self.get_smth)
-    
     def manage_active_window(self, stim_parameters):
         
         if self.window_counter == 0:
