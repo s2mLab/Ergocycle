@@ -174,13 +174,13 @@ class ActivityMenu(QWidget):
         # self.stop_button.clicked.connect(lambda:self.stop_clicked())   
         # self.button_dictionary[self.stop_button] = "stop_training"
         
-        self.error_button = QtWidgets.QPushButton(self) # Effacer cette section quand les erreurs pourront être détectées
-        self.error_button.setText("  ERREUR  ")
-        self.error_button.setStyleSheet("background-color: red; border: 2 solid;")
-        self.error_button.move(250, 850)
-        self.error_button.setFont(QFont('Arial', 44, weight = QFont.Bold))
-        self.error_button.adjustSize()
-        self.error_button.clicked.connect(lambda:self.simulate_error())
+        # self.error_button = QtWidgets.QPushButton(self) # Effacer cette section quand les erreurs pourront être détectées
+        # self.error_button.setText("  ERREUR  ")
+        # self.error_button.setStyleSheet("background-color: red; border: 2 solid;")
+        # self.error_button.move(250, 850)
+        # self.error_button.setFont(QFont('Arial', 44, weight = QFont.Bold))
+        # self.error_button.adjustSize()
+        # self.error_button.clicked.connect(lambda:self.simulate_error())
         
         self.update_labels(current_parameters)
         

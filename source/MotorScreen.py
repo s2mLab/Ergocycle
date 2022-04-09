@@ -51,7 +51,7 @@ class MotorScreen(Screen):
             self.current_menu.increase_training_length_button.clicked.connect(lambda : self.event_function("increase_training_length"))
             self.current_menu.decrease_training_length_button.clicked.connect(lambda : self.event_function("decrease_training_length"))
             self.current_menu.stop_button.clicked.connect(lambda : self.event_function("stop_training"))
-            self.current_menu.error_button.clicked.connect(lambda : self.event_function("stop_training"))
+            # self.current_menu.error_button.clicked.connect(lambda : self.event_function("stop_training"))
             
         elif self.window_counter == 2:
             # self.current_menu.close()
@@ -64,7 +64,7 @@ class MotorScreen(Screen):
             
         elif self.window_counter == 3:
             self.current_menu.close()
-            self.current_menu = SummaryMenu()
+            self.current_menu = SummaryMenu(motor_parameters)
             self.current_menu.show()
         
         

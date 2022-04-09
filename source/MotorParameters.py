@@ -24,6 +24,8 @@ class MotorParameters():
         self.target_power = 0
         self.training_length = 0
         self.distance = 0
+        self.average_power = 0
+        self.max_power = 0
         
         
     def get_training_type(self):
@@ -69,3 +71,11 @@ class MotorParameters():
     
     def get_distance(self):
         return self.distance
+    
+    def get_average_power(self):
+        return 0
+        # TODO : Calculer et retourner la puissance moyenne à partir des données enregistrées
+    
+    def get_max_power(self):
+        return 0
+        # TODO : Trouver et retourner la puissance maximale à partir des données enregistrées
