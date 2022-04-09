@@ -4,11 +4,7 @@
 # from Crankset import Crankset
 # from Menu import Menu
 # from Motor import Motor
-<<<<<<< HEAD
-import numpy as numpy
-=======
 import numpy
->>>>>>> fred
 from Screen import Screen as Screen
 from StimulationScreen import StimulationScreen as StimulationScreen
 from MotorScreen import MotorScreen
