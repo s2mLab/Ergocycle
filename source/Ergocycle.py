@@ -240,7 +240,10 @@ class Ergocycle():
                     self.stimulation_screen.manage_active_window(self.stim_parameters)
                     print("(Ergocycle) Verify unsafe parameters")
                 else:
-                    self.stimulation_screen.next_window()
+                    if self.stimulation_screen.window_counter == -2:
+                        self.stimulation_screen.next_window_special()
+                    else:
+                        self.stimulation_screen.next_window()
                     self.stimulation_screen.manage_active_window(self.stim_parameters)
                     #print("(Ergocycle) Starting stimulations...")
                     self.read_stimulation_screen("show_instructions")
