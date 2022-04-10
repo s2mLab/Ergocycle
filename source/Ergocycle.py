@@ -13,6 +13,8 @@ from Parameters import Parameters
 from TestParameters import TestParameters
 from MotorParameters import MotorParameters
 
+# from ReceiveDataClient import ReceiveDataClient
+
 from PyQt5.QtWidgets import QApplication
 
 import sys
@@ -52,6 +54,7 @@ class Ergocycle():
         self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         self.stimulation_screen.manage_active_window(self.stim_parameters)
         self.stimulation_signal = []
+        
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -61,6 +64,11 @@ class Ergocycle():
         # self.usbDriveWriter = CrankserRecorder(self.read_crankset)
         # self.motor_parameters = MotorParameters()
         # self.motor_parameters.register_observer(self)
+        
+        # self.data = ReceiveDataClient()
+        # TODO: Déplacer les deux lignes suivantes dans une boucle pour faire la prise de données
+        # self.data.receiveForce() # Stock un vecteur de 12 éléments dans data.message (pas de return)
+        # force = self.data.message
 
 
         #self.test_timer()
