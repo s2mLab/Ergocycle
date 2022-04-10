@@ -123,8 +123,8 @@ class ActivityMenu(QWidget):
         self.time_label.adjustSize()
         
         self.current_time_label = QtWidgets.QLabel(self)
-        # self.current_time_label.setText(str(current_parameters.get_time()))
-        self.current_time_label.move(1300, 600)
+        self.current_time_label.setText("00:00:00") # str(current_parameters.get_time()))
+        self.current_time_label.move(1250, 600)
         self.current_time_label.setFont(QFont('Arial', 24))
         self.current_time_label.adjustSize()
         # self.motor_parameters.start_time()

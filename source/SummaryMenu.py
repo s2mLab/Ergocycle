@@ -50,7 +50,7 @@ class SummaryMenu(QWidget):
         self.max_power_label.adjustSize()
         
         self.max_power = QtWidgets.QLabel(self)
-        self.max_power.setText(str(motor_parameters.get_max_power()))
+        self.max_power.setText(str(motor_parameters.get_max_power()) + " W")
         self.max_power.move(1300,400)
         self.max_power.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.max_power.adjustSize()
@@ -62,7 +62,7 @@ class SummaryMenu(QWidget):
         self.average_power_label.adjustSize()
         
         self.average_power = QtWidgets.QLabel(self)
-        self.average_power.setText(str(motor_parameters.get_average_power()))
+        self.average_power.setText(str(motor_parameters.get_average_power()) + " W")
         self.average_power.move(1300,500)
         self.average_power.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.average_power.adjustSize()
@@ -74,7 +74,7 @@ class SummaryMenu(QWidget):
         self.total_length_label.adjustSize()
         
         self.total_length = QtWidgets.QLabel(self)
-        self.total_length.setText(str(motor_parameters.get_training_length()))
+        self.total_length.setText(str(motor_parameters.get_training_length()) + " min")
         self.total_length.move(1300,600)
         self.total_length.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.total_length.adjustSize()
