@@ -38,6 +38,9 @@ class MotorParameters():
         # TODO: Ajouter la commande pour aller chercher les mesures de puissance
         return self.current_power
     
+    def set_current_power(self, power):
+        self.current_power = power
+    
     def get_target_power(self):
         return self.target_power
     

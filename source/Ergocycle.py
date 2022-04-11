@@ -96,26 +96,29 @@ class Ergocycle():
     def motor_control_function(self, name):
         # logging.info("Thread %s: starting", name)
         while(self.stop_motor == False):
-            time.sleep(1)
+            time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur
             print("Adjusting motor control...")
+            # self.motor.adjust_motor() # Remplacer cette ligne par la fonction qui fait l'asservissement du moteur
         print("Stopped motor control")
         # logging.info("Thread %s: finishing", name)
         
     def sensors_function(self, name):
         # logging.info("Thread %s: starting", name)
         while(self.stop_motor == False or self.stop_stimulations == False):
-            time.sleep(0.1)
+            time.sleep(0.1) # Changer la période à laquelle on veut récupérer les données
             # self.data.receiveForce() # Stock un vecteur de 12 éléments dans data.message (pas de return)
             # force = self.data.message
+            # self.motor_parameters.set_current_power(force[5] * ...) # Remplacer 5 par le bon indice du tableau et calculer la puissance \ partir du moment
             print("Receiving data from sensors...")
         print("Stopped receiveing data from sensors")
         # logging.info("Thread %s: finishing", name)
     
-    def stimulations_function(self, name):
+    def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
         # logging.info("Thread %s: starting", name)
         while(self.stop_stimulations == False):
-            time.sleep(0.1)
+            time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
             print("Sending new stimulation data...")
+            # TODO : Ajouter les commandes à envoyer à chaque période
         print("Stopped stimulations")
         # logging.info("Thread %s: finishing", name)
 
