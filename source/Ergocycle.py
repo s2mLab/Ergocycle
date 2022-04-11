@@ -13,7 +13,9 @@ from Parameters import Parameters
 from TestParameters import TestParameters
 from MotorParameters import MotorParameters
 
-# from ReceiveDataClient import ReceiveDataClient
+# from ReceiveDataClient import ReceiveDataClient # Décommenter lorsque la classe sera ajoutée au git
+
+from PyQt5.QtCore import QTimer, QTime
 
 from PyQt5.QtWidgets import QApplication
 
@@ -27,7 +29,7 @@ import sys
 #from Observable import Observable
 
 import threading
-import logging
+# import logging
 import time
 
 """
@@ -57,16 +59,21 @@ class Ergocycle():
         self.stimulation_screen.manage_active_window(self.stim_parameters)
         self.stimulation_signal = []
         
-        self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,))
-        self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,))
-        self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,))
+        self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,), daemon=True)
+        self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,), daemon=True)
+        # self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,), daemon=True)
         
         self.stop_motor = False
-        self.stop_stimulations = False
+        self.stop_sensors = False
+        # self.stop_stimulations = False
         
-        self.thread_motor_control.start()
-        self.thread_sensors.start()
-        self.thread_stimulations.start()
+        # self.thread_motor_control.start()
+        # self.thread_sensors.start()
+        # self.thread_stimulations.start()
+        
+        
+        # self.timer = QTimer(self)
+        
         
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
@@ -97,30 +104,35 @@ class Ergocycle():
         # logging.info("Thread %s: starting", name)
         while(self.stop_motor == False):
             time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur
-            print("Adjusting motor control...")
+            print("(Ergocycle) Adjusting motor control...")
             # self.motor.adjust_motor() # Remplacer cette ligne par la fonction qui fait l'asservissement du moteur
-        print("Stopped motor control")
+        print("(Ergocycle) Stopped motor control thread")
+        # self.thread_motor_control.join()
+        # self.assistance_screen.read_assistance_screen("stop_training")
         # logging.info("Thread %s: finishing", name)
         
     def sensors_function(self, name):
         # logging.info("Thread %s: starting", name)
-        while(self.stop_motor == False or self.stop_stimulations == False):
+        while(self.stop_sensors == False):
             time.sleep(0.1) # Changer la période à laquelle on veut récupérer les données
             # self.data.receiveForce() # Stock un vecteur de 12 éléments dans data.message (pas de return)
             # force = self.data.message
-            # self.motor_parameters.set_current_power(force[5] * ...) # Remplacer 5 par le bon indice du tableau et calculer la puissance \ partir du moment
-            print("Receiving data from sensors...")
-        print("Stopped receiveing data from sensors")
+            # self.motor_parameters.set_current_power((force[5] + force[11]) / 2 * ...) # Calculer la puissance à partir des moments (force[5] = couple gauche, force[11] = couple droit)
+            print("(Ergocycle) Receiving data from sensors...")
+        print("(Ergocycle) Stopped data acquisition thread")
+        # self.thread_sensors.join()
         # logging.info("Thread %s: finishing", name)
     
-    def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
-        # logging.info("Thread %s: starting", name)
-        while(self.stop_stimulations == False):
-            time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
-            print("Sending new stimulation data...")
-            # TODO : Ajouter les commandes à envoyer à chaque période
-        print("Stopped stimulations")
-        # logging.info("Thread %s: finishing", name)
+    # def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
+    #     # logging.info("Thread %s: starting", name)
+    #     while(self.stop_stimulations == False and self.stop_motor == False):
+    #         time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
+    #         print("(Ergocycle) Sending new stimulation data...")
+    #         # TODO : Ajouter les commandes à envoyer à chaque période
+    #     print("(Ergocycle) Stopped stimulations thread")
+    #     # self.thread_stimulations.join()
+    #     # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
+    #     # logging.info("Thread %s: finishing", name)
 
     def read_assistance_screen(self, command):
         # if command == "command_amplitude":
@@ -130,6 +142,9 @@ class Ergocycle():
         #     print("(Ergocycle) TESTING EVENT")
             
         if command == "start_training":
+            self.thread_motor_control.start()
+            self.thread_sensors.start()
+            
             self.assistance_screen.next_window()
             self.assistance_screen.current_menu.submit_clicked(self.motor_parameters)
             
@@ -183,11 +198,12 @@ class Ergocycle():
         
         elif command == "confirmed_stop_training":
             print("(Ergocycle) Stopping training...")
-            self.stop_motor = True
             
             # TODO: Éteindre le moteur et arrêter l'entraînement
+            self.stop_motor = True
             
             # TODO: Arrêter la prise de données
+            self.stop_sensors = True
             
             # TODO: Enregistrer les données dans un fichier
             
@@ -200,6 +216,8 @@ class Ergocycle():
         #     print("(Ergocycle) Commanding a test ") # + str(self.stimulation_screen.get_something()))
         
         if command == "start_test":
+            # self.thread_stimulations.start()
+            
             self.stimulation_screen.window_counter = -1
             self.stimulation_screen.current_menu.get_test_parameters(self.stim_test_parameters)
             self.stimulation_screen.manage_active_window(self.stim_test_parameters)
@@ -250,6 +268,8 @@ class Ergocycle():
             #print(f"Updated test parameters : {self.stim_test_parameters.imp}")
             
         elif command == "back_button_clicked":
+            # self.thread_stimulations.pause()
+            
             self.stimulation_screen.current_menu.close()
             self.stimulation_screen.next_window()
             self.stimulation_screen.manage_active_window(self.stim_parameters)
@@ -261,6 +281,8 @@ class Ergocycle():
         #     print("Ergocycle commanding to get updated test parameters") # +str(self.stimulation_screen.get_updated_test_parameters)
             
         elif command == "start_training":
+            # self.thread_stimulations.start()
+            
             self.stimulation_screen.next_window()
             self.stimulation_screen.current_menu.get_test_parameters(self.stim_parameters)
             self.stimulation_screen.manage_active_window(self.stim_parameters)
@@ -302,6 +324,7 @@ class Ergocycle():
             print("(Ergocycle) Instructions...")
         
         elif command == "start_stimulations":
+            # self.thread_stimulations.start()
             # self.stimulation_screen.current_menu.clicked_start(self.stim_parameters)
             if self.stimulation_screen.current_menu.com_start_feedback == True:
                 self.stimulation_screen.current_menu.get_initial_parameters(self.stim_parameters)

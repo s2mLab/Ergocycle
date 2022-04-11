@@ -116,6 +116,27 @@ class ActivityMenu(QWidget):
         self.current_distance_label.setFont(QFont('Arial', 24))
         self.current_distance_label.adjustSize()
         
+        # self.counter = 0
+        # self.minute = '00'
+        # self.second = '00'
+        # self.count = '00'
+        # self.MAX_TIME = int(current_parameters.get_training_length())
+        # self.time_label = QtWidgets.QLabel(self)
+        # self.time_label.setGeometry(900, 175, 150, 70)
+        # self.startWatch = True
+        
+        # # Bouton pause du timer 
+        # # self.pauseWatch = QtWidgets.QPushButton("Pause", self)
+        # # self.pauseWatch.setGeometry(1200, 187, 100, 40)
+        # # self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
+        # # self.pauseWatch.setFont(QFont('Arial', 16))
+        # # self.pauseWatch.pressed.connect(self.pause)
+        
+        # # objet timer
+        # timer = QTimer(self)
+        # timer.timeout.connect(self.showCounter)
+        # timer.start(100)
+        
         self.time_label = QtWidgets.QLabel(self)
         self.time_label.setText("Temps écoulé")
         self.time_label.move(300, 600)
@@ -193,7 +214,33 @@ class ActivityMenu(QWidget):
         self.stop_window.show()
         self.stop_window.confirmation_button.clicked.connect(lambda:self.close())
         # self.button_dictionary[self.stop_button] = "stop_training"
-        
+    
+    def showCounter(self):
+        # Check the value of startWatch  variable to start or stop the Stop Watch
+        if self.startWatch:
+            # Increment counter by 1
+            self.counter += 1
+
+            # Count and set the time counter value
+            cnt = int((self.counter/10 - int(self.counter/10))*10)
+            self.count = '0' + str(cnt)
+
+            # Set the second value
+            if int(self.counter/10) < 10 :
+                self.second = '0' + str(int(self.counter / 10))
+            else:
+                self.second = str(int(self.counter / 10))
+                # Set the minute value
+                if self.counter / 10 == 60.0 :
+                    self.second == '00'
+                    self.counter = 0
+                    min = int(self.minute) + 1
+                    if min == self.MAX_TIME:
+                        self.close()
+                    if min < 10 :
+                        self.minute = '0' + str(min)
+                    else:
+                        self.minute = str(min)
         
     def update_labels(self, current_parameters):
         

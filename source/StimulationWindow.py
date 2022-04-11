@@ -25,7 +25,7 @@ MAX_IMP = 500
 MIN_IMP = 0
 
 class StimulationWindow(QWidget):
-    def __init__(self, init_parameters):
+    def __init__(self, current_parameters):
         super(StimulationWindow, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
@@ -35,8 +35,9 @@ class StimulationWindow(QWidget):
         # self.setFixedHeight(self.SCREEN_HEIGTH)
         self.setWindowTitle("Menu des stimulations")
         self.setStyleSheet("background-color: white;")
-        current_parameters = init_parameters
+        # current_parameters = init_parameters
         self.initUI(current_parameters)
+        
     def initUI(self, current_parameters):  
         ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
