@@ -27,6 +27,8 @@ import sys
 #from Observable import Observable
 
 import threading
+import logging
+import time
 
 """
 Choices for the events:
@@ -55,6 +57,17 @@ class Ergocycle():
         self.stimulation_screen.manage_active_window(self.stim_parameters)
         self.stimulation_signal = []
         
+        self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,))
+        self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,))
+        self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,))
+        
+        self.stop_motor = False
+        self.stop_stimulations = False
+        
+        self.thread_motor_control.start()
+        self.thread_sensors.start()
+        self.thread_stimulations.start()
+        
         #self.crankset = CranksetCommunicator(self.read_crankset)
         # self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
         # self.motor = Motor()
@@ -79,6 +92,32 @@ class Ergocycle():
         # self.stimulation_screen.start_stimulation_application()
         
         # sys.exit(self.application.exec_())
+    
+    def motor_control_function(self, name):
+        # logging.info("Thread %s: starting", name)
+        while(self.stop_motor == False):
+            time.sleep(1)
+            print("Adjusting motor control...")
+        print("Stopped motor control")
+        # logging.info("Thread %s: finishing", name)
+        
+    def sensors_function(self, name):
+        # logging.info("Thread %s: starting", name)
+        while(self.stop_motor == False or self.stop_stimulations == False):
+            time.sleep(0.1)
+            # self.data.receiveForce() # Stock un vecteur de 12 éléments dans data.message (pas de return)
+            # force = self.data.message
+            print("Receiving data from sensors...")
+        print("Stopped receiveing data from sensors")
+        # logging.info("Thread %s: finishing", name)
+    
+    def stimulations_function(self, name):
+        # logging.info("Thread %s: starting", name)
+        while(self.stop_stimulations == False):
+            time.sleep(0.1)
+            print("Sending new stimulation data...")
+        print("Stopped stimulations")
+        # logging.info("Thread %s: finishing", name)
 
     def read_assistance_screen(self, command):
         # if command == "command_amplitude":
@@ -141,6 +180,7 @@ class Ergocycle():
         
         elif command == "confirmed_stop_training":
             print("(Ergocycle) Stopping training...")
+            self.stop_motor = True
             
             # TODO: Éteindre le moteur et arrêter l'entraînement
             
@@ -574,6 +614,7 @@ class Ergocycle():
             self.stimulation_screen.current_menu.clicked_stop()
             self.stimulation_screen.next_window()
             self.stimulation_screen.manage_active_window(self.stim_parameters)
+            self.stop_stimulations = True
             print("(Ergocycle) Stopping stimulations...")
             
         else:
