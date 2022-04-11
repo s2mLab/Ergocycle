@@ -61,11 +61,11 @@ class Ergocycle():
         
         self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,), daemon=True)
         self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,), daemon=True)
-        # self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,), daemon=True)
+        self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,), daemon=True)
         
         self.stop_motor = False
         self.stop_sensors = False
-        # self.stop_stimulations = False
+        self.stop_stimulations = False
         
         # self.thread_motor_control.start()
         # self.thread_sensors.start()
@@ -123,16 +123,16 @@ class Ergocycle():
         # self.thread_sensors.join()
         # logging.info("Thread %s: finishing", name)
     
-    # def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
-    #     # logging.info("Thread %s: starting", name)
-    #     while(self.stop_stimulations == False and self.stop_motor == False):
-    #         time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
-    #         print("(Ergocycle) Sending new stimulation data...")
-    #         # TODO : Ajouter les commandes à envoyer à chaque période
-    #     print("(Ergocycle) Stopped stimulations thread")
-    #     # self.thread_stimulations.join()
-    #     # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
-    #     # logging.info("Thread %s: finishing", name)
+    def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
+        # logging.info("Thread %s: starting", name)
+        while(self.stop_stimulations == False and self.stop_motor == False):
+            time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
+            print("(Ergocycle) Sending new stimulation data...")
+            # TODO : Ajouter les commandes à envoyer à chaque période
+        print("(Ergocycle) Stopped stimulations thread")
+        # self.thread_stimulations.join()
+        # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
+        # logging.info("Thread %s: finishing", name)
 
     def read_assistance_screen(self, command):
         # if command == "command_amplitude":
@@ -188,6 +188,8 @@ class Ergocycle():
             print("(Ergocycle) Training length decreased")
             
         elif command == "stop_training":
+            self.final_time = self.assistance_screen.current_menu.current_time_label.text()
+            
             self.assistance_screen.next_window()
             self.assistance_screen.manage_active_window(self.motor_parameters)
             # self.assistance_screen.current_menu.stop_clicked()
@@ -198,7 +200,7 @@ class Ergocycle():
         
         elif command == "confirmed_stop_training":
             print("(Ergocycle) Stopping training...")
-            
+            self.assistance_screen.current_menu.total_length.setText(self.final_time)
             # TODO: Éteindre le moteur et arrêter l'entraînement
             self.stop_motor = True
             

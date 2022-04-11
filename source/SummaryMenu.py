@@ -74,10 +74,12 @@ class SummaryMenu(QWidget):
         self.total_length_label.adjustSize()
         
         self.total_length = QtWidgets.QLabel(self)
-        self.total_length.setText(str(motor_parameters.get_training_length()) + " min")
-        self.total_length.move(1300,600)
-        self.total_length.setFont(QFont('Arial', 24, weight = QFont.Bold))
-        self.total_length.adjustSize()
+        # self.total_length.setText(str(motor_parameters.get_training_length()) + " min")
+        self.total_length.setGeometry(1300, 590, 100, 70)
+        self.total_length.setFont(QFont('Arial', 12))
+        # self.total_length.move(1300,600)
+        # self.total_length.setFont(QFont('Arial', 24, weight = QFont.Bold))
+        # self.total_length.adjustSize()
         
         # self.label = QtWidgets.QLabel(self)
         # self.label.setText("Nombre d'ajustement du moteur : ")

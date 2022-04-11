@@ -31,7 +31,6 @@ class MotorScreen(Screen):
         # self.connect_buttons(self.main_window_motor)
         self.current_menu = 0
         self.confirm_menu = 0
-        
     
     def manage_active_window(self, motor_parameters):
         

@@ -33,20 +33,6 @@ class ActivityMenu(QWidget):
         self.setStyleSheet("background-color: white;")
         # self.button_dictionary = {}
         
-        # self.timer = QTimer(self)
-        # self.time = QTime(0, 0, 0)
-        # self.timer.setInterval(1000)
-        
-        # self.counter = 0
-        # self.second = '00'
-        # self.minute = '00'
-        # self.count = '00'
-        # self.start_timer - False
-        
-        
-        # self.timer.timeout.connect(self.timer_event)
-        # self.timer.start(1000)
-        
         self.initUI(motor_parameters)
 
     def initUI(self, current_parameters):
@@ -116,38 +102,29 @@ class ActivityMenu(QWidget):
         self.current_distance_label.setFont(QFont('Arial', 24))
         self.current_distance_label.adjustSize()
         
-        # self.counter = 0
-        # self.minute = '00'
-        # self.second = '00'
-        # self.count = '00'
-        # self.MAX_TIME = int(current_parameters.get_training_length())
-        # self.time_label = QtWidgets.QLabel(self)
-        # self.time_label.setGeometry(900, 175, 150, 70)
-        # self.startWatch = True
-        
-        # # Bouton pause du timer 
-        # # self.pauseWatch = QtWidgets.QPushButton("Pause", self)
-        # # self.pauseWatch.setGeometry(1200, 187, 100, 40)
-        # # self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
-        # # self.pauseWatch.setFont(QFont('Arial', 16))
-        # # self.pauseWatch.pressed.connect(self.pause)
-        
-        # # objet timer
-        # timer = QTimer(self)
-        # timer.timeout.connect(self.showCounter)
-        # timer.start(100)
-        
         self.time_label = QtWidgets.QLabel(self)
         self.time_label.setText("Temps écoulé")
         self.time_label.move(300, 600)
         self.time_label.setFont(QFont('Arial', 24, weight = QFont.Bold))
         self.time_label.adjustSize()
         
+        self.counter = 0
+        self.minute = '00'
+        self.second = '00'
+        self.count = '00'
+        self.MAX_TIME = int(current_parameters.get_training_length())
+        self.startWatch = True
+
+        timer = QTimer(self)
+        timer.timeout.connect(self.showCounter)
+        timer.start(100)
+        
         self.current_time_label = QtWidgets.QLabel(self)
-        self.current_time_label.setText("00:00:00") # str(current_parameters.get_time()))
-        self.current_time_label.move(1250, 600)
-        self.current_time_label.setFont(QFont('Arial', 24))
-        self.current_time_label.adjustSize()
+        self.current_time_label.setText("00:00") # str(current_parameters.get_time()))
+        # self.current_time_label.move(1250, 600)
+        self.current_time_label.setGeometry(1270, 600, 100, 70)
+        self.current_time_label.setFont(QFont('Arial', 12))
+        # self.current_time_label.adjustSize()
         # self.motor_parameters.start_time()
         # self.current_time_label.setText(self.motor_parameters.time.toString('hh:mm:ss'))
         
@@ -241,6 +218,14 @@ class ActivityMenu(QWidget):
                         self.minute = '0' + str(min)
                     else:
                         self.minute = str(min)
+        #if min == self.MAX_TIME:
+            #print('hi')
+            #self.close()
+
+        # Merge the mintue, second and count values
+        text = self.minute + ':' + self.second
+        # Display the stop watch values in the label
+        self.current_time_label.setText('<h1 style="color:black">' + text + '</h1>')
         
     def update_labels(self, current_parameters):
         
