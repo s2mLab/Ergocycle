@@ -1,35 +1,52 @@
-import nidaqmx
-import keyboard
-import time
-import csv
+from Crankset import Crankset
 import numpy as np
-from datetime import datetime
-from crankset import DataCrankset
+import csv
+import time
 
-class CranksetRecorder(DataCrankset):
 
-    def __init__(self, ergocycle_command_function):
-        super().__init__(ergocycle_command_function)
+class CSV(Crankset):
+    def __init__(self):
+        super().__init__()
 
-    def loop(self,Ts):
-        #Ts is the sampling time
-        k=0
+    def writef(self, t, x):
+        timestr = self.now.strftime("%m_%d_%Y, %H;%M;%S")
+        file = open(timestr + " force.csv", "a")  # Open the csv file
+
+        # time = str(t)
+        value = np.append(t, x)
+
+        # create the csv writter
+        writer = csv.writer(file)
+
+        # write a row to the csv file
+        writer.writerow(map(lambda y: [y], value))
+
+    # file.write(time+ "\t" + value)
+        # file.write("\n")
+
+        # Close the csv file
+        file.close()
+
+    def loop(self, Ts):
+        # Ts is the sampling time
+        nmbOfVal = 0
+
         while True:
-            valuef=readcard()
-            k= k+1
+            valuef = self.readcard()
+            valueangle= self.readangle()
+            nmbOfVal = nmbOfVal+1
 
+            # Find the Force/Torque data Left
+            forceL = self.multGU(self.gL, valuef[0:6])
+            forceR = self.multGU(self.gR, valuef[6:12])
+            vectforce = np.append(forceL, forceR,valueangle)
+            self.writef(nmbOfVal*Ts, vectforce)
+            # print("valeurk",vectforce[0],nmbOfVal)
 
-            #Find the Force/Torque data Left
-            forceL = multGU(gL,valuef[0:6])
-            forceR = multGU(gR, valuef[6:12])
-            self.vectforce = np.append(forceL,forceR)
-            self.ergocycle_command_function(1, self.getAvgMoment())
-            writef(k*Ts,vectforce)
-            print("valeurk",vectforce[0],k)
-
-            #To stop the while
-            if thick == 1:
+            # To stop the while
+            if nmbOfVal == int(250):
                 print("You stop the acquisition")
                 break
 
             time.sleep(Ts)
+
