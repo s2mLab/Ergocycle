@@ -46,7 +46,7 @@ class Stimulator:
 
 
     # Constuctor
-    def __init__(self, ts2, StimulationSignal, port_path): #Changer ts1 pour 1/StimulationSignal.frequency
+    def __init__(self, StimulationSignal, port_path): #Changer ts1 pour 1/StimulationSignal.frequency
     # ---- StimulationSignal = Contient les infos d'amplitude, de fréquence, de durée d'impulsion et le nom du muscle pour chaque électrode ---- #
     # ---- ts1 = Main stimulation interval                                 ---- #
     # ---- ts2 = Inter pulse interval (use only if use duplet or triplet)  ---- #
@@ -57,7 +57,7 @@ class Stimulator:
         self.matrice = StimulationSignal
         self.electrode_number = 0
         idx = []
-            
+        print(StimulationSignal)   
         for i in range(0,8):
             if StimulationSignal[0][i]==0:
                 idx.append(i)
@@ -87,36 +87,65 @@ class Stimulator:
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
         
-
+        #self.initialise_connection()
+        #self.stimulation_220_10()
         """
         while True:
             received_packet= self.read_packets()
             self.init_ACK(received_packet)
             time.sleep(self.INIT_REPETITION_TIME)
         return"""
+        
+        
+    def initialise_connection(self):
+        
         while (1):
             if (self.port.in_waiting>0):
                 self.calling_ACK()
                 break
-        self.set_stim_biceps_DeltPost() 
-       
+        
+    def stimulation_220_10(self):
+        
+        self.set_stim_biceps_DeltPost()
         self.set_StimulationSignal(self.StimulationSignal)
         
         starttime = time.time()
         timer = 0
         self.send_packet('InitChannelListMode', self.packet_count)
         
-        while timer < 5.00:
+        #À MODIFIER POUR AVOIR ANGLES À LA PLACE 
+        ### while (1)
+        ###     self.send_packet('StartChannelListMode', self.packet_count)
+        ### AJOUTER BREAK DANS ERGOCYCLE
+        while timer < 5.00: 
             timer = round(time.time()-starttime,2)
             self.send_packet('StartChannelListMode', self.packet_count)
-            print(self.read_packets()[7])
             time.sleep(1/self.frequency[0])
             if timer >=(5.00-(1/self.frequency[0])): 
                 break
        
-       
+    def stimulation_20_180(self):
         
+        self.set_stim_triceps_DeltAnt()
+        self.set_StimulationSignal(self.StimulationSignal)
         
+        starttime = time.time()
+        timer = 0
+        self.send_packet('InitChannelListMode', self.packet_count)
+        
+        #À MODIFIER POUR AVOIR ANGLES À LA PLACE 
+        ### while (1)
+        ###     self.send_packet('StartChannelListMode', self.packet_count)
+        ### AJOUTER BREAK DANS ERGOCYCLE
+        while timer < 5.00: 
+            timer = round(time.time()-starttime,2)
+            self.send_packet('StartChannelListMode', self.packet_count)
+            time.sleep(1/self.frequency[0])
+            if timer >=(5.00-(1/self.frequency[0])): 
+                break
+        
+    def set_matrice(self, Signal):
+         self.matrice = Signal
         
     # Function to modify the stimulation's parameters
     def set_StimulationSignal(self,StimulationSignal):
@@ -141,7 +170,7 @@ class Stimulator:
         biceps_DeltPost = np.copy(self.matrice)
         for j in range(np.shape(self.matrice)[1]): 
             
-            if(self.matrice[3][j] == 1 or self.matrice[3][j]== 3):
+            if(self.matrice[3][j] == 2 or self.matrice[3][j]== 4):
                 biceps_DeltPost[:,j]=0
        
         
@@ -164,7 +193,7 @@ class Stimulator:
         self.electrode_number = 0
         for j in range(np.shape(self.matrice)[1]): 
             
-            if(self.matrice[3][j] == 2 or self.matrice[3][j]== 4):
+            if(self.matrice[3][j] == 1 or self.matrice[3][j]== 3):
                 triceps_DeltAnt[:,j]=0
                 
         for i in range(0,8):

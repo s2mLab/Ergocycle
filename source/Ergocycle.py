@@ -20,8 +20,7 @@ from PyQt5.QtCore import QTimer, QTime
 from PyQt5.QtWidgets import QApplication
 
 import sys
-# from StimulationSignal import StimulationSignal
-#from Stimulator import Stimulator as Stimulator
+from Stimulator import Stimulator
 #import MainWindowStim
 #import main_sef
 #import InstructionWindow
@@ -59,7 +58,7 @@ class Ergocycle():
         self.stimulation_screen.manage_active_window(self.stim_parameters)
         self.stimulation_signal = []
         
-        self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,), daemon=True)
+        #self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,), daemon=True)
         self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,), daemon=True)
         self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,), daemon=True)
         
@@ -125,10 +124,15 @@ class Ergocycle():
     
     def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
         # logging.info("Thread %s: starting", name)
+        
+        stimulator = Stimulator(self.stimulation_signal, 'COM6')
         while(self.stop_stimulations == False and self.stop_motor == False):
-            time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
+            
+            Stimulator.initialise_connection(stimulator)
+           # time.sleep(0.1) # Changer la période à laquelle on veut ajuster les stimulations
+            Stimulator.stimulation_220_10(stimulator)
             print("(Ergocycle) Sending new stimulation data...")
-            # TODO : Ajouter les commandes à envoyer à chaque période
+            
         print("(Ergocycle) Stopped stimulations thread")
         # self.thread_stimulations.join()
         # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
@@ -283,6 +287,7 @@ class Ergocycle():
         #     print("Ergocycle commanding to get updated test parameters") # +str(self.stimulation_screen.get_updated_test_parameters)
             
         elif command == "start_training":
+            
             # self.thread_stimulations.start()
             
             self.stimulation_screen.next_window()
@@ -337,7 +342,8 @@ class Ergocycle():
                 print(f"Initial training parameters : {self.stimulation_signal}")
             else:
                 self.stimulation_screen.current_menu.start_button.setEnabled(False)
-        
+            self.thread_stimulations.start()
+            
         elif command == "increase_amplitude1":
             self.stimulation_screen.current_menu.increase_amplitude1(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
