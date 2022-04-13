@@ -140,21 +140,28 @@ class ActivityMenu(QWidget):
         self.current_training_length_label.setFont(QFont('Arial', 24))
         self.current_training_length_label.adjustSize()
         
-        self.increase_training_length_button = QtWidgets.QPushButton(self)
-        self.increase_training_length_button.setText("     +     ")
-        self.increase_training_length_button.move(1100, 723)
-        self.increase_training_length_button.setFont(QFont('Arial', 28))
-        self.increase_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
-        self.increase_training_length_button.adjustSize()
+        self.time_status_label = QtWidgets.QLabel(self)
+        self.time_status_label.setText("")
+        self.time_status_label.move(625, 800)
+        self.time_status_label.setFont(QFont('Arial', 28))
+        self.time_status_label.setStyleSheet("color: green")
+        # self.time_status_label.adjustSize()
+        
+        # self.increase_training_length_button = QtWidgets.QPushButton(self)
+        # self.increase_training_length_button.setText("     +     ")
+        # self.increase_training_length_button.move(1100, 723)
+        # self.increase_training_length_button.setFont(QFont('Arial', 28))
+        # self.increase_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
+        # self.increase_training_length_button.adjustSize()
         # self.increase_training_length_button.clicked.connect(lambda:self.increase_training_length(current_parameters))  
         # self.button_dictionary[self.increase_training_length_button] = "increase_training_length"
         
-        self.decrease_training_length_button = QtWidgets.QPushButton(self)
-        self.decrease_training_length_button.setText("     -     ")
-        self.decrease_training_length_button.move(1420, 723)
-        self.decrease_training_length_button.setFont(QFont('Arial', 28))
-        self.decrease_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
-        self.decrease_training_length_button.adjustSize()
+        # self.decrease_training_length_button = QtWidgets.QPushButton(self)
+        # self.decrease_training_length_button.setText("     -     ")
+        # self.decrease_training_length_button.move(1420, 723)
+        # self.decrease_training_length_button.setFont(QFont('Arial', 28))
+        # self.decrease_training_length_button.setStyleSheet("background-color: palegreen; border: 2 solid; border-radius: 1")
+        # self.decrease_training_length_button.adjustSize()
         # self.decrease_training_length_button.clicked.connect(lambda:self.decrease_training_length(current_parameters)) 
         # self.button_dictionary[self.decrease_training_length_button] = "decrease_training_length"
         
@@ -182,9 +189,9 @@ class ActivityMenu(QWidget):
         
         self.update_labels(current_parameters)
         
-    def simulate_error(self): # À enlever
-        self.error_window = ErrorMenu()
-        self.error_window.show()
+    # def simulate_error(self): # À enlever
+    #     self.error_window = ErrorMenu()
+    #     self.error_window.show()
       
     def stop_clicked(self):
         self.stop_window = StopMenu()
@@ -213,14 +220,13 @@ class ActivityMenu(QWidget):
                     self.counter = 0
                     min = int(self.minute) + 1
                     if min == self.MAX_TIME:
-                        self.close()
+                        # self.close()
+                        self.time_status_label.setText("Le temps d'entraînement visé est terminé")
+                        self.time_status_label.adjustSize()
                     if min < 10 :
                         self.minute = '0' + str(min)
                     else:
                         self.minute = str(min)
-        #if min == self.MAX_TIME:
-            #print('hi')
-            #self.close()
 
         # Merge the mintue, second and count values
         text = self.minute + ':' + self.second

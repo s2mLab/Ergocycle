@@ -80,7 +80,7 @@ class MainWindowMotor(QMainWindow):
         self.training_length_label.adjustSize()
         
         self.training_length_ComboBox = QComboBox(self)
-        self.training_length_ComboBox.addItems(["5", "10", "15", "20", "25", "30"])
+        self.training_length_ComboBox.addItems(["1", "5", "10", "15", "20", "25", "30"])
         self.training_length_ComboBox.move(1300,700)
         self.training_length_ComboBox.setFont(QFont('Arial', 24))
         self.training_length_ComboBox.adjustSize()

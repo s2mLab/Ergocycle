@@ -107,7 +107,19 @@ class Ergocycle():
         while(self.stop_motor == False):
             time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur
             print("(Ergocycle) Adjusting motor control...")
+            
+            # if self.assistance_screen.window_counter == 1: # Vérification si le temps d'entraînement est atteint
+            #     if int(self.assistance_screen.current_menu.minute) >= self.motor_parameters.get_training_length():
+            #         self.times_up()
+            #         # self.final_time = self.assistance_screen.current_menu.current_time_label.text()
+            #         # self.assistance_screen.window_counter = 3
+            #         # self.assistance_screen.manage_active_window(self.motor_parameters)
+            #         # self.stop_motor = True
+            #         # self.stop_sensors = True
+            #         # self.stop_stimulations = True
+                    
             # self.motor.adjust_motor() # Remplacer cette ligne par la fonction qui fait l'asservissement du moteur
+        
         print("(Ergocycle) Stopped motor control thread")
         # self.thread_motor_control.join()
         # self.assistance_screen.read_assistance_screen("stop_training")
@@ -216,11 +228,13 @@ class Ergocycle():
             # TODO: Éteindre le moteur et arrêter l'entraînement
             self.stop_motor = True
             self.motor_on = False
+            
             # TODO: Arrêter la prise de données
             self.stop_sensors = True
             
             # TODO: Enregistrer les données dans un fichier
             
+            # TODO: Calculer les puissances moyennes et maximales et les afficher dans le SummaryMenu en modifiant les labels existants
             
             self.read_stimulation_screen("stop_stimulation")
             

@@ -12,7 +12,7 @@ from PyQt5.QtCore import QTimer, QTime
 MIN_TARGET_POWER = 0
 MAX_TARGET_POWER = 100
 
-MIN_TRAINING_LENGTH = 1
+MIN_TRAINING_LENGTH = 0
 MAX_TRAINING_LENGTH = 120 # À modifier
 
 class MotorParameters():

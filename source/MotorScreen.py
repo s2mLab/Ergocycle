@@ -34,25 +34,25 @@ class MotorScreen(Screen):
     
     def manage_active_window(self, motor_parameters):
         
-        if self.window_counter == 0:
+        if self.window_counter == 0: # MainWindowMotor
             self.current_menu = MainWindowMotor(motor_parameters)
             self.current_menu.show()
             # self.connect_buttons(self.current_menu)
             self.current_menu.submit_button.clicked.connect(lambda : self.event_function("start_training"))
             
-        elif self.window_counter == 1:
+        elif self.window_counter == 1: # ActivityMenu
             self.current_menu.close()
             self.current_menu = ActivityMenu(motor_parameters)
             self.current_menu.show()
             # self.connect_buttons(self.current_menu)
             self.current_menu.increase_target_power_button.clicked.connect(lambda : self.event_function("increase_target_power"))
             self.current_menu.decrease_target_power_button.clicked.connect(lambda : self.event_function("decrease_target_power"))
-            self.current_menu.increase_training_length_button.clicked.connect(lambda : self.event_function("increase_training_length"))
-            self.current_menu.decrease_training_length_button.clicked.connect(lambda : self.event_function("decrease_training_length"))
+            # self.current_menu.increase_training_length_button.clicked.connect(lambda : self.event_function("increase_training_length"))
+            # self.current_menu.decrease_training_length_button.clicked.connect(lambda : self.event_function("decrease_training_length"))
             self.current_menu.stop_button.clicked.connect(lambda : self.event_function("stop_training"))
             # self.current_menu.error_button.clicked.connect(lambda : self.event_function("stop_training"))
             
-        elif self.window_counter == 2:
+        elif self.window_counter == 2: # StopMenu
             # self.current_menu.close()
             self.confirm_menu = StopMenu()
             self.confirm_menu.show()
@@ -61,7 +61,7 @@ class MotorScreen(Screen):
             # self.connect_buttons(self.confirm_menu)
             self.confirm_menu.continue_button.clicked.connect(lambda:self.continue_button_clicked(motor_parameters))
             
-        elif self.window_counter == 3:
+        elif self.window_counter == 3: # SummaryMenu
             self.current_menu.close()
             self.current_menu = SummaryMenu(motor_parameters)
             self.current_menu.show()
