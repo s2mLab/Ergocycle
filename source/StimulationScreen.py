@@ -18,6 +18,9 @@ from StimulationWindow import StimulationWindow
 from MainWindowStim import MainWindowStim
 from DangerPopUp import DangerPopUp
 import sys
+import datetime
+import time
+import csv
 from CommandButton import CommandButton as CommandButton
 
 # Take the code from main_sef.py and add getters and setters
@@ -183,7 +186,21 @@ class StimulationScreen(Screen):
         self.manage_active_window(stim_parameters)
         self.danger_menu.close()
         self.event_function("continue_to_instructions")
-        
+    
+    def create_in_csv_file(self, matrix):
+        with open('enregistrement_stimulations.csv', 'w',newline='') as f:
+            fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion', 'muscle']
+            thewriter = csv.DictWriter(f,fieldnames)
+            thewriter.writeheader()
+            now = datetime.datetime.now()
+            date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
+            ## Ajouter les paramètres initiaux ##
+            for col in matrix():
+                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(matrix[col,1]) ,'Frequence(Hz)': str(matrix[col,2]), 'Durée dimpulsion': str(matrix[col,3]), 'muscle': str(matrix[col,4]) })
+        f.close
+
+
+
     # def connect_buttons(self, window):
     #     print(f"{len(window.button_dictionary)} Buttons:")
     #     for button in window.button_dictionary:
