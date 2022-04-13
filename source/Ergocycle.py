@@ -57,6 +57,7 @@ class Ergocycle():
         self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         self.stimulation_screen.manage_active_window(self.stim_parameters)
         self.stimulation_signal = []
+        self.stimulation_time = 0
         
         self.thread_motor_control = threading.Thread(target=self.motor_control_function, args=(1,), daemon=True)
         # self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,), daemon=True)
@@ -254,7 +255,7 @@ class Ergocycle():
             self.stimulation_screen.current_menu.get_test_parameters(self.stim_test_parameters)
             self.stimulation_screen.manage_active_window(self.stim_test_parameters)
             print("Ergocycle commanding to get initial test parameters") # +str(self.stimulation_screen.get_initial_test_parameters)
-            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
+            self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle) 
             print(f"Initial test parameters : {self.stimulation_signal}")
             
         elif command == "increase_amp":
@@ -362,11 +363,14 @@ class Ergocycle():
             # self.stimulation_screen.current_menu.clicked_start(self.stim_parameters)
             if self.motor_on == True:
                 self.stimulation_screen.current_menu.get_initial_parameters(self.stim_parameters)
+                self.stimulation_screen.current_menu.get_training_time(self.stim_parameters)
                 self.stimulation_signal = self.stimulation_screen.current_menu.get_initial_parameters(self.stim_parameters)
+                self.stimulation_time = self.stimulation_screen.current_menu.get_training_time(self.stim_parameters)
                 self.stimulation_screen.next_window()
                 self.stimulation_screen.manage_active_window(self.stim_parameters)
                 print("(Ergocycle) Starting stimulations...")
                 print(f"Initial training parameters : {self.stimulation_signal}")
+                print(f"Training time : {self.stimulation_time}")
                 
                 if self.stimulation_started == False:
                     self.thread_stimulations.start()
@@ -673,19 +677,27 @@ class Ergocycle():
             print(f"UPDATED training parameters : {self.stimulation_signal}")
         
         elif command == "pause_stimulation":
-            self.stimulation_screen.current_menu.pause()
-            print("(Ergocycle) Stimulations paused...")
-            
+            self.stimulation_screen.current_menu.pause(self.stim_parameters)
+            print("(Ergocycle) Stimulations paused/restarted...")
+            if self.stimulation_signal != []:
+                print("(Ergocycle) Stimulations paused")
+                self.paused_stimulation_signal = self.stimulation_signal
+                self.stimulation_signal = []
+                print(f"PAUSED parameters: {self.stimulation_signal}")
+            else:
+                print("(Ergocycle) Stimulations restarted")
+                self.stimulation_signal = self.paused_stimulation_signal
+                print(f"RESTARTED parameters: {self.stimulation_signal}")
+
             # TODO : Passer le temps en paramètre si on prend le temps d'Ergocycle
             
         elif command == "stop_stimulation":
             # self.stimulation_screen.current_menu.clicked_stop()
             self.stimulation_screen.current_menu.close() # .next_window()
             # self.stimulation_screen.manage_active_window(self.stim_parameters)
+            self.stimulation_signal = []
+            print(f"(Ergocycle): Stopping stimulations : {self.stimulation_signal}")
             self.stop_stimulations = True
-            
-            print("(Ergocycle) Stopping stimulations...")
-            
         else:
             print("(Ergocycle) Command " + command + " not found")
             

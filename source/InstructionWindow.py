@@ -167,6 +167,9 @@ class InstructionWindow(QWidget):
                     self.start_parameters[i,:]=init_parameters.get_muscle_number()
         #print("Start parameters: \n", self.start_parameters)
         return(self.start_parameters)
+    def get_training_time(self, init_parameters):
+        self.training_time = init_parameters.get_stim_training_length()
+        return(self.training_time)
     def create_file(self, init_parameters):
         self.file_object1 = open("InstructionWindowTestFile", "w+")
         matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", init_parameters.start_parameters[1,:]],["Frequency (Hz)", init_parameters.start_parameters[2,:]], ["Impulsion length (ms)", init_parameters.start_paramters[3,:]]])
