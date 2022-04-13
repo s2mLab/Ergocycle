@@ -18,17 +18,10 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
 class StartWindow(QWidget):
-    def __init__(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-    #def __init__(self, event_function): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-        #super(StartWindow, self).__init__(event_function) ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-        super(StartWindow, self).__init__() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-        ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
-        # self.SCREEN_WIDTH = 1920
-        # self.SCREEN_HEIGTH = 1080
-        # self.setFixedWidth(self.SCREEN_WIDTH)
-        # self.setFixedHeight(self.SCREEN_HEIGTH)
+    def __init__(self): 
+        super(StartWindow, self).__init__() 
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
-        #self.setGeometry(300, 300, SCREEN_WIDTH/1.7, SCREEN_HEIGTH/1.8)
+        # 1.1. Initialisation de la fenêtre
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
         self.button_dictionary = {}
@@ -61,8 +54,8 @@ class StartWindow(QWidget):
         self.training_button = QtWidgets.QPushButton(self)
         self.training_button.setText("   Débuter un entraînement   ")
         self.training_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.training_button.move(300, 600)
-        self.training_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
+        self.training_button.move(150, 600)
+        self.training_button.setFont(QFont('Arial', 30, weight = QFont.Bold))
         self.training_button.adjustSize()
         # self.training_button.clicked.connect(lambda:self.clicked_training())
         
@@ -70,8 +63,8 @@ class StartWindow(QWidget):
         self.test_button = QtWidgets.QPushButton(self)
         self.test_button.setText("  Effectuer des tests  ")
         self.test_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
-        self.test_button.move(1250, 600)
-        self.test_button.setFont(QFont('Arial', 16, weight = QFont.Bold))
+        self.test_button.move(1150, 600)
+        self.test_button.setFont(QFont('Arial', 30, weight = QFont.Bold))
         self.test_button.adjustSize()
         # self.test_button.clicked.connect(lambda:self.clicked_test())
         
