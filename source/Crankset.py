@@ -98,5 +98,5 @@ class Crankset:
         pass
 
     def getAvgMoment(self):
-        return -1 if self.vectforce == None else ((self.vectforce[3] + self.vectforce[9]) / 2)
+        return -1 if self.vectforce == None else ((self.vectforce[6] + self.vectforce[12]) / 2)
 
