@@ -55,6 +55,7 @@ class Stimulator:
     # ---- packet_count = initialise the packet count                      ---- #
 
         self.matrice = StimulationSignal
+        '''
         self.electrode_number = 0
         idx = []
         print(StimulationSignal)   
@@ -66,7 +67,7 @@ class Stimulator:
                 self.electrode_number += (2)**(i)
         StimulationSignal = np.delete(StimulationSignal, idx, 1)
         self.idx = idx
-
+        '''
         '''
         self.amplitude = []
         self.ts1 = []
@@ -83,7 +84,7 @@ class Stimulator:
             self.muscle.append(StimulationSignal[3][i])
             self.ts2 = ts2
         '''
-        self.set_StimulationSignal(StimulationSignal)
+       # self.set_StimulationSignal(StimulationSignal)
         self.port = serial.Serial(port_path, self.BAUD_RATE, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=0.1)
         self.packet_count = 0
         
@@ -240,7 +241,7 @@ class Stimulator:
         packet_lead = [start_byte, self.STUFFING_BYTE, checksum, self.STUFFING_BYTE, data_length]
         packet_end = [stop_byte]
         packet = packet_lead + packet_payload + packet_end
-        print(packet)
+        
         return b''.join([byte.to_bytes(1, 'little') for byte in packet])
 
 
