@@ -1,0 +1,20 @@
+
+import socket            
+s = socket.socket()        
+port = 12345     
+
+VECT_FORCE_UPDATE_OPCODE = 2
+
+#faut call ca dans un autre thread
+def start_client():
+    # connect to the server on local computer
+    s.connect(('ADDRESSE_ORDI', port))
+    isConnected = True
+    while isConnected:
+         opcode = int(str(c.recv(1024), 'utf8'))
+         if opcode == VECT_FORCE_UPDATE_OPCODE 
+            data = struct.unpack('<10f', s.recv(1024))
+            
+	
+	
+   s.close()
