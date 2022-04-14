@@ -34,40 +34,8 @@ class StimulationScreen(Screen):
     def __init__(self, event_function):
         super(StimulationScreen, self).__init__(event_function)
         self.event_function = event_function
-        # self.app= QApplication(sys.argv)
-        # self.win = StartWindow()
-        # self.window_counter = 0
         self.current_menu = 0
         self.danger_menu = 0
-        # self.manage_active_window()
-        #self.manage_active_window()
-        #parameters = Parameters()
-        #start_win = StartWindow()
-        #testing_win = TestingWindow()
-        #instruction_win = InstructionWindow()
-        #stim_win = StimulationWindow
-
-        #self.test_button = CommandButton("   Débuter un entraînement   ", "test_event")
-        #self.test_button.clicked.connect(lambda : self.event_function(self.test_button.get_command()))
-    #def start_stimulation_application(self):
-        #self.win.show()
-        #sys.exit(self.app.exec_())
-        
-    #def get_initial_test_parameters(self, start_win):
-        #self.initial_test_parameters = start_win.get_initial_test_parameters()
-        #return(self.initial_test_parameters)
-    
-    #def get_updated_test_parameters(self, testing_win):
-        #self.updated_test_parameters = testing_win.get_updated_test_parameters()
-        #return(self.updated_test_parameters)
-    
-    #def get_initial_training_parameters(self, instruction_win):
-        #self.initial_training_parameters = instruction_win.get_initial_parameters(Parameters)
-        #return(self.initial_training_parameters)
-    
-    #def get_updated_training_parameters(self):
-        #self.updated_training_parameters = self.get_initial_parameters(Parameters)
-        #return(self.updated_test_parameters)  
     
     def manage_active_window(self, stim_parameters):
         
@@ -187,18 +155,36 @@ class StimulationScreen(Screen):
         self.danger_menu.close()
         self.event_function("continue_to_instructions")
     
-    def create_in_csv_file(self, matrix):
+    #def create_in_csv_file(self, matrix):
+        #with open('enregistrement_stimulations.csv', 'w',newline='') as f:
+            #fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion', 'muscle']
+            #thewriter = csv.DictWriter(f,fieldnames)
+            #thewriter.writeheader()
+            #now = datetime.datetime.now()
+            #date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
+            ## Ajouter les paramètres initiaux ##
+            #for col in matrix():
+                #thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(matrix[col,1]) ,'Frequence(Hz)': str(matrix[col,2]), 'Durée dimpulsion': str(matrix[col,3]), 'muscle': str(matrix[col,4]) })
+        #f.close
+    def create_csv_file(self, matrice):
         with open('enregistrement_stimulations.csv', 'w',newline='') as f:
-            fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion', 'muscle']
+            fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
             thewriter.writeheader()
             now = datetime.datetime.now()
             date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
-            ## Ajouter les paramètres initiaux ##
-            for col in matrix():
-                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(matrix[col,1]) ,'Frequence(Hz)': str(matrix[col,2]), 'Durée dimpulsion': str(matrix[col,3]), 'muscle': str(matrix[col,4]) })
-        f.close
-
+            for i in range(8):
+                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': str(matrice[3,i])})
+            f.close
+    def save_data_in_csv_file(self, matrice):
+        with open('enregistrement_stimulations.csv', 'a+',newline='') as f:
+            fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
+            thewriter = csv.DictWriter(f,fieldnames)
+            now = datetime.datetime.now()
+            date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
+            for i in range(8):
+                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': str(matrice[3,i])})
+            f.close
 
 
     # def connect_buttons(self, window):

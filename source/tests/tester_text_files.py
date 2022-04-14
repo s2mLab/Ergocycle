@@ -2,6 +2,7 @@ import numpy as np
 import datetime
 import csv
 import time
+import numpy
 
 
 #file_object = open("test2", "w+")
@@ -20,18 +21,40 @@ import time
 #file_object.write(matrix)
 #file_object1.close
 
+def get_matrice():
+    matrice = numpy.empty([4,8], dtype=int)
+    for i in range(len(matrice)):
+        if i==0:
+            matrice[i,:]=[2, 4, 6,8,10,12,14,16]
+        if i==1:
+            matrice[i,:]=[10, 15, 20,25,30,35,40,45]
+        if i==2:
+            matrice[i,:]=[20,40, 60, 70, 90, 110, 130,150]
+        if i==3:
+            matrice[i,:]=1
+    return(matrice)
 with open('enregistrement_stimulations.csv', 'w',newline='') as f:
-    fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion', 'muscle']
+    fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
     thewriter = csv.DictWriter(f,fieldnames)
     thewriter.writeheader()
     now = datetime.datetime.now()
     date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
-
-    for col in matrix():
-        thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(2) ,'Frequence(Hz)': str(10), 'Durée dimpulsion': str(20), 'muscle': str(4) })
-
-now = datetime.datetime.now()
-date_time = now.strftime("%m-%d-%Y_%H:%M:%S")
+    matrice = get_matrice()
+    for i in range(8):
+        thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': str(matrice[3,i])})
+        #if i==0:
+                    #self.start_parameters[i,:]=[2, 4, 6,8,10,12,14,16]
+                #if i==1:
+                    #self.start_parameters[i,:]=[10, 15, 20,25,30,35,40,45]
+                #if i==2:
+                    #self.start_parameters[i,:]=[20,40, 60, 70, 90, 110, 130,150]
+                #if i==3:
+                    #self.start_parameters[i,:]=1
+    #for col in matrix():
+        #thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(2) ,'Frequence(Hz)': str(10), 'Durée dimpulsion': str(20), 'muscle': str(4) })
+    f.close
+#now = datetime.datetime.now()
+#date_time = now.strftime("%m-%d-%Y_%H:%M:%S")
 #file = open("C:\Users\frede\Desktop\test_nouveau.csv", mode ='w')#, newline="")
 #file = open('test.csv', )
 #writer = csv.writer(file)
