@@ -4,6 +4,8 @@ Created on Wed March 30 11::00 2022
 @author: Frédérique Leclerc
 """
 from tracemalloc import start
+
+from numpy import number
 from Screen import Screen as Screen
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
@@ -36,6 +38,7 @@ class StimulationScreen(Screen):
         self.event_function = event_function
         self.current_menu = 0
         self.danger_menu = 0
+        #self.now = datetime.datetime.now()
     
     def manage_active_window(self, stim_parameters):
         
@@ -167,24 +170,47 @@ class StimulationScreen(Screen):
                 #thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(matrix[col,1]) ,'Frequence(Hz)': str(matrix[col,2]), 'Durée dimpulsion': str(matrix[col,3]), 'muscle': str(matrix[col,4]) })
         #f.close
     def create_csv_file(self, matrice):
-        with open('enregistrement_stimulations.csv', 'w',newline='') as f:
+        self.now = datetime.datetime.now()
+        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv"
+        #with open('enregistrement_stimulations.csv', 'w',newline='') as f:
+        with open(name_of_file, 'w',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
             thewriter.writeheader()
             now = datetime.datetime.now()
             date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
             for i in range(8):
-                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': str(matrice[3,i])})
+                muscle_name = self.get_muscle_traduction(matrice[3,i])
+                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': muscle_name})
             f.close
     def save_data_in_csv_file(self, matrice):
-        with open('enregistrement_stimulations.csv', 'a+',newline='') as f:
+        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv"
+        #with open('enregistrement_stimulations.csv', 'a+',newline='') as f:
+        with open(name_of_file, 'a+',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
-            now = datetime.datetime.now()
-            date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
-            for i in range(8):
-                thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': str(matrice[3,i])})
+            new_now = datetime.datetime.now()
+            date_time = new_now.strftime("%m-%d-%Y,%H:%M:%S")
+            if matrice == []:
+                for i in range(8):
+                    thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(0) ,'Frequence(Hz)': str(0), 'Durée dimpulsion(us)': str(0), 'muscle': str(0)})
+            else:
+                for i in range(8):
+                    muscle_name = self.get_muscle_traduction(matrice[3,i])
+                    thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': muscle_name})
             f.close
+    def get_muscle_traduction(self, muscle_number):
+        if muscle_number == 0:
+            muscle = "Aucun"
+        if muscle_number == 1:
+            muscle = "Biceps Brachii"
+        if muscle_number== 2:
+            muscle = "Triceps Brachii"
+        if muscle_number == 3:
+            muscle = "Deltoide Postérieur"
+        if muscle_number == 4:
+            muscle = "Deltoide Antérieur"
+        return(muscle)
 
 
     # def connect_buttons(self, window):

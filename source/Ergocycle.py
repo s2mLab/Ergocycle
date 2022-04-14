@@ -733,12 +733,12 @@ class Ergocycle():
                 print("(Ergocycle) Stimulations paused")
                 self.paused_stimulation_signal = self.stimulation_signal
                 self.stimulation_signal = []
-                #self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
+                self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
                 print(f"PAUSED parameters: {self.stimulation_signal}")
             else:
                 print("(Ergocycle) Stimulations restarted")
                 self.stimulation_signal = self.paused_stimulation_signal
-                #self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
+                self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
                 print(f"RESTARTED parameters: {self.stimulation_signal}")
 
             # TODO : Passer le temps en paramètre si on prend le temps d'Ergocycle
