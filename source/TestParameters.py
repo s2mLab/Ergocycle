@@ -22,8 +22,20 @@ class TestParameters():
         self.imp = 200
         self.muscle = 1
     def get_test_parameters(self,amp,freq,imp,muscle):
-        initial_test_parameters = numpy.array([[amp],[freq],[imp],[muscle]])
+        initial_test_parameters = numpy.empty([4,8], dtype=int)
+        for i in range(4):
+            if i==0:
+               initial_test_parameters[i,:]=[amp, 0, 0, 0, 0, 0, 0, 0]
+            if i==1:
+                initial_test_parameters[i,:]=[freq, 0, 0, 0, 0, 0, 0, 0]
+            if i==2:
+                initial_test_parameters[i,:]=[imp, 0, 0, 0, 0, 0, 0, 0]
+            if i==3:
+                initial_test_parameters[i,:]=[muscle, 0, 0, 0, 0, 0, 0, 0]
         return(initial_test_parameters)
+    #def get_test_parameters(self,amp,freq,imp,muscle):
+        #initial_test_parameters = numpy.array([[amp],[freq],[imp],[muscle]])
+        #return(initial_test_parameters)
     def set_to_off(self):
         zero_parameters = []
         #zero_parameters = numpy.array([[0],[0],[0],[0]])
