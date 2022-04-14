@@ -171,8 +171,10 @@ class StimulationScreen(Screen):
         #f.close
     def create_csv_file(self, matrice):
         self.now = datetime.datetime.now()
-        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv"
-        #with open('enregistrement_stimulations.csv', 'w',newline='') as f:
+        file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))
+        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
+        name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
+        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordi
         with open(name_of_file, 'w',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
@@ -184,8 +186,10 @@ class StimulationScreen(Screen):
                 thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': muscle_name})
             f.close
     def save_data_in_csv_file(self, matrice):
-        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv"
-        #with open('enregistrement_stimulations.csv', 'a+',newline='') as f:
+        file = self.now.strftime("%m-%d-%Y, %H;%M;%S")
+        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
+        name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
+        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordi
         with open(name_of_file, 'a+',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
