@@ -55,6 +55,7 @@ class Stimulator:
     # ---- packet_count = initialise the packet count                      ---- #
 
         self.matrice = StimulationSignal
+        
         '''
         self.electrode_number = 0
         idx = []
@@ -110,20 +111,20 @@ class Stimulator:
         self.set_stim_biceps_DeltPost()
         self.set_StimulationSignal(self.StimulationSignal)
         
-        starttime = time.time()
-        timer = 0
+        #starttime = time.time()
+        #timer = 0
         self.send_packet('InitChannelListMode', self.packet_count)
         
         #À MODIFIER POUR AVOIR ANGLES À LA PLACE 
         ### while (1)
         ###     self.send_packet('StartChannelListMode', self.packet_count)
         ### AJOUTER BREAK DANS ERGOCYCLE
-        while timer < 5.00: 
-            timer = round(time.time()-starttime,2)
-            self.send_packet('StartChannelListMode', self.packet_count)
-            time.sleep(1/self.frequency[0])
-            if timer >=(5.00-(1/self.frequency[0])): 
-                break
+        #while timer < 5.00: 
+            #timer = round(time.time()-starttime,2)
+        self.send_packet('StartChannelListMode', self.packet_count)
+            #time.sleep(1/self.frequency[0])
+            #if timer >=(5.00-(1/self.frequency[0])): 
+             #   break
        
     def stimulation_20_180(self):
         
@@ -138,12 +139,9 @@ class Stimulator:
         ### while (1)
         ###     self.send_packet('StartChannelListMode', self.packet_count)
         ### AJOUTER BREAK DANS ERGOCYCLE
-        while timer < 5.00: 
-            timer = round(time.time()-starttime,2)
-            self.send_packet('StartChannelListMode', self.packet_count)
-            time.sleep(1/self.frequency[0])
-            if timer >=(5.00-(1/self.frequency[0])): 
-                break
+        
+        self.send_packet('StartChannelListMode', self.packet_count)
+            
         
     def set_matrice(self, Signal):
          self.matrice = Signal
@@ -293,21 +291,23 @@ class Stimulator:
     def calling_ACK(self):
             #Call the Ack function
         packet = self.read_packets()
-        if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
-            
-            return Stimulator.send_packet(self, 'InitAck', int(packet[5]))
-        elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
-            return Stimulator.unknown_cmd()
-        elif(str(packet[6]) == Stimulator.TYPES['GetStimulationModeAck']):
-            return Stimulator.getmodeACK(packet)
-        elif(str(packet[6]) == Stimulator.TYPES['InitChannelListModeAck']):
-            return Stimulator.init_stimulation_ACK(packet)
-        elif(str(packet[6]) == Stimulator.TYPES['StartChannelListMode']):
-            return Stimulator.start_stimulation_ACK(packet)
-        elif(str(packet[6]) == Stimulator.TYPES['StopChannelListModeAck']):
-            return Stimulator.stop_stimulation_ACK(packet)
-        elif(str(packet[6]) == Stimulator.TYPES['StartChannelListModeAck']):
-            return Stimulator.error_stimulation_ACK(packet)
+        print(packet)
+        if (len(packet)>1):
+            if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
+                
+                return Stimulator.send_packet(self, 'InitAck', int(packet[5]))
+            elif(str(packet[6]) == Stimulator.TYPES['UnknownCommand']):
+                return Stimulator.unknown_cmd()
+            elif(str(packet[6]) == Stimulator.TYPES['GetStimulationModeAck']):
+                return Stimulator.getmodeACK(packet)
+            elif(str(packet[6]) == Stimulator.TYPES['InitChannelListModeAck']):
+                return Stimulator.init_stimulation_ACK(packet)
+            elif(str(packet[6]) == Stimulator.TYPES['StartChannelListMode']):
+                return Stimulator.start_stimulation_ACK(packet)
+            elif(str(packet[6]) == Stimulator.TYPES['StopChannelListModeAck']):
+                return Stimulator.stop_stimulation_ACK(packet)
+            elif(str(packet[6]) == Stimulator.TYPES['StartChannelListModeAck']):
+                return Stimulator.error_stimulation_ACK(packet)
     # Establishes connexion acknowlege
     def init(self, packet_count):
         packet = self.packet_construction(packet_count,'Init', self.VERSION )
@@ -460,7 +460,7 @@ class Stimulator:
 
     # Stops stimulation
     def stop_stimulation(self):
-        packet = self.packet_construction(self.packet_count,Stimulator.TYPES['StopChannelListMode'])
+        packet = self.packet_construction(self.packet_count,'StopChannelListMode')
         return packet
 
 
