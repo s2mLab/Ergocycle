@@ -21,7 +21,7 @@ class StartWindow(QWidget):
     def __init__(self): 
         super(StartWindow, self).__init__() 
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
-        # 1.1. Initialisation de la fenêtre
+        ### 1.1. Initialisation de la fenêtre ###
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
         self.button_dictionary = {}
@@ -57,7 +57,6 @@ class StartWindow(QWidget):
         self.training_button.move(150, 600)
         self.training_button.setFont(QFont('Arial', 30, weight = QFont.Bold))
         self.training_button.adjustSize()
-        # self.training_button.clicked.connect(lambda:self.clicked_training())
         
         ### 1.5. Bouton pour faire des tests ###
         self.test_button = QtWidgets.QPushButton(self)
@@ -66,20 +65,6 @@ class StartWindow(QWidget):
         self.test_button.move(1150, 600)
         self.test_button.setFont(QFont('Arial', 30, weight = QFont.Bold))
         self.test_button.adjustSize()
-        # self.test_button.clicked.connect(lambda:self.clicked_test())
-        
-    # def clicked_training(self): 
-    #     self.main_menu = MainWindowStim()
-    #     self.main_menu.show()
-    #     self.close()
-    #     self.update()
-        
-    # def clicked_test(self): ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-    #     self.test_menu = TestingWindow() ## PROBLÈME PASSAGE DE PARAMÈTRES EVENT_FUNCTION
-    #     self.test_menu.setWindowModality(2)
-    #     self.test_menu.show()
-    #     self.get_initial_test_parameters()
-    #     self.update()
         
     def get_test_parameters(self, stim_parameters):
         stim_parameters = numpy.array([0,30,200])

@@ -40,6 +40,7 @@ class StimulationScreen(Screen):
         self.danger_menu = 0
         #self.now = datetime.datetime.now()
     
+    ### 1.1. Permet de gérer les fenêtre apparaissant sur l'interface. ###
     def manage_active_window(self, stim_parameters):
         
         if self.window_counter == 0:
@@ -158,23 +159,13 @@ class StimulationScreen(Screen):
         self.danger_menu.close()
         self.event_function("continue_to_instructions")
     
-    #def create_in_csv_file(self, matrix):
-        #with open('enregistrement_stimulations.csv', 'w',newline='') as f:
-            #fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion', 'muscle']
-            #thewriter = csv.DictWriter(f,fieldnames)
-            #thewriter.writeheader()
-            #now = datetime.datetime.now()
-            #date_time = now.strftime("%m-%d-%Y,%H:%M:%S")
-            ## Ajouter les paramètres initiaux ##
-            #for col in matrix():
-                #thewriter.writerow({'Date and time' : date_time, 'Electrode': str(col), 'Amplitude(mA)': str(matrix[col,1]) ,'Frequence(Hz)': str(matrix[col,2]), 'Durée dimpulsion': str(matrix[col,3]), 'muscle': str(matrix[col,4]) })
-        #f.close
+    ### 1.2. Création d'un fichier CSV lors de l'entraînement afin d'enregistrer les données de stimulations ###
     def create_csv_file(self, matrice):
         self.now = datetime.datetime.now()
         file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))
-        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
+        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordinateur
         name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
-        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordi
+        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordinateur
         with open(name_of_file, 'w',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
@@ -185,6 +176,8 @@ class StimulationScreen(Screen):
                 muscle_name = self.get_muscle_traduction(matrice[3,i])
                 thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': muscle_name})
             f.close
+    
+    ### 1.3. Ajouter les modification des paramètres d'entraînement au même fichier CSV ###
     def save_data_in_csv_file(self, matrice):
         file = self.now.strftime("%m-%d-%Y, %H;%M;%S")
         path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
@@ -203,6 +196,8 @@ class StimulationScreen(Screen):
                     muscle_name = self.get_muscle_traduction(matrice[3,i])
                     thewriter.writerow({'Date and time' : date_time, 'Electrode': str(i+1), 'Amplitude(mA)': str(matrice[0,i]) ,'Frequence(Hz)': str(matrice[1,i]), 'Durée dimpulsion(us)': str(matrice[2,i]), 'muscle': muscle_name})
             f.close
+    
+    ### 1.4. Traduit les muscles de chiffre à nom pour l'enregistrements des données ###
     def get_muscle_traduction(self, muscle_number):
         if muscle_number == 0:
             muscle = "Aucun"
@@ -215,16 +210,3 @@ class StimulationScreen(Screen):
         if muscle_number == 4:
             muscle = "Deltoide Antérieur"
         return(muscle)
-
-
-    # def connect_buttons(self, window):
-    #     print(f"{len(window.button_dictionary)} Buttons:")
-    #     for button in window.button_dictionary:
-    #         button.clicked.connect(lambda:self.event_function(window.button_dictionary[button]))
-    #         print(f"CONNECTED BUTTON {window.button_dictionary[button]} TO ERGOCYCLE.")
-        #self.InitUI()
-    #def InitUI(self):
-        #self.app = QApplication(sys.argv)
-        #self.win = StartWindow()
-        #self.win.show()
-        #sys.exit(self.app.exec_())

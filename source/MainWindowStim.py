@@ -17,27 +17,22 @@ SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080 - 30
 
 MIN_TRAINING_LENGTH = 1
-MAX_TRAINING_LENGTH = 120 # À modifier
+MAX_TRAINING_LENGTH = 120 
 
 N_ELECTRODES = 8
 
 class MainWindowStim(QMainWindow):
     def __init__(self):
         super(MainWindowStim, self).__init__()
-        ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre du menu principal ###
-        # self.SCREEN_WIDTH = 1920
-        # self.SCREEN_HEIGTH = 1080
-        # self.setFixedWidth(self.SCREEN_WIDTH)
-        # self.setFixedHeight(self.SCREEN_HEIGTH)
+        ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des tests ###
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
         self.setWindowTitle("Menu principal des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
-        ## 1.2. ##
         init_parameters = Parameters()
         self.initUI(init_parameters)
 
     def initUI(self, init_parameters):
-        ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
+        ### 1.2. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
         self.petite_imageS2M = self.imageS2M.resize((200, 150))
         self.petite_imageS2M.save('image_400.jpg')
@@ -45,13 +40,13 @@ class MainWindowStim(QMainWindow):
         self.logo_jpg = QPixmap('image_400.jpg') # Modifier la taille de l'image au besoin
         self.logo_label.setPixmap(self.logo_jpg)
         self.logo_label.resize(self.logo_jpg.width(), self.logo_jpg.height())
-        ### 1.4. Titre du menu principal ###
+        ### 1.3. Titre du menu principal ###
         self.menu_label = QtWidgets.QLabel(self)
         self.menu_label.setText("Bienvenue au menu principal de l'interface usager des stimulations électriques fonctionnelles")
         self.menu_label.move(200,40)
         self.menu_label.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.menu_label.adjustSize()
-        ## 1.5.  Durée de l'entrainement (possiblement à retirer pour éviter la répétition avec UI du contrôle moteur) ##
+        ## 1.4.  Durée de l'entrainement (possiblement à retirer pour éviter la répétition avec UI du contrôle moteur) ##
         self.stim_training_length_label = QtWidgets.QLabel(self)
         self.stim_training_length_label.setText("Durée de l'entraînement en stimulation (min):")
         self.stim_training_length_label.move(10,150)
@@ -64,10 +59,12 @@ class MainWindowStim(QMainWindow):
         self.stim_training_length_ComboBox.setFont(QFont('Arial', 20))
         self.stim_training_length_ComboBox.adjustSize()
 
-        ## 1.6. Définition des muscles à stimuler ##
+        ## 1.5. Définition des muscles à stimuler ##
         ### Droite ###
 
         """
+        Ici, voici simplement une suggestion d'écriture du code plus optimale que celle utilisée présentement.
+
         self.electrode_first_labels = []
         self.electrode_ComboBoxes = []
         self.electrode_second_labels = []
@@ -226,14 +223,15 @@ class MainWindowStim(QMainWindow):
         self.electrode8_ComboBox.setFont(QFont('Arial', 20))
         self.electrode8_ComboBox.adjustSize()
 
+        ### 1.6. Définition du bouton soummettre qui permet de voir la suite. ###
         self.submit_button = QtWidgets.QPushButton(self)
         self.submit_button.setText("  Soumettre  ")
         self.submit_button.setStyleSheet("background-color: palegreen; border: 1 solid;")
         self.submit_button.move(1600, 400) # originalement 1400, 400 (devrait être mis a 1000,400)
         self.submit_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.submit_button.adjustSize()
-        # self.submit_button.clicked.connect(lambda:self.clicked_more(init_parameters))
 
+        ### 1.7. Définition des labels, des boutons et des menus déroulants pour la définition des paramètres de stimulation ###
         self.param_label = QtWidgets.QLabel(self)
         self.electrode11_label = QtWidgets.QLabel(self)
         self.electrode22_label = QtWidgets.QLabel(self)
@@ -313,6 +311,8 @@ class MainWindowStim(QMainWindow):
     def clicked_more(self, init_parameters):
 
         """
+        Ici, voici simplement une suggestion d'écriture du code plus optimale que celle utilisée présentement. 
+
         for i in range (0, N_ELECTRODES):
 
             if (i < 4):
@@ -624,6 +624,7 @@ class MainWindowStim(QMainWindow):
         init_parameters.set_electrode7_length_imp(self.electrode7_ComboBox_length_imp)
         init_parameters.set_electrode8_length_imp(self.electrode8_ComboBox_length_imp)
         ### 4.5 - Vérification que toutes les informations sont entrées (appel a la fonction is_completed) ###
+        ## Maintenant contrôler dans Ergocycle.py ###
         # if self.is_completed(init_parameters) == True:
         #     ### 4.5.1 - Vérification du danger et appel au bon menu (DangerPopUp ou InstructionWindow) ###
         #     if self.danger_check(init_parameters) == True:
@@ -695,6 +696,7 @@ class MainWindowStim(QMainWindow):
         else:
             self.reponse8 = False
         return(self.reponse8)
+        
     def is_completed(self, init_parameters):
         self.rep1 = self.e1_is_completed(init_parameters)
         self.rep2 = self.e2_is_completed(init_parameters)

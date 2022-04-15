@@ -29,17 +29,12 @@ class StimulationWindow(QWidget):
         super(StimulationWindow, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
         self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
-        # self.SCREEN_WIDTH = 1920
-        # self.SCREEN_HEIGTH = 1080
-        # self.setFixedWidth(self.SCREEN_WIDTH)
-        # self.setFixedHeight(self.SCREEN_HEIGTH)
         self.setWindowTitle("Menu des stimulations")
         self.setStyleSheet("background-color: white;")
-        # current_parameters = init_parameters
         self.initUI(current_parameters)
         
     def initUI(self, current_parameters):  
-        ### 1.3. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
+        ### 1.1. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
         self.imageS2M = Image.open("img_S2M_JPG.jpg")
         self.petite_imageS2M = self.imageS2M.resize((200, 150))
         self.petite_imageS2M.save('image_400.jpg')
@@ -47,23 +42,21 @@ class StimulationWindow(QWidget):
         self.logo_jpg = QPixmap('image_400.jpg') # Modifier la taille de l'image au besoin
         self.logo_label.setPixmap(self.logo_jpg)
         self.logo_label.resize(self.logo_jpg.width(), self.logo_jpg.height())
-        ### 1.4. Titre menu des instructions ###
+        ### 1.2. Titre menu des stimulations ###
         self.menu_label = QtWidgets.QLabel(self)
         self.menu_label.setText("Stimulations en cours...")
         self.menu_label.move(750,100)
         self.menu_label.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.menu_label.adjustSize()
-        ### 1.5. Bouton d'arrêt ##
+        ### 1.3. Bouton d'arrêt ##
         self.stop_button = QtWidgets.QPushButton(self)
         self.stop_button.setText("  Arrêter  ")
         self.stop_button.setStyleSheet("background-color: red; border: 2 solid;")
         self.stop_button.move(1600, 50)
         self.stop_button.setFont(QFont('Arial', 20, weight = QFont.Bold))
         self.stop_button.adjustSize()
-        # self.stop_button.clicked.connect(lambda:self.clicked_stop()) 
-        ### 1.6. ###
-        #self.end_of_stim = False
-        ### 1.7. Nouvelle méthode pour le timer ###
+        
+        ### 1.4. Le timer ###
         self.counter = 0
         self.minute = '00'
         self.second = '00'
@@ -72,17 +65,16 @@ class StimulationWindow(QWidget):
         self.time_label = QLabel(self)
         self.time_label.setGeometry(900, 175, 150, 70)
         self.startWatch = True
-        # Bouton pause du timer 
+        # 1.4.1. Bouton pause du timer #
         self.pauseWatch = QPushButton("Pause", self)
         self.pauseWatch.setGeometry(1200, 187, 100, 40)
         self.pauseWatch.setStyleSheet("background-color: palegreen; border: 2 solid;")
         self.pauseWatch.setFont(QFont('Arial', 16))
-        # self.pauseWatch.pressed.connect(self.pause)
-        # objet timer
+        # 1.4.2. objet timer #
         timer = QTimer(self)
         timer.timeout.connect(self.showCounter)
         timer.start(100)
-        ### 1.8. Layout des labels de la fenêtre de stimulation ###
+        ### 1.5. Layout des labels de la fenêtre de stimulation ###
         self.amplitude_label = QtWidgets.QLabel(self)
         self.amplitude_label.setText("Amplitude (mA):")
         self.amplitude_label.move(400,300)
@@ -100,7 +92,7 @@ class StimulationWindow(QWidget):
         self.length_imp_label.move(1400,(300))
         self.length_imp_label.setFont(QFont('Arial', 16))
         self.length_imp_label.adjustSize()
-        ### 1.7. Label d'électrode ##
+        ### 1.6. Label d'électrode ##
         self.electrode1_label = QtWidgets.QLabel(self)
         self.electrode1_label.setText("Électrode 1 (droite):")
         self.electrode1_label.move(50,375)
@@ -148,9 +140,6 @@ class StimulationWindow(QWidget):
         self.electrode8_label.move(50,900)
         self.electrode8_label.setFont(QFont('Arial', 16))
         self.electrode8_label.adjustSize()
-        #print("Amplitudes enregistrées: ", current_parameters.get_electrode1_amplitude(),  current_parameters.get_electrode2_amplitude(),  current_parameters.get_electrode3_amplitude(),  current_parameters.get_electrode4_amplitude(),  current_parameters.get_electrode5_amplitude(), current_parameters.get_electrode6_amplitude(),  current_parameters.get_electrode7_amplitude(),  current_parameters.get_electrode8_amplitude())
-        #print("Fréquences enregistrées: ", init_parameters.get_electrode1_frequency(),  init_parameters.get_electrode2_frequency(),  init_parameters.get_electrode3_frequency(),  init_parameters.get_electrode4_frequency(),  init_parameters.get_electrode5_frequency(), init_parameters.get_electrode6_frequency(),  init_parameters.get_electrode7_frequency(),  init_parameters.get_electrode8_frequency())
-        #print("Durées d'imp enregistrées: ", init_parameters.get_electrode1_length_imp(),  init_parameters.get_electrode2_length_imp(),  init_parameters.get_electrode3_length_imp(),  init_parameters.get_electrode4_length_imp(),  init_parameters.get_electrode5_length_imp(), init_parameters.get_electrode6_length_imp(),  init_parameters.get_electrode7_length_imp(),  init_parameters.get_electrode8_length_imp())
         
         ### 1.8. Placer toutes les amplitudes selon l'électrode ###
         self.current_amplitude1_label = QtWidgets.QLabel(self)
@@ -1060,7 +1049,7 @@ class StimulationWindow(QWidget):
         self.current_imp_label7_label.adjustSize()
         self.current_imp_label8_label.setText(current_parameters.get_electrode8_length_imp())
         self.current_imp_label8_label.adjustSize()
-        #self.update_parameters = numpy.empty([4,8],dtype=int)
+    ### 1.14. Chercher les valeurs labels changés par l'utilisateur à l'aide des boutons + et - pour l'envoyer au module de communication ###
     def get_updated_parameters(self, current_parameters):
         self.update_parameters = numpy.empty([4,8],dtype=int)
         for i in range(len(self.update_parameters)):
@@ -1073,7 +1062,7 @@ class StimulationWindow(QWidget):
             if i==3:
                     self.update_parameters[i,:]=current_parameters.get_muscle_number()
         return(self.update_parameters)
-        #print("updated parameters: ", self.update_parameters)
+        
     def showCounter(self):
         # Check the value of startWatch  variable to start or stop the Stop Watch
         if self.startWatch:
@@ -1100,15 +1089,13 @@ class StimulationWindow(QWidget):
                         self.minute = '0' + str(min)
                     else:
                         self.minute = str(min)
-        #if min == self.MAX_TIME:
-            #print('hi')
-            #self.close()
 
         # Merge the mintue, second and count values
         text = self.minute + ':' + self.second + ':' + self.count
         # Display the stop watch values in the label
         self.time_label.setText('<h1 style="color:black">' + text + '</h1>')
 
+    ### 1.15. Changement du label sur le bouton et changement de fonctionnalité du bouton afin de reprendre/pauser selon la situation ### 
     def pause(self, current_parameters):
         if self.pauseWatch.text() == 'Pause':
             self.pauseWatch.setFont(QFont('Arial', 12))
@@ -1123,6 +1110,8 @@ class StimulationWindow(QWidget):
             self.end_of_stim = False
             self.set_all_button_on()
             self.check_if_off(current_parameters)
+    
+    ### 1.15. Mettre tous les bouton + et - à off. Utilisé dans le cas ou l'utilisateur fait pause à l'entrainement pour ne pas qu'il soit en mesure de changer l'entraînement en pause. ### 
     def set_all_button_off(self):
         self.increase_amplitude1_button.setEnabled(False)
         self.increase_amplitude2_button.setEnabled(False)
@@ -1174,6 +1163,8 @@ class StimulationWindow(QWidget):
         self.decrease_imp6_button.setEnabled(False)
         self.decrease_imp7_button.setEnabled(False)
         self.decrease_imp8_button.setEnabled(False)
+    
+    ### 1.16. Remise active de tous les bouton + et - quand on reprend la stimulation ###
     def set_all_button_on(self):
         self.increase_amplitude1_button.setEnabled(True)
         self.increase_amplitude2_button.setEnabled(True)
@@ -1228,16 +1219,4 @@ class StimulationWindow(QWidget):
 
     def clicked_stop(self):
         self.end_of_stim = True
-        #self.event_function("stop_stim")
-        #self.close()
-        # sys.exit()
-
-import datetime
-#amplitude : self.start_parameters[1,:]
-#frequency : self.start_parameters[2,:]
-#length impulsion: self.start_parameters[3,:]
-#file_object1 = open("RegisterFile_Test", "w+")
-#matrix = numpy.array([[" ","electrode 1", "electrode 2","electrode 3","electrode 4","electrode 5","electrode 6","electrode 7","electrode 8"],["Amplitude (mA)", self.start_parameters[1,:]],["Frequency (Hz)", self.start_parameters[2,:]], ["Impulsion length (ms)", self.start_paramters[3,:]]])
-#file_object1.write(str(datetime.now()))
-#file_object1.write(matrix)
-#file_object1.close
+        

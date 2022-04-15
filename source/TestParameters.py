@@ -21,6 +21,7 @@ class TestParameters():
         self.frequency = 30
         self.imp = 200
         self.muscle = 1
+    ## Recoit les nouvelles valeurs entrées par l'utilisateur et le transforme en matrice facilement exécutable par le module de communication.
     def get_test_parameters(self,amp,freq,imp,muscle):
         initial_test_parameters = numpy.empty([4,8], dtype=int)
         for i in range(4):
@@ -33,10 +34,7 @@ class TestParameters():
             if i==3:
                 initial_test_parameters[i,:]=[muscle, 0, 0, 0, 0, 0, 0, 0]
         return(initial_test_parameters)
-    #def get_test_parameters(self,amp,freq,imp,muscle):
-        #initial_test_parameters = numpy.array([[amp],[freq],[imp],[muscle]])
-        #return(initial_test_parameters)
     def set_to_off(self):
         zero_parameters = []
-        #zero_parameters = numpy.array([[0],[0],[0],[0]])
         return(zero_parameters)
+
