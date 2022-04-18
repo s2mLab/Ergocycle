@@ -96,5 +96,6 @@ passif_mode(-1, my_drive)
 # moteur.concentric_mode()
 #decommenter pour effectuer les tests
 #test_vitesse(1, my_drive)
+#test_couple (-1, my_drive)
 #test_couple (0.5, my_drive) 
 #my_drive.axis0.requested_state = AXIS_STATE_IDLE
