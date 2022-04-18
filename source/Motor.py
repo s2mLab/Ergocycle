@@ -113,6 +113,30 @@ class Motor():
 
         print("mode excentrique")
 
+    def passif_mode(self) :    
+        start = time.time() 
+        end = time.time()  
+        while (end - start) <= 30 : 
+            end = time.time()
+        new_time = time.time() 
+        new_end_time = time.time() 
+        self._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL #pour démarrer le moteur
+        self._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL #set le mode torque
+        self._carte.axis0.motor.config.torque_constant = 0.21  
+        self._carte.axis0.controller.input_torque = self._couple #set le couple normalement en Nm. scale en 0 et 1        
+        while (new_end_time - new_time) <= 30 :
+            new_end_time = time.time()
+            vitesse = self._carte.axis0.encoder.vel_estimate
+            courant = self._carte.axis0.motor.current_control.Iq_setpoint 
+            puissance = self._couple * vitesse  
+            print("puissance en watt :", puissance) 
+
+
+
+        self._carte.axis0.controller.input_torque = 0.0
+
+
+
 
 #test 
 moteur = Motor('tsdz2', 0.1 , 0.5, 0.1, 3 , 50, 35, -35, 30)
