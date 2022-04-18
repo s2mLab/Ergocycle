@@ -4,7 +4,7 @@ import odrive
 from odrive.enums import *
 import time
 import math
-import Motor 
+#import Motor 
 
 def test_vitesse (vitesse, carte : odrive):
     carte.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION

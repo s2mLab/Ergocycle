@@ -12,9 +12,9 @@ import math
 
 class Motor():
     # Constuctor
-    def __init__(self, nom, kp, ki, T, couple, vitesse, val_max, val_min, duree_ent, carte : odrive) :
+    def __init__(self, nom, kp, ki, T, couple, vitesse, val_max, val_min, duree_ent): #, carte : odrive) :
         self._nom = nom
-        self._carte = carte
+        self._carte = []
         self._kp = kp
         self._ki = ki
         self._couple = couple
@@ -34,11 +34,14 @@ class Motor():
         # Find a connected ODrive (this will block until you connect one)
         print("finding an odrive...")
         my_drive = odrive.find_any()
+        print("odrive found")
+        
         # Calibrate motor and wait for it to finish
         print("starting calibration...")
         my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
         while my_drive.axis0.current_state != AXIS_STATE_IDLE:
             time.sleep(0.1)
+        return my_drive
     
     def get_force_usager (self):
         self._force_usager += 1  #récupération du torque de l'usager 
