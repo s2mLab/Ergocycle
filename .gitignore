@@ -134,3 +134,7 @@ source/test_gitignore.txt
 # Documentation personnelle
 documentation/guide_oop.md
 
+#Fichiers d'enregistrement
+source/0*
+source/1*
+

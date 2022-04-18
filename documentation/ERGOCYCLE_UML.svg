@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="420mm"
-   height="136.3mm"
-   viewBox="0 0 420 136.3"
+   width="930.5mm"
+   height="316.79999mm"
+   viewBox="0 0 930.49996 316.8"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
@@ -85,16 +85,17 @@
     <marker
        inkscape:stockid="TriangleInM"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="TriangleInM"
        style="overflow:visible"
        inkscape:isstock="true">
       <path
          id="path22082"
-         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         transform="scale(-0.4)" />
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(-0.4)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="DiamondM"
@@ -114,16 +115,17 @@
     <marker
        inkscape:stockid="TriangleInL"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="TriangleInL"
        style="overflow:visible"
        inkscape:isstock="true">
       <path
          id="path22079"
-         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
-         transform="scale(-0.8)" />
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(-0.8)"
+         inkscape:connector-curvature="0" />
     </marker>
     <marker
        inkscape:stockid="EmptyTriangleOutM"
@@ -184,22 +186,6 @@
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
          d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
          id="path10543"
-         inkscape:connector-curvature="0" />
-    </marker>
-    <marker
-       inkscape:isstock="true"
-       style="overflow:visible"
-       id="marker8031"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="DiamondM"
-       inkscape:collect="always">
-      <path
-         transform="scale(0.4)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
-         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
-         id="path8029"
          inkscape:connector-curvature="0" />
     </marker>
     <marker
@@ -488,6 +474,84 @@
          d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
          id="path28287-6" />
     </marker>
+    <marker
+       inkscape:stockid="DiamondM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker26948-3"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path26946-5"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker26948-2"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path26946-9"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker26948-27"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path26946-0"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.4)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker29009-5"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="EmptyTriangleInM">
+      <path
+         inkscape:connector-curvature="0"
+         transform="matrix(-0.4,0,0,-0.4,1.8,0)"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path29007-6" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyDiamondM"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="EmptyDiamondM-1-6-6-2-70"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path931-2-10-1-8-9"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 Z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="scale(0.4)" />
+    </marker>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -496,9 +560,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.1767767"
-     inkscape:cx="1274.0402"
-     inkscape:cy="-315.75861"
+     inkscape:zoom="0.125"
+     inkscape:cx="1289.8368"
+     inkscape:cy="846.35521"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -507,7 +571,8 @@
      inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:snap-bbox="true" />
+     inkscape:snap-bbox="true"
+     units="mm" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -516,7 +581,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -524,29 +589,39 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-160.7)">
-    <rect
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect1104-5"
-       width="60"
-       height="20"
-       x="-31.511904"
-       y="-78.502975" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="-24.046518"
-       y="-64.071358"
-       id="text1108-3"><tspan
-         sodipodi:role="line"
-         id="tspan1106-5"
-         x="-24.046518"
-         y="-64.071358"
-         style="stroke-width:0.26458332">Example</tspan></text>
+     transform="translate(0,19.80004)">
+    <g
+       id="g31283"
+       transform="translate(209.55,-234.95)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <rect
+         y="-78.502975"
+         x="-31.511904"
+         height="20"
+         width="60"
+         id="rect1104-5"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         id="text1108-3"
+         y="-65.58326"
+         x="-24.706869"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="-65.58326"
+           x="-24.706869"
+           id="tspan1106-5"
+           sodipodi:role="line">Example</tspan></text>
+    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot1181"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><flowRegion
          id="flowRegion1183"><rect
            id="rect1185"
            width="445.71429"
@@ -555,9 +630,10 @@
            y="82.519684" /></flowRegion><flowPara
          id="flowPara1187" /></flowRoot>    <g
        id="g1164"
-       transform="translate(150.8631,112.23828)"
+       transform="translate(270.86311,-67.761721)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="48.461716"
          x="49.136902"
@@ -579,17 +655,19 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 290,216.99999 V 197"
+       d="M 410.00001,36.999989 V 16.999999"
        id="path5181-9-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g1213"
-       transform="translate(243.88691,86.48214)"
+       transform="translate(363.88692,-93.517861)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="130.51785"
          x="16.113094"
@@ -611,9 +689,10 @@
     </g>
     <g
        id="g1269"
-       transform="translate(120.6994,152.15179)"
+       transform="translate(240.69941,-27.848211)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="124.84821"
          x="119.3006"
@@ -634,18 +713,20 @@
            sodipodi:role="line">StimulationSignal</tspan></text>
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker8031)"
-       d="M 290,240.7 V 277"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker25158)"
+       d="m 410.00001,60.699999 v 36.3"
        id="path5181-9"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g1179"
-       transform="translate(394.40476,111.0506)"
+       transform="translate(514.40477,-68.949401)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="105.9494"
          x="45.595238"
@@ -667,17 +748,19 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker29009)"
-       d="M 470,238.5 V 257"
+       d="m 590.00001,58.499999 v 18.5"
        id="path5181-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g1174"
-       transform="translate(192.85119,95.175596)"
+       transform="translate(162.8512,-84.824405)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="121.8244"
          x="-42.851189"
@@ -699,17 +782,19 @@
     </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 180,217 V 197"
+       d="M 226.66634,96.999972 V 16.999996"
        id="path5181-9-6-5"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g1169"
-       transform="translate(108.14286,124.27976)"
+       transform="translate(328.14289,-55.720241)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="92.720238"
          x="-48.142857"
@@ -731,9 +816,10 @@
     </g>
     <g
        id="g5329"
-       transform="translate(115.65788,-90.18085)"
+       transform="translate(335.65789,-270.18085)"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png">
       <rect
          y="367.18085"
          x="-55.657879"
@@ -756,97 +842,27 @@
     <path
        id="path5181-9-6-59"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m -10.000001,277 2e-6,-80 H 460 v 20"
+       d="m 70.000006,96.999972 2e-6,-79.999987 510.000002,1.4e-5 v 20"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker22374)"
-       d="M 230,197 V 184.4"
+       d="M 350.00001,16.999999 V 4.3999987"
        id="path5181-6-2-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <g
-       id="g19555"
-       transform="translate(-503.03441,-290.72763)"
-       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_LEGENDE.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
-      <path
-         inkscape:export-ydpi="96"
-         inkscape:export-xdpi="96"
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path5181-9-6-5-9"
-         d="M 380,497 H 340"
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyDiamondM-1-6-6-2)" />
-      <text
-         id="text17763"
-         y="499.91971"
-         x="389.40573"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="stroke-width:0.26458332"
-           y="499.91971"
-           x="389.40573"
-           id="tspan17761"
-           sodipodi:role="line">Composition</tspan></text>
-      <text
-         id="text17767"
-         y="520.13159"
-         x="389.91733"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="stroke-width:0.26458332"
-           y="520.13159"
-           x="389.91733"
-           id="tspan17765"
-           sodipodi:role="line">Aggrégation</tspan></text>
-      <text
-         id="text17771"
-         y="540.13159"
-         x="388.9613"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="stroke-width:0.26458332"
-           y="540.13159"
-           x="388.9613"
-           id="tspan17769"
-           sodipodi:role="line">Héritage</tspan></text>
-      <path
-         inkscape:export-ydpi="96"
-         inkscape:export-xdpi="96"
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path5181-9-6-5-9-6"
-         d="M 380,537 H 340"
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyTriangleInM)" />
-      <path
-         inkscape:export-ydpi="96"
-         inkscape:export-xdpi="96"
-         sodipodi:nodetypes="cc"
-         inkscape:connector-curvature="0"
-         id="path5181-9-6-5-9-9"
-         d="M 380,517 H 340"
-         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker8031-3)" />
-    </g>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:11.28888893px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="-166.05823"
-       y="276.33752"
-       id="text19604"><tspan
-         sodipodi:role="line"
-         id="tspan19602"
-         x="-166.05823"
-         y="276.33752"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332">Classe abstraite</tspan></text>
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g19636"
-       transform="translate(210.00001,60)">
+       transform="translate(330.00002,-120)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <rect
          y="277"
          x="360"
@@ -868,7 +884,10 @@
     </g>
     <g
        id="g19703"
-       transform="translate(348.83245,45.855286)">
+       transform="translate(468.83246,-134.14472)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text19628"
          y="365.09018"
@@ -890,7 +909,10 @@
     </g>
     <g
        id="g19728"
-       transform="translate(197.04798,2.0230717)">
+       transform="translate(317.04799,-177.97693)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text19620"
          y="407.73383"
@@ -912,7 +934,10 @@
     </g>
     <g
        id="g19689"
-       transform="translate(-48.248184,72.047731)">
+       transform="translate(71.751826,-107.95227)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text19624"
          y="338.89777"
@@ -934,7 +959,10 @@
     </g>
     <g
        id="g19723"
-       transform="translate(251.9985,-26.307494)">
+       transform="translate(371.99851,-206.3075)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text19612"
          y="437.25296"
@@ -956,7 +984,10 @@
     </g>
     <g
        id="g19739"
-       transform="translate(44.3341,-99.00479)">
+       transform="translate(164.33411,-279.00479)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text19616"
          y="509.95029"
@@ -978,13 +1009,19 @@
     </g>
     <path
        style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 262,170.7 H 480 V 217"
+       d="m 382.00001,-9.3000013 h 218 V 36.999999"
        id="path19741"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <g
        id="g20756"
-       transform="translate(129.40015,126.16779)">
+       transform="translate(249.40016,-53.832211)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text20704"
          y="344.77771"
@@ -1006,7 +1043,10 @@
     </g>
     <g
        id="g20751"
-       transform="translate(225.46095,205.14798)">
+       transform="translate(345.46096,25.147979)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text20700"
          y="205.19035"
@@ -1026,159 +1066,102 @@
          id="rect1104-5-7-6-3-7-0"
          style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
-    <g
-       id="g20792"
-       transform="translate(-397.83673,-21.225314)">
-      <text
-         id="text20760"
-         y="312.17081"
-         x="540.66846"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="stroke-width:0.26458332"
-           y="312.17081"
-           x="540.66846"
-           id="tspan20758"
-           sodipodi:role="line">SendCrankset</tspan></text>
-      <rect
-         y="298.22531"
-         x="537.83673"
-         height="20"
-         width="80"
-         id="rect1104-5-7-6-3-7-0-0"
-         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker26948)"
-       d="M 89.999998,240.7 V 277"
+       d="m 309.99999,60.699999 v 36.3"
        id="path5181-9-6-5-6"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyTriangleInM-8)"
-       d="M 180,238.5 V 277"
-       id="path5181-9-6-5-6-7"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cc"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m 264.71769,168.2 -3.41805,2.5 3.51873,2.5"
+       d="m 384.7177,-11.800001 -3.41805,2.4999997 3.51873,2.5"
        id="path22912"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:47.77272415px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:0.26458332;"
-       x="-115.31713"
-       y="107.51901"
-       id="text22938"
-       transform="scale(1.086472,0.92041031)"><tspan
-         sodipodi:role="line"
-         id="tspan22936"
-         x="-115.31713"
-         y="107.51901"
-         style="stroke-width:0.26458332;fill:#ff0000;">FLÈCHES À L'ENVERS</tspan></text>
-    <path
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m -80.635215,202.33314 c -0.249452,0.43654 -0.498903,0.87308 -0.748355,1.30962 0,0.18709 0.08367,0.39393 0,0.56126 -0.178581,0.35716 -0.526854,0.60319 -0.748356,0.93545 -0.245168,0.36775 -0.845711,1.86355 -0.935442,2.05797 -0.17531,0.37984 -0.374176,0.74836 -0.561266,1.12253 -0.374176,0.74836 -0.70095,1.52236 -1.122532,2.24507 -0.453186,0.77689 -1.04186,1.46914 -1.496708,2.24506 -0.60665,1.03487 -1.122534,2.12034 -1.6838,3.18051 -0.561266,1.06017 -1.123887,2.11962 -1.683798,3.18051 -0.76599,1.45135 -3.099141,5.83269 -3.741772,7.29645 -3.672678,8.36555 0.820214,-0.18212 -3.554685,7.10937 -0.473736,0.78956 -0.86588,1.62536 -1.309621,2.43216 -0.504489,0.91725 -0.593307,1.41918 -1.496708,1.87088 -0.05578,0.0279 0,-0.12472 0,-0.18709 0,-0.12472 0,-0.24945 0,-0.37417 0,-0.23174 -0.03687,-0.52714 0,-0.74836 0.04227,-0.25363 0.124724,-0.4989 0.187087,-0.74835"
-       id="path24354"
-       inkscape:connector-curvature="0" />
-    <path
-       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       d="m -99.905348,202.33314 c 0.311814,0.12472 0.677447,0.15918 0.935443,0.37417 0.1515,0.12625 0.113847,0.37817 0.187089,0.56127 0.112392,0.28098 0.392327,0.73272 0.561266,0.93544 3.928033,4.71364 -1.517158,-1.96358 3.928861,3.74178 0.585682,0.61356 0.997808,1.37198 1.496711,2.05797 0.623628,0.74836 1.182066,1.55624 1.870887,2.24507 0.564719,0.56472 1.28932,0.94935 1.870885,1.4967 1.013164,0.95357 1.793169,2.22695 2.806332,3.18051 0.517782,0.48733 1.213353,0.77645 1.683798,1.30962 0.481176,0.54534 0.686168,1.28907 1.122532,1.87089 0.503404,0.6712 1.180393,1.19968 1.683797,1.87089 0.436362,0.58181 0.761704,1.23944 1.122532,1.87088 0.387686,0.67845 0.642795,1.44118 1.122532,2.05798 0.406998,0.52328 1.027949,0.84086 1.496708,1.30962 0.344411,0.34441 0.591035,0.77812 0.935445,1.12253 0.158994,0.159 0.38853,0.23023 0.561266,0.37418 0.27101,0.22584 0.498904,0.4989 0.748353,0.74835"
-       id="path24356"
-       inkscape:connector-curvature="0" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <path
        id="path5181-9-6-59-5"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 180.00001,397 v -20 h 470 v 20"
+       d="m 300.00002,217 v -20 h 470 v 20"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#EmptyTriangleOutM)"
-       d="M 600,377 V 358.5"
+       d="M 720.00001,197 V 178.5"
        id="path5181-6-2-2-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 310.00001,397 V 377"
+       d="M 430.00002,217 V 197"
        id="path5181-9-6-5-8"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 430.00001,396.99997 v -20"
+       d="m 550.00002,216.99997 v -20"
        id="path5181-9-6-5-97"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 540.00001,396.99997 v -20"
+       d="m 660.00002,216.99997 v -20"
        id="path5181-9-6-5-3"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker28289)"
-       d="M 633.70001,347 H 760 v 50.00003"
+       d="m 753.70002,167 h 126.29999 v 50.00003"
        id="path19741-6"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyTriangleInM-8-1)"
-       d="M 760.00001,418.5 V 457"
+       d="M 880.00002,238.5 V 277"
        id="path5181-9-6-5-6-7-9"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <g
-       id="g28837"
-       transform="translate(-566.02753,115.72358)">
-      <text
-         id="text22922"
-         y="175.22191"
-         x="514.45123"
-         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="stroke-width:0.26458332"
-           y="175.22191"
-           x="514.45123"
-           id="tspan22920"
-           sodipodi:role="line">USBDriveWriter</tspan></text>
-      <rect
-         y="161.27641"
-         x="506.02753"
-         height="20"
-         width="100"
-         id="rect1104-5-7-6-3-6-4"
-         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 90,217 V 197"
+       d="m 309.99999,36.999999 v -20"
        id="path5181-9-6-5-7"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <g
        id="g28912"
-       transform="translate(-21.537384,131.43902)">
+       transform="translate(98.462626,-48.560981)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text28860"
          y="159.50647"
@@ -1200,7 +1183,10 @@
     </g>
     <g
        id="g28907"
-       transform="translate(-125.07358,76.809139)">
+       transform="translate(-5.0735702,-103.19086)"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
       <text
          id="text28856"
          y="214.13635"
@@ -1223,16 +1209,314 @@
     <path
        id="path5181-9-6-59-1"
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 410,277 v -20.00001 l 120,0 v 20"
+       d="m 530.00001,96.999999 v -20.00001 h 120 v 20"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
        inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
     <path
        style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker28289-0)"
-       d="M 503.7,227 H 600 v 110"
+       d="m 623.70001,46.999999 h 96.3 V 157"
        id="path19741-6-3"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <g
+       id="g1213-3"
+       transform="matrix(5.3568056,0,0,2.905,258.33528,-704.92939)"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       style="stroke-width:0.25349769">
+      <rect
+         y="130.51785"
+         x="16.113094"
+         height="20"
+         width="60"
+         id="rect1104-5-9-6"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.25349769;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         id="text1108-3-3-7"
+         y="144.46335"
+         x="18.150978"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06707126"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.06707126"
+           y="144.46335"
+           x="18.150978"
+           id="tspan1106-5-6-5"
+           sodipodi:role="line">Stimulator</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="355.60001"
+       y="-177.13335"
+       id="text1024"><tspan
+         sodipodi:role="line"
+         id="tspan1022"
+         x="355.60001"
+         y="-177.13335"
+         style="stroke-width:0.26458332">rs Comm</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="465.66669"
+       y="-160.20003"
+       id="text1028"><tspan
+         sodipodi:role="line"
+         id="tspan1026"
+         x="465.66669"
+         y="-160.20003"
+         style="stroke-width:0.26458332">rsPacket</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="560.91663"
+       y="-164.43336"
+       id="text1032"><tspan
+         sodipodi:role="line"
+         id="tspan1030"
+         x="560.91663"
+         y="-164.43336"
+         style="stroke-width:0.26458332">rsControler</tspan></text>
+    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1034"
+       width="70.908333"
+       height="25.4"
+       x="339.72498"
+       y="-193.00835" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1036"
+       width="63.5"
+       height="31.75"
+       x="458.25833"
+       y="-180.30836" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect1038"
+       width="79.375023"
+       height="32.808331"
+       x="551.39166"
+       y="-184.54169" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker26948-3)"
+       d="m 382.05833,-237.07225 v 36.3"
+       id="path5181-9-6-5-6-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker26948-2)"
+       d="m 488.95,-233.89725 v 36.3"
+       id="path5181-9-6-5-6-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker26948-27)"
+       d="m 587.375,-241.30558 v 36.3"
+       id="path5181-9-6-5-6-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
+    <g
+       id="g1077"
+       transform="translate(54.448672,243.29739)">
+      <rect
+         y="-146.29739"
+         x="105.55134"
+         height="20"
+         width="100"
+         id="rect1104-6-6"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <text
+         id="text1108-2-7"
+         y="-132.3519"
+         x="107.92117"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="-132.3519"
+           x="107.92117"
+           id="tspan1106-9-5"
+           sodipodi:role="line">CranksetRecorder</tspan></text>
+    </g>
+    <g
+       id="g1072"
+       transform="translate(-346.94726,188.12285)">
+      <text
+         id="text1052"
+         y="-77.177361"
+         x="353.97177"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="-77.177361"
+           x="353.97177"
+           id="tspan1050"
+           sodipodi:role="line">CranksetCommunicator</tspan></text>
+      <rect
+         y="-91.122856"
+         x="346.94727"
+         height="20"
+         width="140"
+         id="rect1104-6-6-3"
+         style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.99999994;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker29009-5)"
+       d="m 150.00001,58.599972 v 18.5"
+       id="path5181-6-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
+    <path
+       id="path5181-9-6-59-1-9"
+       style="fill:#000000;fill-opacity:0;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 105.00001,97.099972 v -20.00001 h 88.33333 v 19.999999"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png" />
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 318.30001,-9.3000013 H 35.000003 V 96.999994"
+       id="path19741-1"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 315.18169,-11.800005 3.41805,2.5000002 -3.51873,2.499999"
+       id="path22912-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <g
+       id="g1246"
+       transform="translate(163.03442,4.4910298)">
+      <path
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5181-9-6-5-9"
+         d="m -123.03441,206.27237 h -40"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyDiamondM-1-6-6-2)" />
+      <text
+         id="text17763"
+         y="209.19208"
+         x="-113.62868"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="209.19208"
+           x="-113.62868"
+           id="tspan17761"
+           sodipodi:role="line">Composition</tspan></text>
+      <text
+         id="text17767"
+         y="229.40396"
+         x="-113.11708"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="229.40396"
+           x="-113.11708"
+           id="tspan17765"
+           sodipodi:role="line">Aggrégation</tspan></text>
+      <text
+         id="text17771"
+         y="249.40396"
+         x="-114.0731"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="249.40396"
+           x="-114.0731"
+           id="tspan17769"
+           sodipodi:role="line">Héritage</tspan></text>
+      <path
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5181-9-6-5-9-6"
+         d="m -123.03441,246.27237 h -40"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#EmptyTriangleInM)" />
+      <path
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path5181-9-6-5-9-9"
+         d="m -123.03441,226.27237 h -40"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker8031-3)" />
+      <text
+         inkscape:export-ydpi="96"
+         inkscape:export-xdpi="96"
+         inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+         id="text19604"
+         y="292.34912"
+         x="-164.36263"
+         style="font-style:normal;font-weight:normal;font-size:11.28888893px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+           y="292.34912"
+           x="-164.36263"
+           id="tspan19602"
+           sodipodi:role="line">Classe abstraite</tspan></text>
+      <g
+         transform="translate(-13.3733,85.688682)"
+         id="g1210">
+        <path
+           style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m -109.66111,180.5833 h -40"
+           id="path5181-9-6-5-9-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96" />
+        <path
+           style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+           d="m -113.07916,178.0833 3.41805,2.5 -3.51873,2.49999"
+           id="path22912-2-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccc"
+           inkscape:export-filename="/home/felix/POLY/ELE8080/Schémas/UML_v_1_1.png"
+           inkscape:export-xdpi="96"
+           inkscape:export-ydpi="96" />
+      </g>
+      <text
+         id="text17771-0"
+         y="270.21747"
+         x="-113.11708"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="stroke-width:0.26458332"
+           y="270.21747"
+           x="-113.11708"
+           id="tspan17769-6"
+           sodipodi:role="line">Association</tspan></text>
+    </g>
   </g>
 </svg>

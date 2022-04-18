@@ -34,6 +34,8 @@ class ErrorMenu(QWidget):
         self.setWindowTitle("Erreur")
         self.setStyleSheet("background-color: white;")
         
+        self.button_dictionary = {}
+        
         self.initUI()
 
     def initUI(self):        

@@ -13,43 +13,6 @@ from numpy import *
 class Parameters():
     def __init__(self):
         super(Parameters, self).__init__()
-        
-        #self.stim_training_length = 0
-        #self.electrode1_muscle = "vide"
-        #self.electrode2_muscle = "vide"
-        #self.electrode3_muscle = "vide"
-        #self.electrode4_muscle = "vide"
-        #self.electrode5_muscle = "vide"
-        #self.electrode6_muscle = "vide"
-        #self.electrode7_muscle = "vide"
-        #self.electrode8_muscle = "vide"
-        #self.electrode1_amplitude = 0
-        #self.electrode2_amplitude = 0
-        #self.electrode3_amplitude = 0
-        #self.electrode4_amplitude = 0
-        #self.electrode5_amplitude = 0
-        #self.electrode6_amplitude = 0
-        #self.electrode7_amplitude = 0
-        #self.electrode8_amplitude = 0
-        #self.electrode1_frequency = 0
-        #self.electrode2_frequency = 0
-        #self.electrode3_frequency = 0
-        #self.electrode4_frequency = 0
-        #self.electrode5_frequency = 0
-        #self.electrode6_frequency = 0
-        #self.electrode7_frequency = 0
-        #self.electrode8_frequency = 0
-        #self.electrode1_length_imp = 0
-        #self.electrode2_length_imp = 0
-        #self.electrode3_length_imp = 0
-        #self.electrode4_length_imp = 0
-        #self.electrode5_length_imp = 0
-        #self.electrode6_length_imp = 0
-        #self.electrode7_length_imp = 0
-        #self.electrode8_length_imp = 0
-        
-        
-    
     ## Aller chercher les valeurs d'amplitudes pour chaque électrode ##
     def get_electrode1_amplitude(self):
         return self.electrode1_amplitude
@@ -101,12 +64,10 @@ class Parameters():
 
     ## Aller chercher les valeurs des fréquences pour chaque électrode ##
     def get_electrode1_frequency(self):
-        #print("valeur de get : ", self.electrode1_frequency)
         return self.electrode1_frequency
     
     def set_electrode1_frequency(self, combo_box):
         if combo_box.currentText() == str(5):
-            #print("combo box text : ", combo_box.currentText())
             self.electrode1_frequency = str(10)
         else: 
             self.electrode1_frequency = combo_box.currentText()
@@ -291,7 +252,6 @@ class Parameters():
 
     ## Transformer les muscles en numeros ##
     def get_muscle_number(self):
-        #self.muscle = numpy.empty([1,8], dtype=string)
         self.muscle_number = numpy.empty([1,8], dtype=int)
         self.muscle=[self.get_electrode1_muscle(),self.get_electrode2_muscle(), self.get_electrode3_muscle(), self.get_electrode4_muscle(), self.get_electrode5_muscle(), self.get_electrode6_muscle(), self.get_electrode7_muscle(),self.get_electrode8_muscle()]
         for i in range(len(self.muscle)):
@@ -305,7 +265,7 @@ class Parameters():
                 self.muscle_number[0,i] = 3
             if self.muscle[i] == "Deltoide Antérieur":
                 self.muscle_number[0,i] = 4
-            #if self.muscle[i] == "Grand pectoral":
+            #if self.muscle[i] == "Grand pectoral": ## Conservé si vous désirer ajouter des muscles à stimuler
                 #self.muscle_number[0,i] = 5
             #if self.muscle[i] =="Trapezius descendens":
                 #self.muscle_number[0,i] = 6
