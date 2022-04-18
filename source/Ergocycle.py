@@ -27,12 +27,12 @@ class Ergocycle:
     # Constuctor
     def __init__(self):
 
-        self.assistance_screen = Screen(self.read_assistance_screen)
+        self.assistance_screen = AssistanceScreen(self.read_assistance_screen)
         # self.crankset = Crankset()
         # self.crankset_measures = {}
         # self.motor = Motor()
         # For now, we will only use one screen to make the implementation easier
-        # self.stimulation_screen = Screen(self.read_stimulation_screen)
+        self.stimulation_screen = StimulationScreen(self.read_stimulation_screen)
         # self.stimulator = Stimulator( 2, main_sef, "COM1")
         # self.usbDriveWriter = UsbDriveWriter()
 
@@ -49,7 +49,7 @@ class Ergocycle:
         else:
             print("(Ergocycle) Command " + command + " not found")
 
-    def read_stimulation_screen(self):
+    def read_stimulation_screen(self, command):
         print("TODO: Read stimulation screen")
 
     #def command_stimulator(self):#(self, command)
