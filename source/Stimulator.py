@@ -182,7 +182,7 @@ class Stimulator:
                 self.electrode_number += (2)**(i)
                 
         biceps_DeltPost = np.delete(biceps_DeltPost, idx, 1)
-          
+        print(self.electrode_number)
         self.StimulationSignal = biceps_DeltPost
         self.idx = idx
          
@@ -291,7 +291,7 @@ class Stimulator:
     def calling_ACK(self):
             #Call the Ack function
         packet = self.read_packets()
-        print(packet)
+        
         if (len(packet)>1):
             if(int(packet[6]) == Stimulator.TYPES['Init'] and int(packet[7]) == self.VERSION):
                 

@@ -70,6 +70,8 @@ class Ergocycle():
         self.stop_motor = False
         self.stop_sensors = False
         self.stop_stimulations = False
+        self.stop_tests = False
+        self.pause = True
         
         self.motor_on = True
         self.stimulation_started = False
@@ -146,23 +148,26 @@ class Ergocycle():
         # logging.info("Thread %s: starting", name)
         
         matrice_0 = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
-        i=0
+       
         Stimulator.initialise_connection(self.stimulator)
-        starttime = time.time()
+        #starttime = time.time()
         timer = 0
+        timer_test = 0
         
         while(self.stop_stimulations == False and self.stop_motor == False):# and self.time <= self.stimulation_parameters.MAX_TIME
             
             if (self.stimulator.port.in_waiting>0):
                      self.stimulator.calling_ACK()
-            while(timer<10.0):
-                 print('hi')
+            
+            
+            while(timer_test<10.0 and self.stop_tests == True):
                  
-                     
+                 
+                 print(timer_test, 'test timer')
                 
                  if(~(np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
-                        print(timer , 'timer')
+                        timer_test = round(time.time()-self.starttime,2)
+                        
                         #print(self.stimulator.matrice, 'stimulation_signal update')
                         #if(220=<read_angle=< 360 or 0=read_angle=<10):
                         matrice_0 = self.stimulator.matrice
@@ -171,44 +176,39 @@ class Ergocycle():
                         
                         
                         
-                        i=i+1
+                        
                         
                         
                  elif((np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
+                        timer_test = round(time.time()-self.starttime,2)
                         Stimulator.stimulation_220_10(self.stimulator)
                         time.sleep(1/self.stimulator.frequency[0])
                 
                  else:
                     break
                     
-        
-            while(timer<(self.stimulation_time)*60): 
+            Stimulator.stop_stimulation(self.stimulator)
+            while(timer<(self.stimulation_time)*60 and self.stop_stimulations == False ): #and self.pause == True
                     
-                    
-                    #print(self.stimulator.matrice, 'new_matrice')
-                    #print(matrice_0,'matrice 0')
-                    
+
+                        
+                if(~(np.allclose(self.stimulator.matrice,matrice_0))):
+                    timer = round(time.time()-self.starttime,2)
+                            
+                    #print(self.stimulator.matrice, 'stimulation_signal update')
                     #if(220=<read_angle=< 360 or 0=read_angle=<10):
+                    matrice_0 = self.stimulator.matrice
+                    Stimulator.stimulation_220_10(self.stimulator)
+                    time.sleep(1/self.stimulator.frequency[0])
+                                 
+                            
+                else:
+                    timer = round(time.time()-self.starttime,2)
+                    Stimulator.stimulation_220_10(self.stimulator)
+                    time.sleep(1/self.stimulator.frequency[0])
                         
-                    if(~(np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
-                        print(timer , 'timer')
-                        #print(self.stimulator.matrice, 'stimulation_signal update')
-                        #if(220=<read_angle=< 360 or 0=read_angle=<10):
-                        matrice_0 = self.stimulator.matrice
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
-                        
-                        
-                        
-                        i=i+1
-                        print(i)
-                        
-                    else:
-                        timer = round(time.time()-starttime,2)
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
+                    
+                    
                     
                 #print("(Ergocycle) Sending new stimulation data...")
             
@@ -321,6 +321,7 @@ class Ergocycle():
             print("Ergocycle commanding to get initial test parameters") # +str(self.stimulation_screen.get_initial_test_parameters)
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle) 
             print(f"Initial test parameters : {self.stimulation_signal}")
+            self.stop_tests = True
             
             
             
@@ -331,10 +332,13 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
+            
             if self.stimulation_started == False:
                     self.thread_stimulations.start()
                     self.stimulation_started = True
+            self.starttime = time.time()
             Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+            
             
         elif command == "increase_frequency":
             self.stimulation_screen.current_menu.increase_frequency(self.stim_test_parameters)
@@ -386,6 +390,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.set_to_off()
             print(f"Initial test parameters : {self.stimulation_signal}")
             Stimulator.stop_stimulation(self.stimulator)
+            self.stop_tests = False
         
         # elif command == "updated_test_parameters":
         #     print("Ergocycle commanding to get updated test parameters") # +str(self.stimulation_screen.get_updated_test_parameters)
@@ -451,6 +456,7 @@ class Ergocycle():
                 if self.stimulation_started == False:
                     self.thread_stimulations.start()
                     self.stimulation_started = True
+                self.starttime = time.time()
                 Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
             else:
                 # self.stimulation_screen.current_menu.start_button.setEnabled(False)
@@ -905,11 +911,13 @@ class Ergocycle():
                 self.stimulation_signal = []
                 self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
                 print(f"PAUSED parameters: {self.stimulation_signal}")
+                self.pause = False
             else:
                 print("(Ergocycle) Stimulations restarted")
                 self.stimulation_signal = self.paused_stimulation_signal
                 self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
                 print(f"RESTARTED parameters: {self.stimulation_signal}")
+                self.pause = True
 
             # TODO : Passer le temps en paramètre si on prend le temps d'Ergocycle
             
@@ -920,9 +928,11 @@ class Ergocycle():
             self.stimulation_signal = []
             self.stimulation_screen.save_data_in_csv_file(self.stimulation_signal)
             print(f"(Ergocycle): Stopping stimulations : {self.stimulation_signal}")
+            self.stop_stimulations = True
+            time.sleep(1)
             if self.stimulation_started == True:
                 self.thread_stimulations.join()
-            self.stop_stimulations = True
+            
         else:
             print("(Ergocycle) Command " + command + " not found")
             
