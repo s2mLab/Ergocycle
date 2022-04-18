@@ -12,7 +12,7 @@ from MotorScreen import MotorScreen
 from Parameters import Parameters
 from TestParameters import TestParameters
 from MotorParameters import MotorParameters
-
+from Motor import Motor
 # from ReceiveDataClient import ReceiveDataClient # Décommenter lorsque la classe sera ajoutée au git
 
 from PyQt5.QtCore import QTimer, QTime
@@ -65,16 +65,17 @@ class Ergocycle():
         # self.thread_sensors = threading.Thread(target=self.sensors_function, args=(1,), daemon=True)
         self.thread_stimulations = threading.Thread(target=self.stimulations_function, args=(1,), daemon=True)
         
-        self.stimulator = Stimulator(self.stimulation_signal, 'COM6')
+        # self.stimulator = Stimulator(self.stimulation_signal, 'COM6')
         
         self.stop_motor = False
         self.stop_sensors = False
         self.stop_stimulations = False
         
-        self.motor_on = True
+        self.motor_on = False
         self.stimulation_started = False
         
-        # self.thread_motor_control.start()
+        self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0)
+        self.thread_motor_control.start()
         # self.thread_sensors.start()
         # self.thread_stimulations.start()
         
@@ -109,8 +110,14 @@ class Ergocycle():
     
     def motor_control_function(self, name):
         # logging.info("Thread %s: starting", name)
+        self.motor.calibratre_motor()
+        while(self.motor_on == False):
+            print("Waiting for motor to start...")
+            time.sleep(1)
         while(self.stop_motor == False):
-            time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur
+            time.sleep(0.1) # Changer la période à laquelle on veut ajuster le contrôle du moteur+-
+            self.motor._couple = self.motor_parameters.get_target_power() / 10
+            self.motor._carte.axis0.controller.input_torque = self._couple #set le couple normalement en Nm. scale en 0 et 1
             print("(Ergocycle) Adjusting motor control...")
             
             # if self.assistance_screen.window_counter == 1: # Vérification si le temps d'entraînement est atteint
@@ -124,7 +131,7 @@ class Ergocycle():
             #         # self.stop_stimulations = True
                     
             # self.motor.adjust_motor() # Remplacer cette ligne par la fonction qui fait l'asservissement du moteur
-        
+        self.motor._carte.axis0.controller.input_torque = 0.0
         print("(Ergocycle) Stopped motor control thread")
         # self.thread_motor_control.join()
         # self.assistance_screen.read_assistance_screen("stop_training")
@@ -142,84 +149,84 @@ class Ergocycle():
     #     # self.thread_sensors.join()
     #     # logging.info("Thread %s: finishing", name)
     
-    def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
-        # logging.info("Thread %s: starting", name)
+    # def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
+    #     # logging.info("Thread %s: starting", name)
         
-        matrice_0 = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
-        i=0
-        Stimulator.initialise_connection(self.stimulator)
-        starttime = time.time()
-        timer = 0
+    #     matrice_0 = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
+    #     i=0
+    #     Stimulator.initialise_connection(self.stimulator)
+    #     starttime = time.time()
+    #     timer = 0
         
-        while(self.stop_stimulations == False and self.stop_motor == False):# and self.time <= self.stimulation_parameters.MAX_TIME
+    #     while(self.stop_stimulations == False and self.stop_motor == False):# and self.time <= self.stimulation_parameters.MAX_TIME
             
-            if (self.stimulator.port.in_waiting>0):
-                     self.stimulator.calling_ACK()
-            while(timer<10.0):
-                 print('hi')
+    #         if (self.stimulator.port.in_waiting>0):
+    #                  self.stimulator.calling_ACK()
+    #         while(timer<10.0):
+    #              print('hi')
                  
                      
                 
-                 if(~(np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
-                        print(timer , 'timer')
-                        #print(self.stimulator.matrice, 'stimulation_signal update')
-                        #if(220=<read_angle=< 360 or 0=read_angle=<10):
-                        matrice_0 = self.stimulator.matrice
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
+    #              if(~(np.allclose(self.stimulator.matrice,matrice_0))):
+    #                     timer = round(time.time()-starttime,2)
+    #                     print(timer , 'timer')
+    #                     #print(self.stimulator.matrice, 'stimulation_signal update')
+    #                     #if(220=<read_angle=< 360 or 0=read_angle=<10):
+    #                     matrice_0 = self.stimulator.matrice
+    #                     Stimulator.stimulation_220_10(self.stimulator)
+    #                     time.sleep(1/self.stimulator.frequency[0])
                         
                         
                         
-                        i=i+1
+    #                     i=i+1
                         
                         
-                 elif((np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
+    #              elif((np.allclose(self.stimulator.matrice,matrice_0))):
+    #                     timer = round(time.time()-starttime,2)
+    #                     Stimulator.stimulation_220_10(self.stimulator)
+    #                     time.sleep(1/self.stimulator.frequency[0])
                 
-                 else:
-                    break
+    #              else:
+    #                 break
                     
         
-            while(timer<(self.stimulation_time)*60): 
+    #         while(timer<(self.stimulation_time)*60): 
                     
                     
-                    #print(self.stimulator.matrice, 'new_matrice')
-                    #print(matrice_0,'matrice 0')
+    #                 #print(self.stimulator.matrice, 'new_matrice')
+    #                 #print(matrice_0,'matrice 0')
                     
-                    #if(220=<read_angle=< 360 or 0=read_angle=<10):
+    #                 #if(220=<read_angle=< 360 or 0=read_angle=<10):
                         
-                    if(~(np.allclose(self.stimulator.matrice,matrice_0))):
-                        timer = round(time.time()-starttime,2)
-                        print(timer , 'timer')
-                        #print(self.stimulator.matrice, 'stimulation_signal update')
-                        #if(220=<read_angle=< 360 or 0=read_angle=<10):
-                        matrice_0 = self.stimulator.matrice
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
+    #                 if(~(np.allclose(self.stimulator.matrice,matrice_0))):
+    #                     timer = round(time.time()-starttime,2)
+    #                     print(timer , 'timer')
+    #                     #print(self.stimulator.matrice, 'stimulation_signal update')
+    #                     #if(220=<read_angle=< 360 or 0=read_angle=<10):
+    #                     matrice_0 = self.stimulator.matrice
+    #                     Stimulator.stimulation_220_10(self.stimulator)
+    #                     time.sleep(1/self.stimulator.frequency[0])
                         
                         
                         
-                        i=i+1
-                        print(i)
+    #                     i=i+1
+    #                     print(i)
                         
-                    else:
-                        timer = round(time.time()-starttime,2)
-                        Stimulator.stimulation_220_10(self.stimulator)
-                        time.sleep(1/self.stimulator.frequency[0])
+    #                 else:
+    #                     timer = round(time.time()-starttime,2)
+    #                     Stimulator.stimulation_220_10(self.stimulator)
+    #                     time.sleep(1/self.stimulator.frequency[0])
                     
-                #print("(Ergocycle) Sending new stimulation data...")
+    #             #print("(Ergocycle) Sending new stimulation data...")
             
-        # Remettre la matrice à 0
+    #     # Remettre la matrice à 0
         
         
         
-        print("(Ergocycle) Stopped stimulations thread")
-        # self.thread_stimulations.join()
-        # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
-        # logging.info("Thread %s: finishing", name)
+    #     print("(Ergocycle) Stopped stimulations thread")
+    #     # self.thread_stimulations.join()
+    #     # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
+    #     # logging.info("Thread %s: finishing", name)
 
     def read_assistance_screen(self, command):
         # if command == "command_amplitude":
@@ -229,7 +236,7 @@ class Ergocycle():
         #     print("(Ergocycle) TESTING EVENT")
             
         if command == "start_training":
-            self.thread_motor_control.start()
+            # self.thread_motor_control.start()
             # self.thread_sensors.start()
             
             self.motor_on = True
