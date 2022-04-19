@@ -4,6 +4,7 @@ import odrive
 from odrive.enums import *
 import time
 import math
+#import Motor 
 
 def test_vitesse (vitesse, carte : odrive):
     carte.axis0.requested_state = AXIS_STATE_ENCODER_OFFSET_CALIBRATION
@@ -46,6 +47,28 @@ def test_couple (couple, carte : odrive):
 
     carte.axis0.controller.input_torque = 0.0
 
+def passif_mode(couple, carte : odrive) :    
+        start = time.time() 
+        end = time.time()  
+        while (end - start) <= 30 : 
+            end = time.time()
+        new_time = time.time() 
+        new_end_time = time.time() 
+        carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL #pour démarrer le moteur
+        carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL #set le mode torque
+        carte.axis0.motor.config.torque_constant = 0.21  
+        carte.axis0.controller.input_torque = couple #set le couple normalement en Nm. scale en 0 et 1        
+        while (new_end_time - new_time) <= 30 :
+            new_end_time = time.time()
+            vitesse = carte.axis0.encoder.vel_estimate
+            courant = carte.axis0.motor.current_control.Iq_setpoint 
+            puissance = couple * vitesse  
+            print("puissance en watt :", puissance) 
+
+
+
+        carte.axis0.controller.input_torque = 0.0
+
 
 
     # courant = carte.axis0.motor.current_control.Iq_measured
@@ -62,12 +85,17 @@ def test_couple (couple, carte : odrive):
 print("finding an odrive...")
 my_drive = odrive.find_any()
 # Calibrate motor and wait for it to finish
-# print("starting calibration...")
-# my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
-# while my_drive.axis0.current_state != AXIS_STATE_IDLE:
-#     time.sleep(0.1)
+print("starting calibration...")
+my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+while my_drive.axis0.current_state != AXIS_STATE_IDLE:
+    time.sleep(0.1)
 
+passif_mode(-1, my_drive)
+# moteur = Motor('tsdz2', 0.1 , 0.5, 0.1, 0.5 , 50, 35, -35, 1, my_drive)
+# moteur._couple_usager = 8 
+# moteur.concentric_mode()
 #decommenter pour effectuer les tests
 #test_vitesse(1, my_drive)
-test_couple (0.5, my_drive)
+#test_couple (-1, my_drive)
+#test_couple (0.5, my_drive) 
 #my_drive.axis0.requested_state = AXIS_STATE_IDLE

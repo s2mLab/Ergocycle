@@ -12,8 +12,11 @@ from MotorScreen import MotorScreen
 from Parameters import Parameters
 from TestParameters import TestParameters
 from MotorParameters import MotorParameters
-
+from Motor import Motor
 # from ReceiveDataClient import ReceiveDataClient # Décommenter lorsque la classe sera ajoutée au git
+import odrive
+#import numpy 
+from odrive.enums import *
 
 from PyQt5.QtCore import QTimer, QTime
 
@@ -113,8 +116,34 @@ class Ergocycle():
 
     def motor_control_function(self, name):
         # logging.info("Thread %s: starting", name)
+        print("Thread started")
+#         carte = self.motor.calibratre_motor()
+        # Find a connected ODrive (this will block until you connect one)
+        print("finding an odrive...")
+        my_drive = odrive.find_any()
+        print("odrive found")
+        
+        # Calibrate motor and wait for it to finish
+        print("starting calibration...")
+        my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
+        while my_drive.axis0.current_state != AXIS_STATE_IDLE:
+            time.sleep(0.1)
+        self.motor._carte = my_drive
+        
+        while(self.motor_on == False):
+            print("Waiting for motor to start...")
+            time.sleep(1)
+        self.motor._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL #pour démarrer le moteur
+#         self.motor._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL #set le mode torque
+        self.motor._carte.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL #set le mode vitesse
+#         self.motor._carte.axis0.motor.config.torque_constant = 0.21
         while(self.stop_motor == False):
-            time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur
+            time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur+- 
+
+#             self.motor._couple = (-1)*(self.motor_parameters.get_target_power() / 10)
+            self.motor._couple = (-1)*self.motor_parameters.get_target_power()
+#             self.motor._carte.axis0.controller.input_vel = self.motor._couple #set le couple normalement en Nm. scale en 0 et 1
+            self.motor._carte.axis0.controller.input_vel = self.motor._couple
             print("(Ergocycle) Adjusting motor control...")
 
             # if self.assistance_screen.window_counter == 1: # Vérification si le temps d'entraînement est atteint
@@ -128,7 +157,8 @@ class Ergocycle():
             #         # self.stop_stimulations = True
 
             # self.motor.adjust_motor() # Remplacer cette ligne par la fonction qui fait l'asservissement du moteur
-
+#         self.motor._carte.axis0.controller.input_torque = 0.0
+        self.motor._carte.axis0.controller.input_vel = 0.0
         print("(Ergocycle) Stopped motor control thread")
         # self.thread_motor_control.join()
         # self.assistance_screen.read_assistance_screen("stop_training")
@@ -231,7 +261,7 @@ class Ergocycle():
         #     print("(Ergocycle) TESTING EVENT")
 
         if command == "start_training":
-            self.thread_motor_control.start()
+            # self.thread_motor_control.start()
             # self.thread_sensors.start()
 
             self.motor_on = True
@@ -310,7 +340,6 @@ class Ergocycle():
             print("(Ergocycle) Command " + command + " not found")
 
     def read_stimulation_screen(self, command):
-
         # if command == "USER CLICKING":
         #     print("(Ergocycle) Commanding a test ") # + str(self.stimulation_screen.get_something()))
 

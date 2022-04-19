@@ -68,7 +68,7 @@ class MainWindowMotor(QMainWindow):
         self.target_power_label.adjustSize()
         
         self.target_power_ComboBox = QComboBox(self)
-        self.target_power_ComboBox.addItems(["25", "50", "75", "100"])
+        self.target_power_ComboBox.addItems(["5", "10", "15", "20", "25", "30"])
         self.target_power_ComboBox.move(1300,500)
         self.target_power_ComboBox.setFont(QFont('Arial', 24))
         self.target_power_ComboBox.adjustSize()
