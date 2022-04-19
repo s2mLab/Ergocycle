@@ -78,6 +78,10 @@ class Ergocycle():
 
         self.motor_on = True
         self.stimulation_started = False
+        
+        self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0,0)
+        
+        self.thread_motor_control.start()
 
         # self.thread_motor_control.start()
         # self.thread_sensors.start()

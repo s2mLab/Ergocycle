@@ -163,9 +163,9 @@ class StimulationScreen(Screen):
     def create_csv_file(self, matrice):
         self.now = datetime.datetime.now()
         file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))
-        #path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordinateur
-        #name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
-        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordinateur
+        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordinateur
+        name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
+        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordinateur
         with open(name_of_file, 'w',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
@@ -180,9 +180,9 @@ class StimulationScreen(Screen):
     ### 1.3. Ajouter les modification des paramètres d'entraînement au même fichier CSV ###
     def save_data_in_csv_file(self, matrice):
         file = self.now.strftime("%m-%d-%Y, %H;%M;%S")
-        #path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
-        #name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
-        name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordi
+        path = "\\home\\pi\\Downloads\\stimulation_data_" # à commenter si vous travaillez sur votre ordi
+        name_of_file = path+file+".csv" # à commenter si vous travaillez sur votre ordi
+        #name_of_file = (self.now.strftime("%m-%d-%Y, %H;%M;%S"))+" stimulations_data.csv" # à décommenter si vous travaillez sur votre ordi
         with open(name_of_file, 'a+',newline='') as f:
             fieldnames = ['Date and time', 'Electrode', 'Amplitude(mA)','Frequence(Hz)', 'Durée dimpulsion(us)', 'muscle']
             thewriter = csv.DictWriter(f,fieldnames)
