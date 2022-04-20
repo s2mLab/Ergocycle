@@ -27,7 +27,7 @@ class CSV(Crankset):
         # Close the csv file
         file.close()
 
-    def loop(self, Ts):
+    def readAngle(self, Ts):
         # Ts is the sampling time
         nmbOfVal = 0
 
