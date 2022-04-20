@@ -94,7 +94,7 @@ class Crankset:
         return F
 
 #     --- Where the magic happens ---
-    def loop(self, Ts):
+    def readAngle(self, Ts):
         pass
 
     def getAvgMoment(self):
