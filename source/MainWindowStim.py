@@ -1,8 +1,3 @@
-"""
-Created on Wed Feb 16 09:10:00 2022
-
-@author: Frédérique Leclerc
-"""
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *

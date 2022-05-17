@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Apr  5 16:22:48 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 from Screen import Screen as Screen
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *

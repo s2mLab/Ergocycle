@@ -1,8 +1,4 @@
-"""
-Created on Wed March 24 11:15:00 2022
 
-@author: Frédérique Leclerc
-"""
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap

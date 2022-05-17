@@ -22,6 +22,7 @@ from Menu import Menu
 SCREEN_WIDTH = 1920
 SCREEN_HEIGTH = 1080
 
+
 class Screen:
 
     # Constuctor
@@ -97,7 +98,7 @@ class Screen:
         # print("")
 
 #    def clicked(self):
-    
+
     def next_window(self):
         self.window_counter += 1
         # print(self.window_counter)

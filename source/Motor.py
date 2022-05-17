@@ -86,10 +86,7 @@ class Motor():
                 print(self._couple)           
                 #self._carte.axis0.controller.input_torque = self._force                 
                 if (end - start) >= self._duree :
-                    break 
-
-
-
+                    break
         print("mode concentrique")
 
     def eccentric_mode(self):
@@ -121,9 +118,7 @@ class Motor():
              compte += 1 
              print("torque", compte)
              print(self._force)     
-             #self._carte.axis0.controller.input_torque = self._force    
-        
-
+             #self._carte.axis0.controller.input_torque = self._force
         print("mode excentrique")
 
     def passif_mode(self) :    
@@ -142,9 +137,7 @@ class Motor():
             vitesse = self._carte.axis0.encoder.vel_estimate
             courant = self._carte.axis0.motor.current_control.Iq_setpoint 
             puissance = self._couple * vitesse  
-            print("puissance en watt :", puissance) 
-
-
+            print("puissance en watt :", puissance)
 
         self._carte.axis0.controller.input_torque = 0.0
 
@@ -168,4 +161,3 @@ class Motor():
 #print(a)
 #print(b)
 #moteur.concentric_mode() 
-

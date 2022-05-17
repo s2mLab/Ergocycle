@@ -210,11 +210,6 @@ class Ergocycle():
                         Stimulator.stimulation_220_10(self.stimulator)
                         time.sleep(1/self.stimulator.frequency[0])
 
-
-
-
-
-
                  elif((np.allclose(self.stimulator.matrice,matrice_0))):
                         timer_test = round(time.time()-self.starttime,2)
                         Stimulator.stimulation_220_10(self.stimulator)
@@ -223,11 +218,8 @@ class Ergocycle():
                  else:
                     break
 
-            Stimulator.stop_stimulation(self.stimulator)
+            Stimulator.stop_stimulation(self.stimulator) # ??? Pourquoi juste créer le paquet d'arret de la stimulation et ne rien en faire ?
             while(timer<(self.stimulation_time)*60 and self.stop_stimulations == False ): #and self.pause == True
-
-
-
                 if(~(np.allclose(self.stimulator.matrice,matrice_0))):
                     timer = round(time.time()-self.starttime,2)
 
@@ -981,6 +973,7 @@ class Ergocycle():
         # threading.Timer(1, test_timer).start()
 
     def command_assistance_screen(self, command, parameters):
+        # TODO
         print("TODO")
 
     #si command_parameter est egal a 1 , on modifie la force en fonction du vecteur force genere dans crankset
@@ -991,6 +984,7 @@ class Ergocycle():
         sys.exit(self.application.exec_())
 
     #def command_stimulation_screen(self, command, parameters):
+        # TODO
         #print("TODO")
 
     #def read_crankset(self, commanded_parameter, value):

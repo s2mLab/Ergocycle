@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:51:25 2022
-
-@author: Nicolas Pelletier-Côté
-"""
-
 # from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 # from PyQt5.QtGui import QFont, QPixmap

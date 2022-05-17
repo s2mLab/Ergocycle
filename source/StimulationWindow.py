@@ -706,36 +706,42 @@ class StimulationWindow(QWidget):
             self.timer_label_sec.adjustSize()
         self.end_of_stim = True
         self.close()
-    
 
     def increase_amplitude1(self, current_parameters):
         if (int(current_parameters.electrode1_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode1_amplitude = str(int(current_parameters.electrode1_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude2(self, current_parameters):
         if (int(current_parameters.electrode2_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode2_amplitude = str(int(current_parameters.electrode2_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude3(self, current_parameters):
         if (int(current_parameters.electrode3_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode3_amplitude = str(int(current_parameters.electrode3_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude4(self, current_parameters):
         if (int(current_parameters.electrode4_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode4_amplitude = str(int(current_parameters.electrode4_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude5(self, current_parameters):
         if (int(current_parameters.electrode5_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode5_amplitude = str(int(current_parameters.electrode5_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude6(self, current_parameters):
         if (int(current_parameters.electrode6_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode6_amplitude = str(int(current_parameters.electrode6_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude7(self, current_parameters):
         if (int(current_parameters.electrode7_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode7_amplitude = str(int(current_parameters.electrode7_amplitude)+ 2)
             self.update_labels(current_parameters)
+
     def increase_amplitude8(self, current_parameters):
         if (int(current_parameters.electrode8_amplitude)) < MAX_AMPLITUDE:
             current_parameters.electrode8_amplitude = str(int(current_parameters.electrode8_amplitude)+ 2)
@@ -745,30 +751,37 @@ class StimulationWindow(QWidget):
         if (int(current_parameters.electrode1_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode1_amplitude = str(int(current_parameters.electrode1_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude2(self, current_parameters):
         if (int(current_parameters.electrode2_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode2_amplitude = str(int(current_parameters.electrode2_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude3(self, current_parameters):
         if (int(current_parameters.electrode3_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode3_amplitude = str(int(current_parameters.electrode3_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude4(self, current_parameters):
         if (int(current_parameters.electrode4_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode4_amplitude = str(int(current_parameters.electrode4_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude5(self, current_parameters):
         if (int(current_parameters.electrode5_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode5_amplitude = str(int(current_parameters.electrode5_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude6(self, current_parameters):
         if (int(current_parameters.electrode6_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode6_amplitude = str(int(current_parameters.electrode6_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude7(self, current_parameters):
         if (int(current_parameters.electrode7_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode7_amplitude = str(int(current_parameters.electrode7_amplitude)- 2)
             self.update_labels(current_parameters)
+
     def decrease_amplitude8(self, current_parameters):
         if (int(current_parameters.electrode8_amplitude)) > MIN_AMPLITUDE:
             current_parameters.electrode8_amplitude = str(int(current_parameters.electrode8_amplitude)- 2)
@@ -781,6 +794,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode1_frequency = str(int(current_parameters.electrode1_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency2(self, current_parameters):
         if (int(current_parameters.electrode2_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode2_frequency)) == 0:
@@ -788,6 +802,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode2_frequency = str(int(current_parameters.electrode2_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency3(self, current_parameters):
         if (int(current_parameters.electrode3_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode3_frequency)) == 0:
@@ -795,6 +810,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode3_frequency = str(int(current_parameters.electrode3_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency4(self, current_parameters):
         if (int(current_parameters.electrode4_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode4_frequency)) == 0:
@@ -802,6 +818,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode4_frequency = str(int(current_parameters.electrode4_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency5(self, current_parameters):
         if (int(current_parameters.electrode5_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode5_frequency)) == 0:
@@ -809,6 +826,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode5_frequency = str(int(current_parameters.electrode5_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency6(self, current_parameters):
         if (int(current_parameters.electrode6_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode6_frequency)) == 0:
@@ -816,6 +834,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode6_frequency = str(int(current_parameters.electrode6_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency7(self, current_parameters):
         if (int(current_parameters.electrode7_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode7_frequency)) == 0:
@@ -823,6 +842,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode7_frequency = str(int(current_parameters.electrode7_frequency)+ 5)
             self.update_labels(current_parameters)
+
     def increase_frequency8(self, current_parameters):
         if (int(current_parameters.electrode8_frequency)) < MAX_FREQ:
             if (int(current_parameters.electrode8_frequency)) == 0:
@@ -838,6 +858,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode1_frequency = str(int(current_parameters.electrode1_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency2(self, current_parameters):
         if (int(current_parameters.electrode2_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode2_frequency)) == 10:
@@ -845,6 +866,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode2_frequency = str(int(current_parameters.electrode2_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency3(self, current_parameters):
         if (int(current_parameters.electrode3_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode3_frequency))== 10:
@@ -852,6 +874,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode3_frequency = str(int(current_parameters.electrode3_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency4(self, current_parameters):
         if (int(current_parameters.electrode4_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode4_frequency)) == 10:
@@ -859,6 +882,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode4_frequency = str(int(current_parameters.electrode4_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency5(self, current_parameters):
         if (int(current_parameters.electrode5_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode5_frequency)) == 10:
@@ -866,6 +890,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode5_frequency = str(int(current_parameters.electrode5_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency6(self, current_parameters):
         if (int(current_parameters.electrode6_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode6_frequency)) == 10:
@@ -873,6 +898,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode6_frequency = str(int(current_parameters.electrode6_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency7(self, current_parameters):
         if (int(current_parameters.electrode7_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode7_frequency)) == 10:
@@ -880,6 +906,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode7_frequency = str(int(current_parameters.electrode7_frequency)- 5)
             self.update_labels(current_parameters)
+
     def decrease_frequency8(self, current_parameters):
         if (int(current_parameters.electrode8_frequency)) > MIN_FREQ:
             if (int(current_parameters.electrode8_frequency)) == 10:
@@ -887,6 +914,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode8_frequency = str(int(current_parameters.electrode8_frequency)- 5)
             self.update_labels(current_parameters)
+
     ## Durée d'impulsion ##
     def increase_imp1(self, current_parameters):
         if (int(current_parameters.electrode1_length_imp)) < MAX_IMP:
@@ -895,6 +923,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode1_length_imp = str(int(current_parameters.electrode1_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp2(self, current_parameters):
         if (int(current_parameters.electrode2_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode2_length_imp)) == 0:
@@ -902,6 +931,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode2_length_imp = str(int(current_parameters.electrode2_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp3(self, current_parameters):
         if (int(current_parameters.electrode3_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode3_length_imp)) == 0:
@@ -909,6 +939,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode3_length_imp = str(int(current_parameters.electrode3_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp4(self, current_parameters):
         if (int(current_parameters.electrode4_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode4_length_imp)) == 0:
@@ -916,6 +947,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode4_length_imp = str(int(current_parameters.electrode4_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp5(self, current_parameters):
         if (int(current_parameters.electrode5_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode5_length_imp)) == 0:
@@ -923,6 +955,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode5_length_imp = str(int(current_parameters.electrode5_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp6(self, current_parameters):
         if (int(current_parameters.electrode6_length_imp)) < MAX_FREQ:
             if (int(current_parameters.electrode6_length_imp)) == 0:
@@ -930,6 +963,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode6_length_imp = str(int(current_parameters.electrode6_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp7(self, current_parameters):
         if (int(current_parameters.electrode7_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode7_length_imp)) == 0:
@@ -937,6 +971,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode7_length_imp = str(int(current_parameters.electrode7_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def increase_imp8(self, current_parameters):
         if (int(current_parameters.electrode8_length_imp)) < MAX_IMP:
             if (int(current_parameters.electrode8_length_imp)) == 0:
@@ -944,6 +979,7 @@ class StimulationWindow(QWidget):
             else:
                 current_parameters.electrode8_length_imp = str(int(current_parameters.electrode8_length_imp)+ 10)
             self.update_labels(current_parameters)
+
     def decrease_imp1(self, current_parameters):
         if (int(current_parameters.electrode1_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode1_length_imp)) == 20:
@@ -951,6 +987,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode1_length_imp = str(int(current_parameters.electrode1_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp2(self, current_parameters):
         if (int(current_parameters.electrode2_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode2_length_imp)) == 20:
@@ -958,6 +995,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode2_length_imp = str(int(current_parameters.electrode2_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp3(self, current_parameters):
         if (int(current_parameters.electrode3_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode3_length_imp)) == 20:
@@ -965,6 +1003,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode3_length_imp = str(int(current_parameters.electrode3_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp4(self, current_parameters):
         if (int(current_parameters.electrode4_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode4_length_imp)) == 20:
@@ -972,6 +1011,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode4_length_imp = str(int(current_parameters.electrode4_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp5(self, current_parameters):
         if (int(current_parameters.electrode5_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode5_length_imp)) == 20:
@@ -979,6 +1019,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode5_length_imp = str(int(current_parameters.electrode5_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp6(self, current_parameters):
         if (int(current_parameters.electrode6_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode6_length_imp)) == 20:
@@ -986,6 +1027,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode6_length_imp = str(int(current_parameters.electrode6_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp7(self, current_parameters):
         if (int(current_parameters.electrode7_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode7_length_imp)) == 20:
@@ -993,6 +1035,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode7_length_imp = str(int(current_parameters.electrode7_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def decrease_imp8(self, current_parameters):
         if (int(current_parameters.electrode8_length_imp)) > MIN_IMP:
             if (int(current_parameters.electrode8_length_imp)) == 20:
@@ -1000,6 +1043,7 @@ class StimulationWindow(QWidget):
             else: 
                 current_parameters.electrode8_length_imp = str(int(current_parameters.electrode8_length_imp)- 10)
             self.update_labels(current_parameters)
+
     def update_labels(self, current_parameters):
         self.current_amplitude1_label.setText(current_parameters.get_electrode1_amplitude())
         self.current_amplitude1_label.adjustSize()
@@ -1049,6 +1093,7 @@ class StimulationWindow(QWidget):
         self.current_imp_label7_label.adjustSize()
         self.current_imp_label8_label.setText(current_parameters.get_electrode8_length_imp())
         self.current_imp_label8_label.adjustSize()
+
     ### 1.14. Chercher les valeurs labels changés par l'utilisateur à l'aide des boutons + et - pour l'envoyer au module de communication ###
     def get_updated_parameters(self, current_parameters):
         self.update_parameters = numpy.empty([4,8],dtype=int)

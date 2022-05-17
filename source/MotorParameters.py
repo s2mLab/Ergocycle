@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:40:36 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 
 from PyQt5.QtCore import QTimer, QTime
 
@@ -14,6 +8,7 @@ MAX_TARGET_POWER = 100
 
 MIN_TRAINING_LENGTH = 0
 MAX_TRAINING_LENGTH = 120 # À modifier
+
 
 class MotorParameters():
     def __init__(self):
@@ -26,8 +21,7 @@ class MotorParameters():
         self.distance = 0
         self.average_power = 0
         self.max_power = 0
-        
-        
+
     def get_training_type(self):
         return self.training_type
     
