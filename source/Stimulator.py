@@ -257,6 +257,17 @@ class Stimulator:
         packet = self.packet_construction(self.packet_count,'Watchdog')
         return packet
 
+    def send_watchdog(self):
+        self.send_packet('Watchdog', self.packet_count)
+
+    def wait(self, sec):
+        time_start = time.time()
+        time_present = time.time()
+        while time_present - time_start < sec:
+            time.sleep(1)
+            self.send_watchdog()
+            time_present = time.time()
+
     # Asking to know which mode has been chosen
     def getMode(self):
         packet = self.packet_construction(self.packet_count, 'GetStimulationMode')
