@@ -10,9 +10,7 @@ from MotorParameters import MotorParameters
 # from ErrorMenu import ErrorMenu
 # from StopMenu import StopMenu
 # from SummaryMenu import SummaryMenu
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 MIN_SPEED = 0
 MAX_SPEED = 200

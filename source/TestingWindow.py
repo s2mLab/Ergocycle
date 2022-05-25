@@ -8,9 +8,8 @@ from CommandButton import CommandButton as CommandButton
 #from StartWindow import StartWindow
 #from MainWindowStim import MainWindowStim
 #from Stimulator import Stimulator
+from constants import *
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
 MAX_AMPLITUDE = 130
 MIN_AMPLITUDE = 0
 MAX_FREQ = 50
@@ -22,7 +21,7 @@ class TestingWindow(QWidget):
     def __init__(self): 
         super(TestingWindow, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des tests ###
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH,  - 30)
         self.setWindowTitle("Test des stimulations")
         self.setStyleSheet("background-color: white;")
         self.button_dictionary = {}

@@ -7,9 +7,7 @@ from PyQt5.QtCore import Qt
 # import sys
 
 from MotorParameters import MotorParameters
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
+from constants import *
 
 MIN_SPEED = 0
 MAX_SPEED = 200

@@ -14,9 +14,8 @@ import numpy
 from numpy import *
 #from Parameters import Parameters
 import sys
+from constants import *
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
 MAX_AMPLITUDE = 130
 MIN_AMPLITUDE = 0
 MAX_FREQ = 50
@@ -28,7 +27,7 @@ class StimulationWindow(QWidget):
     def __init__(self, current_parameters):
         super(StimulationWindow, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des instructions ###
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH - 30)
         self.setWindowTitle("Menu des stimulations")
         self.setStyleSheet("background-color: white;")
         self.initUI(current_parameters)

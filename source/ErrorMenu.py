@@ -8,6 +8,7 @@ Created on Thu Mar 17 20:41:45 2022
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QFont, QPixmap
+from constants import *
 # import time
 # import sys
 
@@ -16,9 +17,6 @@ from PyQt5.QtGui import QFont, QPixmap
 # from ActivityMenu import ActivityMenu
 # from StopMenu import StopMenu
 # from SummaryMenu import SummaryMenu
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
 
 MIN_SPEED = 0
 MAX_SPEED = 200

@@ -11,9 +11,7 @@ from PyQt5.QtGui import QFont, QPixmap
 from InstructionWindow import InstructionWindow
 from PIL import Image
 #import sys
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 class DangerPopUp(QWidget):
     def __init__(self, init_parameters):

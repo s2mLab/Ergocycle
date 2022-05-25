@@ -18,9 +18,7 @@ from PyQt5.QtCore import QTimer, QTime
 
 # Imports (classes)
 from Menu import Menu
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 
 class Screen:
