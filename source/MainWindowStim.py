@@ -1,8 +1,3 @@
-"""
-Created on Wed Feb 16 09:10:00 2022
-
-@author: Frédérique Leclerc
-"""
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
@@ -12,9 +7,7 @@ from InstructionWindow import InstructionWindow
 from StimulationWindow import StimulationWindow
 from Parameters import Parameters
 from DangerPopUp import DangerPopUp
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
+from constants import *
 
 MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 

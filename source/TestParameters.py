@@ -1,10 +1,4 @@
 import numpy as numpy
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Apr  7 21:06:49 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 
 MAX_AMPLITUDE = 130
 MIN_AMPLITUDE = 0
@@ -12,6 +6,7 @@ MAX_FREQ = 50
 MIN_FREQ = 0
 MAX_IMP = 500
 MIN_IMP = 0
+
 
 class TestParameters():
     def __init__(self):
@@ -21,6 +16,7 @@ class TestParameters():
         self.frequency = 30
         self.imp = 200
         self.muscle = 1
+
     ## Recoit les nouvelles valeurs entrées par l'utilisateur et le transforme en matrice facilement exécutable par le module de communication.
     def get_test_parameters(self,amp,freq,imp,muscle):
         initial_test_parameters = numpy.empty([4,8], dtype=int)
@@ -33,7 +29,8 @@ class TestParameters():
                 initial_test_parameters[i,:]=[imp, 0, 0, 0, 0, 0, 0, 0]
             if i==3:
                 initial_test_parameters[i,:]=[muscle, 0, 0, 0, 0, 0, 0, 0]
-        return(initial_test_parameters)
+        return initial_test_parameters
+
     def set_to_off(self):
         zero_parameters = []
         return(zero_parameters)

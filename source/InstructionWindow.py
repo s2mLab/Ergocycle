@@ -12,9 +12,7 @@ from StimulationWindow import StimulationWindow
 from PIL import Image
 from numpy import *
 #import sys
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
+from constants import *
 
 MIN_TRAINING_LENGTH = 1
 MAX_TRAINING_LENGTH = 120 # À modifier

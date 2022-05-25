@@ -8,9 +8,7 @@ from PyQt5.QtCore import QTimer, QTime
 
 from ErrorMenu import ErrorMenu
 from StopMenu import StopMenu
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 MIN_SPEED = 0
 MAX_SPEED = 200

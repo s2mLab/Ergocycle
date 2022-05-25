@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:39:36 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QPushButton, QLabel, QComboBox
@@ -13,9 +7,7 @@ from PyQt5.QtCore import Qt
 # import sys
 
 from MotorParameters import MotorParameters
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080 - 30
+from constants import *
 
 MIN_SPEED = 0
 MAX_SPEED = 200

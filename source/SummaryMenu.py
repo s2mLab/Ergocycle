@@ -1,18 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:43:34 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QFont, QPixmap
 # import time
 # import sys
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 class SummaryMenu(QWidget):
     def __init__(self, motor_parameters):
@@ -25,7 +17,6 @@ class SummaryMenu(QWidget):
         self.initUI(motor_parameters)
 
     def initUI(self, motor_parameters):
-        
         self.logo_label = QtWidgets.QLabel(self)
         self.pixmap = QPixmap('image_400.jpg') # Modifier la taille de l'image au besoin
         self.logo_label.setPixmap(self.pixmap)

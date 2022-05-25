@@ -1,8 +1,4 @@
-"""
-Created on Wed March 24 11:15:00 2022
 
-@author: Frédérique Leclerc
-"""
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont, QPixmap
@@ -13,9 +9,7 @@ from TestingWindow import TestingWindow
 from MainWindowStim import MainWindowStim 
 from PIL import Image
 from numpy import *
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 class StartWindow(QWidget):
     def __init__(self): 
@@ -30,7 +24,7 @@ class StartWindow(QWidget):
         
     def initUI(self):  
         ### 1.2. Mettre le logo du laboratoire dans le coin gauche de la fenêtre ###
-        self.imageS2M = Image.open("img_S2M_JPG.jpg")
+        self.imageS2M = Image.open('img_S2M_JPG.jpg')
         self.petite_imageS2M = self.imageS2M.resize((200, 150))
         self.petite_imageS2M.save('image_400.jpg')
         self.logo_label = QtWidgets.QLabel(self)

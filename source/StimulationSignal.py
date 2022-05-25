@@ -1,7 +1,5 @@
 # Crankset class
 class StimulationSignal:    
-   
-
 
     # Constuctor
     def __init__(self, frequency, amplitude, pulse_width, training_time, muscle, electrode):

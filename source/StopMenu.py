@@ -1,18 +1,10 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:42:44 2022
-
-@author: Nicolas Pelletier-Côté
-"""
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 from PyQt5.QtGui import QFont, QPixmap
 # import time
 # import sys
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 class StopMenu(QWidget):
     def __init__(self):

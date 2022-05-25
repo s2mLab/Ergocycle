@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 17 20:51:25 2022
-
-@author: Nicolas Pelletier-Côté
-"""
-
 # from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
 # from PyQt5.QtGui import QFont, QPixmap
@@ -17,9 +10,7 @@ from MotorParameters import MotorParameters
 # from ErrorMenu import ErrorMenu
 # from StopMenu import StopMenu
 # from SummaryMenu import SummaryMenu
-
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
+from constants import *
 
 MIN_SPEED = 0
 MAX_SPEED = 200

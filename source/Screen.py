@@ -18,9 +18,8 @@ from PyQt5.QtCore import QTimer, QTime
 
 # Imports (classes)
 from Menu import Menu
+from constants import *
 
-SCREEN_WIDTH = 1920
-SCREEN_HEIGTH = 1080
 
 class Screen:
 
@@ -97,7 +96,7 @@ class Screen:
         # print("")
 
 #    def clicked(self):
-    
+
     def next_window(self):
         self.window_counter += 1
         # print(self.window_counter)
