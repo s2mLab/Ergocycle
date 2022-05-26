@@ -20,7 +20,7 @@ MAX_TRAINING_LENGTH = 120 # À modifier
 class MainWindowMotor(QMainWindow):
     def __init__(self, motor_param):
         super(MainWindowMotor, self).__init__()
-        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setWindowTitle("Menu Principal")
         self.setStyleSheet("background-color: white;")
         # self.button_dictionary = {}

@@ -30,7 +30,7 @@ class Screen:
         self.event_function = event_function
 
         # self.width = SCREEN_WIDTH
-        # self.height = SCREEN_HEIGTH
+        # self.height = SCREEN_HEIGHT
 
         #self.speed = 100
         self.window_counter = 0

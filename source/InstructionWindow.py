@@ -21,7 +21,7 @@ MAX_TRAINING_LENGTH = 120 # À modifier
 class InstructionWindow(QWidget):
     def __init__(self, init_parameters):
         super(InstructionWindow, self).__init__()
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setWindowTitle("Instructions d'installation des électrodes")
         self.setStyleSheet("background-color: white;")
         self.com_start_feedback = True 

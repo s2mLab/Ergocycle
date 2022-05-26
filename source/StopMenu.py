@@ -10,7 +10,7 @@ class StopMenu(QWidget):
     def __init__(self):
         super(StopMenu, self).__init__()
         
-        self.setGeometry(SCREEN_WIDTH + SCREEN_WIDTH/3, SCREEN_HEIGTH/3 + 30, SCREEN_WIDTH/3, SCREEN_HEIGTH/3)
+        self.setGeometry(SCREEN_WIDTH + SCREEN_WIDTH/3, SCREEN_HEIGHT/3 + 30, SCREEN_WIDTH/3, SCREEN_HEIGHT/3)
         self.setWindowTitle("Confirmation")
         self.setStyleSheet("background-color: white;")
         
