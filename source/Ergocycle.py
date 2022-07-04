@@ -134,17 +134,17 @@ class Ergocycle():
         
         # Calibrate motor and wait for it to finish
         print("starting calibration...")
-        my_drive.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE
-        while my_drive.axis0.current_state != AXIS_STATE_IDLE:
+        my_drive.axis0.requested_state = AxisState.FULL_CALIBRATION_SEQUENCE
+        while my_drive.axis0.current_state != AxisState.IDLE:
             time.sleep(0.1)
         self.motor._carte = my_drive
         
         while(self.motor_on == False):
             print("Waiting for motor to start...")
             time.sleep(1)
-        self.motor._carte.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL #pour démarrer le moteur
+        self.motor._carte.axis0.requested_state = AxisState.CLOSED_LOOP_CONTROL #pour démarrer le moteur
 #         self.motor._carte.axis0.controller.config.control_mode = CONTROL_MODE_TORQUE_CONTROL #set le mode torque
-        self.motor._carte.axis0.controller.config.control_mode = CONTROL_MODE_VELOCITY_CONTROL #set le mode vitesse
+        self.motor._carte.axis0.controller.config.control_mode = ControlMode.VELOCITY_CONTROL #set le mode vitesse
 #         self.motor._carte.axis0.motor.config.torque_constant = 0.21
         while(self.stop_motor == False):
             time.sleep(1) # Changer la période à laquelle on veut ajuster le contrôle du moteur+- 
