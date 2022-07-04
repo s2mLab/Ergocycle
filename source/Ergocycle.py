@@ -13,6 +13,10 @@ from TestParameters import TestParameters
 from MotorParameters import MotorParameters
 from Motor import Motor
 from constants import *
+from InterfacePyScienceMode2 import *
+
+from pyScienceMode2 import Stimulator as St
+
 # from ReceiveDataClient import ReceiveDataClient # Décommenter lorsque la classe sera ajoutée au git
 import odrive
 #import numpy 
@@ -23,7 +27,7 @@ from PyQt5.QtCore import QTimer, QTime
 from PyQt5.QtWidgets import QApplication
 
 import sys
-from Stimulator import Stimulator
+
 #import MainWindowStim
 #import main_sef
 #import InstructionWindow
@@ -51,7 +55,7 @@ class Ergocycle():
     # Constuctor
     def __init__(self):
 
-        if DEBUG_REHA == 0:
+        if not DEBUG_REHA:
             self.application = QApplication([])
 
             self.motor_parameters = MotorParameters()
@@ -70,7 +74,9 @@ class Ergocycle():
         self.stimulation_signal = []
         self.stimulation_time = 0
         self.start_time = 0
-        self.stimulator = Stimulator(self.stimulation_signal, USB_DRIVE_PORT_PATH)
+        self.stimulator = St.Stimulator(list_channels=[],
+                                        stimulation_interval=8,
+                                        port_path=USB_DRIVE_PORT_PATH)
 
         self.stop_motor = False
         self.stop_sensors = False
@@ -81,7 +87,7 @@ class Ergocycle():
         self.motor_on = True
         self.stimulation_started = False
 
-        if DEBUG_REHA == 0:
+        if not DEBUG_REHA:
             self.motor = Motor('tsdz2', 0 , 0, 0, 0 , 0, 0, 0,0)
         
             self.thread_motor_control.start()
@@ -113,14 +119,14 @@ class Ergocycle():
 
 
         #self.test_timer()
-        if DEBUG_REHA == 0:
+        if not DEBUG_REHA:
             self.start_application()
 
         # self.assistance_screen.start_application()
         # self.stimulation_screen.start_stimulation_application()
 
         # sys.exit(self.application.exec_())
-        if DEBUG_REHA == 1:
+        if DEBUG_REHA:
             self.stimulations_function("Jean")
 
     def motor_control_function(self, name):
@@ -188,45 +194,68 @@ class Ergocycle():
     def stimulations_function(self, name): # S'il n'y a pas de commande à envoyer périodiquement, retirer ce thread
         # logging.info("Thread %s: starting", name)
         matrice_history = [[0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0]]
+        if DEBUG_REHA_SHOW_COM:
+            self.stimulator.show_log()
+            # self.stimulator.show_com()
+            # stimulator.show_watchdog()
 
-        mess_init = self.stimulator.initialise_connection()
-        if DEBUG_REHA == 1:
-            print(mess_init)
+        if DEBUG_REHA:
+            self.stimulation_signal = [[10, 0, 10, 0, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10, 10, 10],
+                                       [10, 10, 10, 10, 10, 10, 10, 10], [0, 1, 2, 3, 4, 5, 6, 7]]
+        else:
+            while np.shape(self.stimulation_signal)[1] == 0:
+                time.sleep(0.5)
+
+        self.stimulator.init_channel(list_channels=matrix_to_list_channels(self.stimulation_signal),
+                                     stimulation_interval=int(1000 / self.stimulation_signal[1][0]))
 
         self.start_time = time.time()
         timer = 0
         fin_stimulation = 0
+        parameter_stimulation_changed = False
+        start_stimulation = False
 
-        if DEBUG_REHA == 1:
+        if DEBUG_REHA:
             # Rentrer les stimulations voulues (électrodes 1 et 3 défaillantes)
             self.stimulator.matrice = [[10, 0, 10, 0, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10, 10, 10],
                                        [10, 10, 10, 10, 10, 10, 10, 10], [0, 1, 2, 3, 4, 5, 6, 7]]
             # Rentrer le temsp du test en minute
-            self.stimulation_time = 1
+            self.stimulation_time = 10/60
             self.stop_stimulations = False
             self.stop_motor = False
             self.stop_tests = True
 
         while self.stop_stimulations is False and self.stop_motor is False:
-            if self.stimulator.port.in_waiting > 0:
-                print(self.stimulator.calling_ACK())
-            self.stimulator.send_watchdog()
-
-            while timer < self.stimulation_time * 60 and self.stop_stimulations is False: #and self.pause == True
-                if DEBUG_REHA_SHOW_COM == 1:
+            while timer < self.stimulation_time * 60 and self.stop_stimulations is False:  # and self.pause == True
+                if DEBUG_REHA_SHOW_COM:
                     print("Time :", round(timer, 3))
-                if not(np.allclose(self.stimulator.matrice, matrice_history)):
-                    matrice_history = self.stimulator.matrice
-                    self.stimulator.init_channel()
-                self.stimulator.start_channel()
-                self.stimulator.wait(1 / self.stimulator.frequency[0])
+
+                if not(np.allclose(self.stimulation_signal, matrice_history)):
+                    matrice_history = self.stimulation_signal
+                    parameter_stimulation_changed = True
+
+                if not start_stimulation or parameter_stimulation_changed:
+                    if parameter_stimulation_changed:
+                        self.stimulator.init_channel(stimulation_interval=self.stimulation_signal[1][0])
+                        parameter_stimulation_changed = False
+                    self.stimulator.start_stimulation(upd_list_channels=matrix_to_list_channels(
+                        self.stimulation_signal))
+                    start_stimulation = True
+
+
+                time.sleep(1)
+
                 timer = time.time() - self.start_time
                 fin_stimulation = 1
+
             if fin_stimulation == 1:
                 print("Stimulation finished")
+                self.stimulator.stop_stimulation()
                 fin_stimulation = 0
+                if DEBUG_REHA:
+                    self.stop_stimulations = True
         # Remettre la matrice à 0
-
+        self.stimulator.disconnect()
         print("(Ergocycle) Stopped stimulations thread")
         # self.thread_stimulations.join()
         # self.stimulation_screen.read_stimulation_screen("stop_stimulation")
@@ -323,8 +352,6 @@ class Ergocycle():
         #     print("(Ergocycle) Commanding a test ") # + str(self.stimulation_screen.get_something()))
 
         if command == "start_test":
-
-
             self.stimulation_screen.window_counter = -1
             self.stimulation_screen.current_menu.get_test_parameters(self.stim_test_parameters)
             self.stimulation_screen.manage_active_window(self.stim_test_parameters)
@@ -347,7 +374,7 @@ class Ergocycle():
                     self.thread_stimulations.start()
                     self.stimulation_started = True
             self.start_time = time.time()
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
 
         elif command == "increase_frequency":
@@ -356,7 +383,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "increase_imp":
             self.stimulation_screen.current_menu.increase_imp(self.stim_test_parameters)
@@ -364,7 +391,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test imp : {self.stim_test_parameters.imp}")
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_amp":
             self.stimulation_screen.current_menu.decrease_amplitude(self.stim_test_parameters)
@@ -372,7 +399,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test amplitude : {self.stim_test_parameters.amplitude}")
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_frequency":
             self.stimulation_screen.current_menu.decrease_frequency(self.stim_test_parameters)
@@ -380,7 +407,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test frequency : {self.stim_test_parameters.frequency}")
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_imp":
             self.stimulation_screen.current_menu.decrease_imp(self.stim_test_parameters)
@@ -388,7 +415,7 @@ class Ergocycle():
             self.stimulation_signal = self.stim_test_parameters.get_test_parameters(self.stim_test_parameters.amplitude, self.stim_test_parameters.frequency,self.stim_test_parameters.imp,self.stim_test_parameters.muscle)
             print(f"UPDATED test parameters : {self.stimulation_signal}")
             #print(f"Updated test parameters : {self.stim_test_parameters.imp}")
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "back_button_clicked":
             # self.thread_stimulations.pause()
@@ -467,7 +494,7 @@ class Ergocycle():
                     self.thread_stimulations.start()
                     self.stimulation_started = True
                 self.start_time = time.time()
-                Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
             else:
                 # self.stimulation_screen.current_menu.start_button.setEnabled(False)
                 # time.sleep(0.1)
@@ -483,7 +510,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 1 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
             # TODO : Lire la nouvelle matrice?
         elif command == "increase_amplitude2":
             self.stimulation_screen.current_menu.increase_amplitude2(self.stim_parameters)
@@ -493,7 +520,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 2 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude3":
             self.stimulation_screen.current_menu.increase_amplitude3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -502,7 +529,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 3 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude4":
             self.stimulation_screen.current_menu.increase_amplitude4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -511,7 +538,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 4 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude5":
             self.stimulation_screen.current_menu.increase_amplitude5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -520,7 +547,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 5 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude6":
             self.stimulation_screen.current_menu.increase_amplitude6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -529,7 +556,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 6 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude7":
             self.stimulation_screen.current_menu.increase_amplitude7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -538,7 +565,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 7 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_amplitude8":
             self.stimulation_screen.current_menu.increase_amplitude8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -547,7 +574,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 8 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_amplitude1":
             self.stimulation_screen.current_menu.decrease_amplitude1(self.stim_parameters)
@@ -557,7 +584,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 1 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude2":
             self.stimulation_screen.current_menu.decrease_amplitude2(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -566,7 +593,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 2 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude3":
             self.stimulation_screen.current_menu.decrease_amplitude3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -575,7 +602,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 3 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude4":
             self.stimulation_screen.current_menu.decrease_amplitude4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -584,7 +611,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 4 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude5":
             self.stimulation_screen.current_menu.decrease_amplitude5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -593,7 +620,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 5 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude6":
             self.stimulation_screen.current_menu.decrease_amplitude6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -602,7 +629,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 6 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude7":
             self.stimulation_screen.current_menu.decrease_amplitude7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -611,7 +638,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 7 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_amplitude8":
             self.stimulation_screen.current_menu.decrease_amplitude8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -620,7 +647,7 @@ class Ergocycle():
             print("(Ergocycle) Amplitude 8 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "increase_frequency1":
             self.stimulation_screen.current_menu.increase_frequency1(self.stim_parameters)
@@ -630,7 +657,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 1 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency2":
             self.stimulation_screen.current_menu.increase_frequency2(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -639,7 +666,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 2 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency3":
             self.stimulation_screen.current_menu.increase_frequency3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -648,7 +675,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 3 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency4":
             self.stimulation_screen.current_menu.increase_frequency4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -657,7 +684,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 4 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency5":
             self.stimulation_screen.current_menu.increase_frequency5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -666,7 +693,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 5 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency6":
             self.stimulation_screen.current_menu.increase_frequency6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -675,7 +702,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 6 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency7":
             self.stimulation_screen.current_menu.increase_frequency7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -684,7 +711,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 7 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_frequency8":
             self.stimulation_screen.current_menu.increase_frequency8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -693,7 +720,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 8 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_frequency1":
             self.stimulation_screen.current_menu.decrease_frequency1(self.stim_parameters)
@@ -710,7 +737,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 2 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency3":
             self.stimulation_screen.current_menu.decrease_frequency3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -719,7 +746,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 3 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency4":
             self.stimulation_screen.current_menu.decrease_frequency4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -728,7 +755,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 4 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency5":
             self.stimulation_screen.current_menu.decrease_frequency5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -737,7 +764,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 5 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency6":
             self.stimulation_screen.current_menu.decrease_frequency6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -746,7 +773,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 6 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency7":
             self.stimulation_screen.current_menu.decrease_frequency7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -755,7 +782,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 7 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_frequency8":
             self.stimulation_screen.current_menu.decrease_frequency8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -764,7 +791,7 @@ class Ergocycle():
             print("(Ergocycle) Frequency 8 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "increase_imp1":
             self.stimulation_screen.current_menu.increase_imp1(self.stim_parameters)
@@ -774,7 +801,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 1 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp2":
             self.stimulation_screen.current_menu.increase_imp2(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -783,7 +810,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 2 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp3":
             self.stimulation_screen.current_menu.increase_imp3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -792,7 +819,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 3 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp4":
             self.stimulation_screen.current_menu.increase_imp4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -801,7 +828,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 4 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp5":
             self.stimulation_screen.current_menu.increase_imp5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -810,7 +837,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 5 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp6":
             self.stimulation_screen.current_menu.increase_imp6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -819,7 +846,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 6 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp7":
             self.stimulation_screen.current_menu.increase_imp7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -828,7 +855,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 7 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "increase_imp8":
             self.stimulation_screen.current_menu.increase_imp8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -837,7 +864,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 8 increased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "decrease_imp1":
             self.stimulation_screen.current_menu.decrease_imp1(self.stim_parameters)
@@ -847,7 +874,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 1 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp2":
             self.stimulation_screen.current_menu.decrease_imp2(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -856,7 +883,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 2 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp3":
             self.stimulation_screen.current_menu.decrease_imp3(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -865,7 +892,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 3 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp4":
             self.stimulation_screen.current_menu.decrease_imp4(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -874,7 +901,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 4 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp5":
             self.stimulation_screen.current_menu.decrease_imp5(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -883,7 +910,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 5 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp6":
             self.stimulation_screen.current_menu.decrease_imp6(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -892,7 +919,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 6 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp7":
             self.stimulation_screen.current_menu.decrease_imp7(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -901,7 +928,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 7 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
         elif command == "decrease_imp8":
             self.stimulation_screen.current_menu.decrease_imp8(self.stim_parameters)
             self.stimulation_screen.current_menu.get_updated_parameters(self.stim_parameters)
@@ -910,7 +937,7 @@ class Ergocycle():
             print("(Ergocycle) Impulsion 8 decreased")
             print(f"UPDATED training parameters : {self.stimulation_signal}")
 
-            Stimulator.set_matrice(self.stimulator, self.stimulation_signal)
+
 
         elif command == "pause_stimulation":
             self.stimulation_screen.current_menu.pause(self.stim_parameters)
