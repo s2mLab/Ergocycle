@@ -11,4 +11,4 @@ SCREEN_HEIGHT = 768
 
 # Debug
 DEBUG_REHA = 1  # 0 : normal behaviour of software, 1 : only simulation function
-DEBUG_REHA_SHOW_COM = 1  # 0 : normal behaviour, 1 : print all communication with Rehastim
+DEBUG_REHA_SHOW_COM = 0  # 0 : normal behaviour, 1 : print all communication with Rehastim

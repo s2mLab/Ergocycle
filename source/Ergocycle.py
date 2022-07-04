@@ -202,7 +202,7 @@ class Ergocycle():
             self.stimulator.matrice = [[10, 0, 10, 0, 10, 10, 10, 10], [10, 10, 10, 10, 10, 10, 10, 10],
                                        [10, 10, 10, 10, 10, 10, 10, 10], [0, 1, 2, 3, 4, 5, 6, 7]]
             # Rentrer le temsp du test en minute
-            self.stimulation_time = 30/60
+            self.stimulation_time = 1
             self.stop_stimulations = False
             self.stop_motor = False
             self.stop_tests = True
