@@ -18,7 +18,7 @@ class MainWindowStim(QMainWindow):
     def __init__(self):
         super(MainWindowStim, self).__init__()
         ### 1.1. Instaurer la taille, la couleur de fond et le titre du de la fenêtre des tests ###
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setWindowTitle("Menu principal des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
         init_parameters = Parameters()

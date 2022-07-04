@@ -10,7 +10,7 @@ class SummaryMenu(QWidget):
     def __init__(self, motor_parameters):
         super(SummaryMenu, self).__init__()
         
-        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setWindowTitle("Résumé de la séance")
         self.setStyleSheet("background-color: white;")
         

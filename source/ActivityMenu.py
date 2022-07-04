@@ -20,7 +20,7 @@ class ActivityMenu(QWidget):
     def __init__(self, motor_parameters):
         super(ActivityMenu, self).__init__()
         
-        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(SCREEN_WIDTH, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.setWindowTitle("Performances")
         self.setStyleSheet("background-color: white;")
         # self.button_dictionary = {}

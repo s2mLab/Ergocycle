@@ -14,7 +14,7 @@ from constants import *
 class StartWindow(QWidget):
     def __init__(self): 
         super(StartWindow, self).__init__() 
-        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGTH)
+        self.setGeometry(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT)
         ### 1.1. Initialisation de la fenêtre ###
         self.setWindowTitle("Interface usager des stimulations électriques fonctionnelles")
         self.setStyleSheet("background-color: white;")
