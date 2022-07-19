@@ -1,0 +1,9 @@
+{
+  "connection_commands" : {
+    "Init" : 1,
+    "InitAck" : 2,
+    "UnknownCommand" : 3,
+    "Watchdog" : 4
+  },
+  "rehastim2 modes" : {}
+}

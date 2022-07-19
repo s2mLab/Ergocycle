@@ -1,0 +1,57 @@
+from pyparsing import null_debug_action
+from tcpcom import TCPClient
+import time
+IP_ADDRESS = "192.168.0.17"
+IP_PORT = 22000
+
+
+class ReceiveDataClient():
+    def __init__(self):
+        self.message = None
+        self.rc = None
+        self.client = None
+
+    def copy_msg(self, msg):
+        self.message = msg
+
+    def on_state_changed(self, state, msg):
+        global isConnected
+        if state == "CONNECTING":
+            print("Client:-- Waiting for connection...")
+        elif state == "CONNECTED":
+            print("Client:-- Connection established.")
+        elif state == "DISCONNECTED":
+            print("Client:-- Connection lost.")
+            isConnected = False
+        elif state == "MESSAGE":
+            print("Client:-- Received data:", msg)
+            self.copy_msg(msg)
+
+
+def startClient(self):
+    self.client = TCPClient(IP_ADDRESS, IP_PORT,
+                            stateChanged=self.on_state_changed)
+    self.rc = self.client.connect()
+
+
+def receiveForce(self):
+
+    if self.rc:
+        isConnected = True
+        print("We send the command: receiveForce")
+        self.message = None
+        self.client.sendMessage("receiveForce")
+
+    else:
+        print("The connection has failed")
+
+def receiveAngle(self):
+
+    if self.rc:
+        isConnected = True
+        print("We send the command: receiveAngle")
+        self.message = None
+        self.client.sendMessage("receiveAngle")
+        
+    else:
+        print("The connection has failed")

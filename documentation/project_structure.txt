@@ -1,0 +1,17 @@
+File organization:
+- .gitignore:    The gitignore file
+- data:          A repository that stores all the data to be used in the project
+                 (potential examples: RehaStim commands, NIDAQ commands, menu structures, etc...)
+- documentation: A repository that contains all the project documentation and the code organization related documents
+- source:        A repository that contains all the source code
+- tests_git:     A repository to make github access tests for the developers
+- LICENCE :      The S2M licence
+- README:        The README
+
+Branches:
+- main:        The master branch with the official releases
+- hotfixes:    The branches to fix the bugs on the official releases
+- development: The main development branch
+- release:     The branch to prepare official releases
+- (features):  The branches to add features to the development branch
+               (potential examples: gui, motor, new_menu, stimulator, etc...)
