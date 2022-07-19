@@ -1,8 +1,13 @@
+# Not working code
+
 import socket
+import threading
+import time
+import struct
 
 # Server settings
-pi_ip_address =
-pc_ip_address =
+pi_ip_address = 0
+pc_ip_address = 1
 
 # next create a socket object
 s = socket.socket()
@@ -11,7 +16,7 @@ s = socket.socket()
 port = 12345
 
 # Next bind to the port
-s.bind(('ADRESSE_ORDINATEUR', port))
+s.bind(('computer_address', port))
 
 # put the socket into listening mode
 s.listen(5)
@@ -21,37 +26,38 @@ data = None
 
 VECT_FORCE_UPDATE_OPCODE = 2
 
-#faut call ca dans un autre thread
+
+# Needs to be called in another thread
+
+
 def start_server():
     running = True
     while running:
-
         # Establish connection with client.
         c, addr = s.accept()
-        print ('Got connection from', addr )
-	#thread call of handle client
-        thread = threading.Thread(target = handleClient , args = (client,) )
+        print('Got connection from', addr)
+        # thread call of handle client
+        thread = threading.Thread(target=handle_client, args=(client,))
         thread.start()
 
     # Close the connection with the client
     c.close()
 
 
-def handleClient(client):
+def handle_client(client):
     running = True
 
     while running:
-	#on arrete de handle le client
-        if actionOpcode  == -1:
+        # Stop handling the client
+        if actionOpcode == -1:
             break
 
-        #on attend une autre commande du serveur
-        if actionOpcode  == 0 :
+        # Wait for another command from server
+        if actionOpcode == 0:
             time.sleep(10)
             continue
 
-        #on arrete handle l'action VECT_FORCE_UPDATE_OPCODE
-        if actionOpcode  == VECT_FORCE_UPDATE_OPCODE  :
-            client.send(bytes( str(VECT_FORCE_UPDATE_OPCODE), 'utf8'))
-            data = struct.pack( '<10f' , *data)
-            action = 0
+        # Stop handle the action VECT_FORCE_UPDATE_OPCODE
+        if actionOpcode == VECT_FORCE_UPDATE_OPCODE:
+            client.send(bytes(str(VECT_FORCE_UPDATE_OPCODE), 'utf8'))
+            data = struct.pack('<10f', *data)

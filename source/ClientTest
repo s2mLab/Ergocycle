@@ -5,10 +5,10 @@ port = 12345
 
 VECT_FORCE_UPDATE_OPCODE = 2
 
-#faut call ca dans un autre thread
+# This needs to be called in another thread
 def start_client():
     # connect to the server on local computer
-    s.connect(('ADDRESSE_ORDI', port))
+    s.connect(('computer_address', port))
     isConnected = True
     while isConnected:
          opcode = int(str(c.recv(1024), 'utf8'))

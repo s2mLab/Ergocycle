@@ -11,26 +11,26 @@ class ReceiveDataClient():
         self.rc = None
         self.client = None
 
-    def copymsg(self, msg):
+    def copy_msg(self, msg):
         self.message = msg
 
-    def onStateChanged(self, state, msg):
+    def on_state_changed(self, state, msg):
         global isConnected
         if state == "CONNECTING":
             print("Client:-- Waiting for connection...")
         elif state == "CONNECTED":
-            print("Client:-- Connection estabished.")
+            print("Client:-- Connection established.")
         elif state == "DISCONNECTED":
             print("Client:-- Connection lost.")
             isConnected = False
         elif state == "MESSAGE":
             print("Client:-- Received data:", msg)
-            self.copymsg(msg)
+            self.copy_msg(msg)
 
 
 def startClient(self):
     self.client = TCPClient(IP_ADDRESS, IP_PORT,
-                            stateChanged=self.onStateChanged)
+                            stateChanged=self.on_state_changed)
     self.rc = self.client.connect()
 
 
@@ -38,9 +38,9 @@ def receiveForce(self):
 
     if self.rc:
         isConnected = True
-        print("We send the command: reveiveForce")
+        print("We send the command: receiveForce")
         self.message = None
-        self.client.sendMessage("reveiveForce")
+        self.client.sendMessage("receiveForce")
 
     else:
         print("The connection has failed")
@@ -49,9 +49,9 @@ def receiveAngle(self):
 
     if self.rc:
         isConnected = True
-        print("We send the command: reveiveAngle")
+        print("We send the command: receiveAngle")
         self.message = None
-        self.client.sendMessage("reveiveAngle")
+        self.client.sendMessage("receiveAngle")
         
     else:
         print("The connection has failed")

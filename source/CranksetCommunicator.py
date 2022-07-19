@@ -1,10 +1,4 @@
-
 import numpy as np
-import nidaqmx
-import keyboard
-import time
-import csv
-from datetime import datetime
 from tcpcom import TCPServer
 from Crankset import Crankset
 
@@ -14,36 +8,31 @@ IP_PORT = 22000
 
 class SendDataServer(Crankset):
     def __init__(self):
-        super().__init__()
+        super().__init__()  # TODO: Complete the parameter needed
         self.server = None
-    def sendAngle(self):
-        valueangle= self.readangle()
-        return valueangle
 
+    def send_angle(self):
+        return self.read_angle()
 
-    def sendForce(self):
-        valuef = self.readcard()
+    def send_force(self):
+        force_value = self.read_card()
         # Find the Force/Torque data Left
-        forceL = self.multGU(self.gL, valuef[0:6])
-        forceR = self.multGU(self.gR, valuef[6:12])
-        vectforce = np.append(forceL, forceR)
-        return vectforce
+        force_left = self.multiple_gu(self.gL, force_value[0:6])
+        force_right = self.multiple_gu(self.gR, force_value[6:12])
+        force_vector = np.append(force_left, force_right)
+        return force_vector
 
-    def onStateChanged(self, state, msg):
+    def on_state_changed(self, state, msg):
         if state == "LISTENING":
             print("Server:-- Listening...")
         elif state == "CONNECTED":
             print("Server:-- Connected to", msg)
         elif state == "MESSAGE":
             print("Server:-- Message received:", msg)
-            if msg == "reveiveForce":
-                self.server.sendMessage(self.sendForce())
-            elif msg=="reveiveAngle":
-                self.server.sendMessage(self.sendAngle())
+            if msg == "receiveForce":
+                self.server.sendMessage(self.send_force())
+            elif msg == "receiveAngle":
+                self.server.sendMessage(self.send_angle())
 
-    def startServer(self):
-        self.server = TCPServer(IP_PORT, stateChanged=self.onStateChanged)
-
-
-
-
+    def start_server(self):
+        self.server = TCPServer(IP_PORT, stateChanged=self.on_state_changed)
