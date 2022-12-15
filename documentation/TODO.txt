@@ -1,0 +1,6 @@
+TODOs:
+
+- define a standard code documentation (headers, ...)
+- setup Doxygen
+- setup branches
+- setup environment
